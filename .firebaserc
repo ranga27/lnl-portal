@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "loop-luck"
+  },
+  "targets": {
+    "loop-luck": {
+      "hosting": {
+        "lnl-portal": [
+          "lnl-portal"
+        ]
+      }
+    }
+  }
+}
