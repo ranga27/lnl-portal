@@ -10,14 +10,23 @@
     "deploy": "firebase deploy --only hosting"
   },
   "dependencies": {
+    "@hookform/resolvers": "^2.9.7",
+    "@react-query-firebase/auth": "^1.0.0-dev.1",
+    "classnames": "^2.3.1",
     "firebase": "^9.9.1",
     "firebase-admin": "^11.0.1",
     "next": "12.2.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.34.0",
+    "react-intl": "^6.0.5",
+    "react-query": "^4.0.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.8",
     "eslint": "8.21.0",
-    "eslint-config-next": "12.2.3"
+    "eslint-config-next": "12.2.3",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.7"
   }
 }
