@@ -1,9 +1,6 @@
-import App from '../components/App'
+import React from 'react';
+import Login from './login';
 
 export default function Home() {
-  return (
-    <App>
-      <p>Index Page</p>
-    </App>
-  )
+  return <Login />;
 }

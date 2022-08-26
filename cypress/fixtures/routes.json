@@ -1,0 +1,6 @@
+{
+  "landingPage": "http://localhost:3000/",
+  "registerPage": "/register",
+  "loginPage": "/login",
+  "forgotPasswordPage": "/forgot-password"
+}
