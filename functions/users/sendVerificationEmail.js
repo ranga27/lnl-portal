@@ -13,13 +13,13 @@ exports.sendVerificationEmail = functions.firestore
       .get();
     console.log('Testing for user: ', querySnapshot.data());
     const tempUserInfo = snapshot.data();
-    const { email, confirmationHash, fullName } = tempUserInfo;
+    const { email, confirmationHash, firstName } = tempUserInfo;
 
     return sendEmail({
       to: email,
       from: 'Loop Not Luck hello@loopnotluck.com',
       subject: 'Click here to verify your email address - Get in the Loop',
-      fullName,
+      firstName,
       message: `https://us-central1-loop-luck.cloudfunctions.net/confirmEmail?conf=${confirmationHash}`,
     });
   });

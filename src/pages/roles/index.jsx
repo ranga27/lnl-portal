@@ -35,7 +35,6 @@ export default function CompanyProfile() {
     return <div className='loading' />;
   }
 
-  console.log(roles);
   return (
     <SideBar>
       <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>

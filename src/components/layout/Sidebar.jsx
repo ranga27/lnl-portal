@@ -1,7 +1,5 @@
 import { Fragment, useState, useContext, useEffect } from 'react';
 import Image from 'next/image';
-import { useFirestoreQuery } from '@react-query-firebase/firestore';
-import { collection, query, doc, getDoc } from 'firebase/firestore';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   DesktopComputerIcon,
@@ -39,51 +37,12 @@ const navigation = [
     current: false,
   },
   { name: 'Settings', href: 'settings', icon: CogIcon, current: false },
-  { name: 'Logout', href: '#', icon: LogoutIcon, current: false },
+  { name: 'Logout', href: '/logout', icon: LogoutIcon, current: false },
 ];
 const teams = [
   { name: 'Job 1', href: '#', bgColorClass: 'bg-indigo-500' },
   { name: 'Job 2', href: '#', bgColorClass: 'bg-green-500' },
   { name: 'Job 3', href: '#', bgColorClass: 'bg-yellow-500' },
-];
-const projects = [
-  {
-    id: 1,
-    title: 'GraphQL API',
-    initials: 'GA',
-    team: 'Engineering',
-    members: [
-      {
-        name: 'Dries Vincent',
-        handle: 'driesvincent',
-        imageUrl:
-          'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      {
-        name: 'Lindsay Walton',
-        handle: 'lindsaywalton',
-        imageUrl:
-          'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      {
-        name: 'Courtney Henry',
-        handle: 'courtneyhenry',
-        imageUrl:
-          'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      {
-        name: 'Tom Cook',
-        handle: 'tomcook',
-        imageUrl:
-          'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-    ],
-    totalMembers: 12,
-    lastUpdated: 'March 17, 2020',
-    pinned: true,
-    bgColorClass: 'bg-pink-600',
-  },
-  // More projects...
 ];
 
 function classNames(...classes) {
@@ -255,14 +214,14 @@ export default function SideBar({ children }) {
                   <span className='flex w-full justify-between items-center'>
                     <span className='flex min-w-0 items-center justify-between space-x-3'>
                       <Avatar
-                        name={user.fullName}
+                        name={user.firstName}
                         size='45px'
                         className='rounded-full flex-shrink-0'
                       />
 
                       <span className='flex-1 flex flex-col min-w-0'>
                         <span className='text-gray-900 text-sm font-medium truncate'>
-                          {user.fullName}
+                          {user.firstName}
                         </span>
                         <span className='text-gray-500 text-sm truncate'>
                           {user.email}

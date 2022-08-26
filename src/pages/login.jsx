@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+// import { useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthSignInWithEmailAndPassword } from '@react-query-firebase/auth';
 import IntlMessages from '../utils/IntlMessages';
@@ -14,9 +15,15 @@ import GoogleSignIn from '../components/layout/googleSignIn';
 import TwitterSignIn from '../components/layout/twitterSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
-
+import { AuthContext } from '../components/context/AuthContext';
+// import firebase from '../../firebase/clientApp'
 export default function Login() {
   const router = useRouter();
+  const { currentUser } = useContext(AuthContext);
+  if (currentUser) {
+    router.push('/dashboard');
+  }
+
   const defaultValues = {
     email: '',
     password: '',
@@ -35,7 +42,7 @@ export default function Login() {
     onSuccess(userCred) {
       console.debug('User is signed in!');
       if (userCred.user) {
-        router.push('/');
+        router.push('/dashboard');
       }
     },
     onError() {
@@ -48,7 +55,6 @@ export default function Login() {
   });
 
   const handleUserLogin = async (data) => {
-    console.log(data);
     if (!mutation.isLoading) {
       mutation.mutate(data);
     }
@@ -116,7 +122,6 @@ export default function Login() {
                     href='forgot-password'
                     className='mt-4 text-sm text-[#F7B919]'
                     data-cy='forgot-password-page-link'
-
                   >
                     <IntlMessages id='user.forgot-password-question' />
                   </a>

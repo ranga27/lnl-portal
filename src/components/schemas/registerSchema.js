@@ -2,9 +2,9 @@
 import * as yup from 'yup';
 
 export const signUpSchema = yup.object().shape({
-  fullName: yup
+  firstName: yup
     .string()
-    .required('Please enter your Full Name')
+    .required('Please enter your First Name')
     .min(2, 'Name is too short - should be 2 chars minimum'),
   email: yup
     .string()

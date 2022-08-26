@@ -1,6 +1,8 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-
+import { collection, doc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
 import {
   ChevronRightIcon,
   DotsVerticalIcon,
@@ -9,7 +11,10 @@ import {
   TrashIcon,
   UserAddIcon,
 } from '@heroicons/react/solid';
+import { auth, firestore } from '../../firebase/clientApp';
+import { AuthContext } from '../components/context/AuthContext';
 import SideBar from '../components/layout/Sidebar';
+import Router from 'next/router';
 
 const projects = [
   {
@@ -57,8 +62,35 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
 
+  const collectionRef = collection(firestore, 'users');
+  const ref = doc(collectionRef, userId);
+  const { isLoading, data: user } = useFirestoreDocumentData(
+    ['userDoc'],
+    ref,
+    {
+      subscribe: true,
+    },
+    {
+      onSuccess() {
+        console.debug('User Data loaded successfully');
+      },
+      onError(error) {
+        console.error('Woops, something went wrong!', error);
+      },
+    }
+  );
+  if (isLoading) {
+    // return <div className='loading' />;
+    return <div className="loading"><div></div><div></div><div></div></div>
+  }
+
+  if (!user.isOnboarded) return Router.push('onboarding')
+  // <Onboarding />;
   return (
     <SideBar>
       <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
@@ -84,10 +116,10 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        {/* Pinned projects */}
+        {/* Pinned Jobs */}
         <div className='px-4 mt-6 sm:px-6 lg:px-8'>
           <h2 className='text-gray-500 text-xs font-medium uppercase tracking-wide'>
-            Pinned Projects
+            Pinned Jobs
           </h2>
           <ul
             role='list'

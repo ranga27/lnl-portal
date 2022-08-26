@@ -26,7 +26,7 @@ import { TermsInfo } from '../components/layout/TermsInfo';
 
 export default function Register() {
   const defaultValues = {
-    fullName: '',
+    firstName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -59,8 +59,7 @@ export default function Register() {
     collection(firestore, 'temporaryUsers')
   );
   const handleUserSignUp = async (values) => {
-    const { email, password, fullName, termsSelected } = values;
-    console.log(termsSelected, 'created');
+    const { email, password, firstName, termsSelected } = values;
     if (!createUser.isLoading && termsSelected === true) {
       createUser.mutate(
         { email, password },
@@ -71,7 +70,7 @@ export default function Register() {
             createTempUser.mutate({
               uid,
               email,
-              fullName,
+              firstName,
               role: 'company',
               confirmationHash,
               createdAt: serverTimestamp(),
@@ -114,7 +113,6 @@ export default function Register() {
     setIsModalOpen(!isModalOpen);
   };
 
-  console.log(isModalOpen);
   return (
     <div>
       <section className='h-screen'>
@@ -151,9 +149,9 @@ export default function Register() {
                   </p>
                 </div>
                 <TextInput
-                  name='fullName'
-                  label='Full Name'
-                  errors={errors.fullName}
+                  name='firstName'
+                  label='First Name'
+                  errors={errors.firstName}
                   control={control}
                   data-cy='register-first-name-input'
                 />

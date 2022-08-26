@@ -40,7 +40,7 @@ describe('Login Page Tests', () => {
     cy.get(authSelectors.RegisterPasswordSubmitButton)
       .should('be.visible')
       .click();
-    cy.get('.error-text').should('contain', 'Please enter your Full Name');
+    cy.get('.error-text').should('contain', 'Please enter your First Name');
     cy.get('.error-text').should('contain', 'Please enter your email address');
     cy.get('.error-text').should('contain', 'Please enter your password');
     cy.get('.error-text').should('contain', 'Please confirm your password');

@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
         const requiredData = {
           userProviderId: user.providerData[0].providerId,
           userId: user.uid,
-          userName: user.fullName,
+          userName: user.firstName,
           userEmail: user.email,
           userPhotoLink: user.photoURL,
         };
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   if (loading) {
-    return <>Loading...</>;
+    return <div className='loading'></div>;
   }
 
   return (

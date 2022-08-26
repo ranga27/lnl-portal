@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 //Utility function to send email
 //TODO: move html to config db or a lightweight cms
-exports.sendEmail = ({ to, from, subject, message, fullName }) => {
+exports.sendEmail = ({ to, from, subject, message, firstName }) => {
   const mailOptions = {
     to,
     from,
@@ -40,7 +40,7 @@ exports.sendEmail = ({ to, from, subject, message, fullName }) => {
                         </tr>
                         <tr>
                           <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
-                            <h5 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Hi ${fullName}</h2>
+                            <h5 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Hi ${firstName}</h2>
                           </td>
                         </tr>
                         <tr>

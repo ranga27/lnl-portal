@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppLocale from '../components/lang';
-import { AuthProvider } from "../components/context/AuthContext"
+import { AuthProvider } from '../components/context/AuthContext';
 import 'tailwindcss/tailwind.css';
 import '../styles/globals.css';
 

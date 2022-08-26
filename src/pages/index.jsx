@@ -1,13 +1,6 @@
-import React, { useContext } from "react"
-import App from '../components/App';
-import { AuthContext } from '../components/context/AuthContext';
+import React from 'react';
+import Login from './login';
 
 export default function Home() {
-  const { userData } = useContext(AuthContext);
-  console.log(userData);
-  return (
-    <App>
-      <p>Index Page</p>
-    </App>
-  );
+  return <Login />;
 }
