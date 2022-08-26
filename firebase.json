@@ -4,8 +4,9 @@
     "indexes": "firestore.indexes.json"
   },
   "functions": {
-    "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run lint"],
-    "source": "functions"
+    "source": ".",
+    "predeploy": ["npm install", "npm run build"],
+    "runtime": "nodejs14"
   },
   "hosting": {
     "target": "lnl-portal",
@@ -14,8 +15,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "nextjsFunc",
-        "destination": "/index.html"
+        "function": "nextjsFunc"
       }
     ]
   },
