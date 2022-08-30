@@ -1,5 +1,4 @@
 import { Fragment, useState, useContext, useEffect } from 'react';
-import Image from 'next/image';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
   DesktopComputerIcon,
@@ -42,7 +41,7 @@ const navigation = [
 const teams = [
   { name: 'Job 1', href: '#', bgColorClass: 'bg-indigo-500' },
   { name: 'Job 2', href: '#', bgColorClass: 'bg-green-500' },
-  { name: 'Job 3', href: '#', bgColorClass: 'bg-yellow-500' },
+  { name: 'Job 3', href: '#', bgColorClass: 'bg-red-500' },
 ];
 
 function classNames(...classes) {
@@ -190,18 +189,8 @@ export default function SideBar({ children }) {
 
       {/* Static sidebar for desktop */}
       <div className='hidden lg:flex lg:flex-shrink-0'>
-        <div className='flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-gray-100'>
-          <div className='flex items-center flex-shrink-0 px-6'>
-            <div className='h-12 w-12 relative text-center mx-auto'>
-              <Image
-                src='/assets/white.png'
-                alt='Loop Not Luck'
-                layout='fill'
-                className='w-full'
-                objectFit='cover'
-              />
-            </div>
-          </div>
+        <div className='flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-[#F7B919]'>
+         
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
@@ -210,7 +199,7 @@ export default function SideBar({ children }) {
               className='px-3 mt-6 relative inline-block text-left'
             >
               <div>
-                <Menu.Button className='group w-full bg-gray-100 rounded-md px-3.5 py-2 text-sm text-left font-medium text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-purple-500'>
+                <Menu.Button className='group w-full rounded-md px-3.5 py-2 text-sm text-left font-medium focus:outline-none focus:ring-2 focus:ring-[#F7B919]'>
                   <span className='flex w-full justify-between items-center'>
                     <span className='flex min-w-0 items-center justify-between space-x-3'>
                       <Avatar
@@ -220,16 +209,16 @@ export default function SideBar({ children }) {
                       />
 
                       <span className='flex-1 flex flex-col min-w-0'>
-                        <span className='text-gray-900 text-sm font-medium truncate'>
+                        <span className='text-white  text-sm font-bold truncate'>
                           {user.firstName}
                         </span>
-                        <span className='text-gray-500 text-sm truncate'>
+                        <span className='text-gray-100 text-sm truncate'>
                           {user.email}
                         </span>
                       </span>
                     </span>
                     <SelectorIcon
-                      className='flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                      className='flex-shrink-0 h-5 w-5 text-white group-hover:text-gray-100'
                       aria-hidden='true'
                     />
                   </span>
@@ -287,7 +276,7 @@ export default function SideBar({ children }) {
                             'block px-4 py-2 text-sm'
                           )}
                         >
-                          Notifications
+                          Post Role
                         </a>
                       )}
                     </Menu.Item>
@@ -304,7 +293,7 @@ export default function SideBar({ children }) {
                             'block px-4 py-2 text-sm'
                           )}
                         >
-                          Get desktop app
+                         FAQ
                         </a>
                       )}
                     </Menu.Item>
@@ -344,30 +333,7 @@ export default function SideBar({ children }) {
                 </Menu.Items>
               </Transition>
             </Menu>
-            {/* Sidebar Search */}
-            <div className='px-3 mt-5'>
-              <label htmlFor='search' className='sr-only'>
-                Search
-              </label>
-              <div className='mt-1 relative rounded-md shadow-sm'>
-                <div
-                  className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'
-                  aria-hidden='true'
-                >
-                  <SearchIcon
-                    className='mr-3 h-4 w-4 text-gray-400'
-                    aria-hidden='true'
-                  />
-                </div>
-                <input
-                  type='text'
-                  name='search'
-                  id='search'
-                  className='focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md'
-                  placeholder='Search'
-                />
-              </div>
-            </div>
+
             {/* Navigation */}
             <nav className='px-3 mt-6'>
               <div className='space-y-1'>
@@ -377,8 +343,8 @@ export default function SideBar({ children }) {
                     href={item.href}
                     className={classNames(
                       item.current
-                        ? 'bg-gray-200 text-gray-900'
-                        : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50',
+                        ? 'bg-white text-gray-900 font-bold'
+                        : 'text-white hover:text-gray-900 hover:bg-gray-50 font-bold',
                       'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                     )}
                     aria-current={item.current ? 'page' : undefined}
@@ -387,7 +353,7 @@ export default function SideBar({ children }) {
                       className={classNames(
                         item.current
                           ? 'text-gray-500'
-                          : 'text-gray-400 group-hover:text-gray-500',
+                          : 'text-white group-hover:text-gray-500',
                         'mr-3 flex-shrink-0 h-6 w-6'
                       )}
                       aria-hidden='true'
@@ -402,7 +368,7 @@ export default function SideBar({ children }) {
                   className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider'
                   id='desktop-teams-headline'
                 >
-                  Teams
+                  Roles
                 </h3>
                 <div
                   className='mt-1 space-y-1'
@@ -413,7 +379,7 @@ export default function SideBar({ children }) {
                     <a
                       key={team.name}
                       href={team.href}
-                      className='group flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:text-gray-900 hover:bg-gray-50'
+                      className='group flex items-center px-3 py-2 text-sm font-medium text-white rounded-md hover:text-gray-900 hover:bg-gray-50'
                     >
                       <span
                         className={classNames(

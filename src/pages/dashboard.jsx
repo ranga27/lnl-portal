@@ -85,34 +85,31 @@ export default function Dashboard() {
     }
   );
   if (isLoading) {
-    // return <div className='loading' />;
-    return <div className="loading"><div></div><div></div><div></div></div>
+    return <div className='loading' />;
   }
 
-  if (!user.isOnboarded) return Router.push('onboarding')
-  // <Onboarding />;
+  if (!user.isOnboarded) return Router.push('onboarding');
   return (
     <SideBar>
       <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
-        {/* Page title & actions */}
         <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
           <div className='flex-1 min-w-0'>
             <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
-              Home
+              Dashboard
             </h1>
           </div>
           <div className='mt-4 flex sm:mt-0 sm:ml-4'>
             <button
               type='button'
-              className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-0'
+              className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-0 sm:ml-0'
             >
-              Share
+              Share Profile
             </button>
             <button
               type='button'
-              className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1 sm:ml-3'
+              className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'
             >
-              Create
+              Post Role
             </button>
           </div>
         </div>
@@ -230,7 +227,7 @@ export default function Dashboard() {
         <div className='mt-10 sm:hidden'>
           <div className='px-4 sm:px-6'>
             <h2 className='text-gray-500 text-xs font-medium uppercase tracking-wide'>
-              Projects
+              Roles
             </h2>
           </div>
           <ul
@@ -275,10 +272,10 @@ export default function Dashboard() {
               <thead>
                 <tr className='border-t border-gray-200'>
                   <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    <span className='lg:pl-2'>Project</span>
+                    <span className='lg:pl-2'>Roles</span>
                   </th>
                   <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                    Members
+                    Applicants
                   </th>
                   <th className='hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
                     Last updated
