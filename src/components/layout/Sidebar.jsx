@@ -18,14 +18,14 @@ import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreSe
 const navigation = [
   {
     name: 'Dashboard',
-    href: 'dashboard',
+    href: '/dashboard',
     icon: DesktopComputerIcon,
-    current: true,
+    current: false,
   },
   { name: 'Roles', href: '/roles', icon: BriefcaseIcon, current: false },
   {
     name: 'Manage Applicants',
-    href: 'applicants',
+    href: '/applicants',
     icon: UserGroupIcon,
     current: false,
   },
@@ -35,7 +35,7 @@ const navigation = [
     icon: UserIcon,
     current: false,
   },
-  { name: 'Settings', href: 'settings', icon: CogIcon, current: false },
+  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
   { name: 'Logout', href: '/logout', icon: LogoutIcon, current: false },
 ];
 const teams = [
@@ -48,7 +48,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function SideBar({ children }) {
+export default function SideBar({ children, jobIndex, dashboard }) {
   const [user, setUser] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
@@ -62,6 +62,12 @@ export default function SideBar({ children }) {
       setUser(results);
     });
   }, [userId]);
+
+  if (dashboard === true) {
+    navigation[0].current = true;
+  } else if (jobIndex === true) {
+    navigation[1].current = true;
+  }
 
   return (
     <div className='relative h-screen flex overflow-hidden bg-white'>
@@ -190,7 +196,6 @@ export default function SideBar({ children }) {
       {/* Static sidebar for desktop */}
       <div className='hidden lg:flex lg:flex-shrink-0'>
         <div className='flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-[#F7B919]'>
-         
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
@@ -293,7 +298,7 @@ export default function SideBar({ children }) {
                             'block px-4 py-2 text-sm'
                           )}
                         >
-                         FAQ
+                          FAQ
                         </a>
                       )}
                     </Menu.Item>

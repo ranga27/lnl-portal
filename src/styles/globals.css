@@ -25,7 +25,7 @@ a {
   animation: spin 2s linear infinite;
   position: fixed;
   top: 40%;
-  left: 50%;
+  left: 45%;
 }
 
 @keyframes spin {

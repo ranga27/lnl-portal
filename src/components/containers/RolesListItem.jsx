@@ -46,7 +46,7 @@ export default function RolesList({ roles }) {
   const rolesPinned = roles.filter((role) => role.pinned);
 
   return (
-    <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
+    <main>
       <div className='px-4 mt-6 sm:px-6 lg:px-8'>
         <ul
           role='list'

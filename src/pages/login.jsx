@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-// import { useQuery } from 'react-query';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthSignInWithEmailAndPassword } from '@react-query-firebase/auth';
 import IntlMessages from '../utils/IntlMessages';
@@ -16,7 +15,6 @@ import TwitterSignIn from '../components/layout/twitterSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
 import { AuthContext } from '../components/context/AuthContext';
-// import firebase from '../../firebase/clientApp'
 export default function Login() {
   const router = useRouter();
   const { currentUser } = useContext(AuthContext);
@@ -67,7 +65,7 @@ export default function Login() {
             <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
               <div className='w-48 h-48 xl:w-96 lg:w-24 md:w-24 xl:h-96 lg:h-24 md:h-24 relative text-center mx-auto'>
                 <Image
-                  src='/assets/white.png'
+                  src={require('../../public/assets/white.png')}
                   alt='Loop Not Luck'
                   layout='fill'
                   className='w-full'

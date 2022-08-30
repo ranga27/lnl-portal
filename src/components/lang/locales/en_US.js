@@ -41,6 +41,7 @@ module.exports = {
   'roles.create': 'Post a role',
   'roles.title': 'Roles',
   'roles.subtitle': 'Pinned Roles',
+  'roles.next': 'Next',
 
   /* 02.Onboarding */
   'onboarding.lastName': 'Last Name',
@@ -54,7 +55,6 @@ module.exports = {
   'onboarding.stepper1': 'Personal Info',
   'onboarding.stepper2': 'Company Info',
   'onboarding.stepper3': 'Payment',
-
   'onboarding.location': 'Location',
   'onboarding.confirm': 'Confirm Submit',
   'onboarding.jobRole': 'Job Role',
@@ -75,4 +75,5 @@ module.exports = {
   'onboarding.companyLogo': 'Upload Company Logo',
   'onboarding.hearAbout': 'How did you hear about us?',
   'onboarding.confirmation': 'Confirmation',
+
 };

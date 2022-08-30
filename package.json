@@ -2,7 +2,7 @@
   "private": true,
   "main": "firebaseFunctions.js",
   "scripts": {
-    "dev": "next src/",
+    "dev": "next",
     "emulator": "firebase emulators:start --import ./functions/firestore",
     "cypress": "cypress open",
     "build": "next build src/",
