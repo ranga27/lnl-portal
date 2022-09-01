@@ -85,6 +85,7 @@ export default function Step2(props) {
           console.log(values);
           props.update(values);
           props.nextStep();
+          window.scrollTo(0, 0);
         }}
       >
         {({ errors, touched, setFieldValue, values }) => (
@@ -140,8 +141,12 @@ export default function Step2(props) {
                     'border-red-500': errors.industry && touched.industry,
                   })}
                   name='industry'
-                  value={values.industry}
-                  onChange={(value) => setFieldValue('industry', value)}
+                  onChange={(e) => {
+                    setFieldValue(
+                      'industry',
+                      e.map((option) => option.value)
+                    );
+                  }}
                   styles={customStyles}
                   options={positionTypes}
                   placeholder='London'
@@ -160,7 +165,12 @@ export default function Step2(props) {
                   })}
                   name='diversity'
                   value={values.diversity}
-                  onChange={(value) => setFieldValue('diversity', value)}
+                  onChange={(e) => {
+                    setFieldValue(
+                      'diversity',
+                      e.map((option) => option.value)
+                    );
+                  }}
                   styles={customStyles}
                   options={diversityTypes}
                   isMulti={true}
@@ -197,7 +207,12 @@ export default function Step2(props) {
                   })}
                   name='companyValues'
                   value={values.companyValues}
-                  onChange={(value) => setFieldValue('companyValues', value)}
+                  onChange={(e) => {
+                    setFieldValue(
+                      'companyValues',
+                      e.map((option) => option.value)
+                    );
+                  }}
                   styles={customStyles}
                   options={jobValuesOptions}
                   isMulti={true}

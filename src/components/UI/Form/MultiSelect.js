@@ -36,7 +36,7 @@ export const MultiSelect = ({
     if (defaultValue) {
       setSelection({ selectedOptions: setDefaultValues });
     }
-  }, [defaultValue, setDefaultValues]);
+  }, []);
 
   return (
     <Group label={label} errors={errors}>

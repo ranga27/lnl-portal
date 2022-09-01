@@ -59,6 +59,7 @@ export default function Step1(props) {
         onSubmit={(values) => {
           props.update(values)
           props.nextStep();
+          window.scrollTo(0, 0);
         }}
       >
         {({ errors, touched, setFieldValue, values }) => (

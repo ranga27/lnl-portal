@@ -25,7 +25,9 @@ export default function Step3(props) {
         <button
           className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
           type='submit'
-          onClick={() => props.nextStep()}
+          onClick={() => {
+            props.nextStep(), window.scrollTo(0, 0);
+          }}
         >
           <IntlMessages id='onboarding.nextVariant3' />
         </button>

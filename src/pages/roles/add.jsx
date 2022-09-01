@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import SideBar from '../../components/layout/Sidebar';
-import { rolesSchema } from '../../components/schemas/rolesSchema';
-
-import IntlMessages from '../../utils/IntlMessages';
+import { useState, useContext } from 'react';
+import { useRouter } from 'next/router';
 import {
   useFirestoreCollectionMutation,
-  useFirestoreDocumentMutation,
+  useFirestoreQuery,
 } from '@react-query-firebase/firestore';
-import Swal from 'sweetalert2';
-import { collection, serverTimestamp, doc } from 'firebase/firestore';
 import 'react-datepicker/dist/react-datepicker.css';
+import Swal from 'sweetalert2';
+import { collection, serverTimestamp, query, where } from 'firebase/firestore';
+import SideBar from '../../components/layout/Sidebar';
+import { AuthContext } from '../../components/context/AuthContext';
+import IntlMessages from '../../utils/IntlMessages';
 import { firestore } from '../../../firebase/clientApp';
 import AuthRoute from '../../components/context/authRoute';
 import AddRoleForm from '../../components/form/AddRoleForm';
@@ -21,12 +19,18 @@ import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
 
 export default function AddRole() {
+  const mutation = useFirestoreCollectionMutation(
+    collection(firestore, 'companyRolesV2')
+  );
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('tab1');
-
-  const defaultValues = {
+  const [onClickSubmitButton, setClickSubmitButton] = useState(false);
+  const [fields, setFields] = useState({
     title: '',
+    location: '',
     department: '',
     qualification: '',
+    positionType: '',
     salary: '',
     description: '',
     howToApply: '',
@@ -38,66 +42,37 @@ export default function AddRole() {
     coverLetter: false,
     prescreening: false,
     rolesOfInterests: null,
-    behaviourAttributesStrengths: null,
     technicalSkills: null,
-    technicalSkillsOther: '',
-  };
-
-  const {
-    watch,
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    clearErrors,
-    formState: { errors },
-  } = useForm({
-    defaultValues,
-    resolver: yupResolver(rolesSchema),
+    managerId: '',
+    moreRoleInfo: '',
+    behaviourAttributesStrengths: null,
+    experience: null,
   });
 
-  const howToApply = watch('howToApply');
-  const rolling = watch('rolling');
-  const technicalSkillsOther = watch('technicalSkills');
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
 
-  const mutation = useFirestoreCollectionMutation(
-    collection(firestore, 'roles')
+  const { isLoading, data: company } = useFirestoreQuery(
+    ['companyV2'],
+    query(collection(firestore, 'companyV2'), where('userId', '==', userId)),
+    {
+      subscribe: true,
+    },
+    {
+      // React Query data selector
+      select(snapshot) {
+        const companiesData = snapshot.docs.map((document) => ({
+          id: document.id,
+        }));
+        return companiesData;
+      },
+    }
   );
 
-  const updatedRoledMutation = useFirestoreDocumentMutation(
-    doc(firestore, `config/roles`),
-    { merge: true }
-  );
-
-  const handleAddRole = (data) => {
-    const date = { createdAt: serverTimestamp(), updatedAt: serverTimestamp() };
-
-    // TODO: update to add jobValues when creating roles.
-    const newData = {
-      ...data,
-      ...date,
-      // jobValues,
-      // industry,
-      // logoUrl,
-      companyId: '441vhNMBmyJEXvSfnIr7',
-    };
-
-    const roleLastUpdate = { lastUpdated: serverTimestamp() };
-    console.log('SUBMIT: ', newData);
-    mutation.mutate(newData, {
-      onSuccess() {
-        Swal.fire('Added!', 'New Role Added.', 'success');
-      },
-      onError() {
-        Swal.fire('Oops!', 'Failed to Add Role.', 'error');
-      },
-      onMutate() {
-        console.info('Adding document...');
-      },
-    });
-    updatedRoledMutation.mutate(roleLastUpdate);
-    reset(defaultValues);
-  };
+  if (isLoading) {
+    return <div className='loading' />;
+  }
 
   const handleChangeTab = async (data) => {
     if (data === 'tab1') {
@@ -108,6 +83,96 @@ export default function AddRole() {
       setActiveTab('tab3');
     }
   };
+
+  const handleLastTabButton = async (data) => {
+    if (data) {
+      setClickSubmitButton(true);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    const newFields = { ...fields, ...data };
+    setFields(newFields);
+    const {
+      title,
+      location,
+      managerId,
+      department,
+      qualification,
+      positionType,
+      salary,
+      description,
+      howToApply,
+      startDate,
+      coverLetter,
+      prescreening,
+      rolesOfInterests,
+      technicalSkills,
+      moreRoleInfo,
+      behaviourAttributesStrengths,
+      experience,
+    } = newFields;
+
+    if (onClickSubmitButton) {
+      if (
+        !title ||
+        !location ||
+        !department ||
+        !qualification ||
+        !positionType ||
+        !salary ||
+        !description ||
+        !howToApply ||
+        !startDate ||
+        !coverLetter ||
+        !prescreening ||
+        !rolesOfInterests ||
+        !technicalSkills ||
+        !moreRoleInfo ||
+        !behaviourAttributesStrengths ||
+        !experience ||
+        !managerId
+      ) {
+        return Swal.fire({
+          icon: 'error',
+          title: 'Empty Fields',
+          text: 'Please fill all fields before submitting',
+        });
+      } else {
+        const date = {
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        };
+
+        const newData = {
+          ...fields,
+          ...date,
+          companyId: company[0].id,
+        };
+
+        mutation.mutate(newData, {
+          onSuccess() {
+            Swal.fire({
+              title: 'Success!',
+              text: 'New Role Added.',
+              icon: 'success',
+              iconColor: '#3085d6',
+              showConfirmButton: false,
+            });
+            window.setTimeout(() => {
+              router.push('/roles');
+            }, 2000);
+          },
+          onError() {
+            Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+          },
+          onMutate() {
+            console.info('Adding role...');
+          },
+        });
+      }
+    }
+  };
   return (
     <AuthRoute>
       <SideBar>
@@ -115,50 +180,50 @@ export default function AddRole() {
           <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
             <div className='flex-1 min-w-0'>
               <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
-                Add Role
+                <IntlMessages id='roles.create' />
               </h1>
             </div>
           </div>
           <div className='space-y-6 sm:px-6 lg:px-0 lg:col-span-9'>
             <section aria-labelledby='payment-details-heading'>
-              <form onSubmit={handleSubmit(handleAddRole)}>
-                <div className='shadow sm:rounded-md sm:overflow-hidden'>
-                  <div className='bg-white py-6 px-4 sm:p-6'>
-                    <div className='shadow sm:rounded-md sm:overflow-hidden'>
-                      <div className='bg-white sm:px-6 sm:pt-2'>
-                        <Tabs
-                          activeTab={activeTab}
-                          handleChangeTab={handleChangeTab}
-                        />
-                      </div>
+              <div className='shadow sm:rounded-md sm:overflow-hidden'>
+                <div className='bg-white py-6 px-4 sm:p-6'>
+                  <div className='shadow sm:rounded-md sm:overflow-hidden'>
+                    <div className='bg-white sm:px-6 sm:pt-2'>
+                      <Tabs
+                        activeTab={activeTab}
+                        handleChangeTab={handleChangeTab}
+                      />
+                    </div>
 
-                      <div>
-                        {activeTab === 'tab1' ? (
-                          <AddRoleForm
-                            activeTab={activeTab}
-                            handleChangeTab={handleChangeTab}
-                          />
-                        ) : activeTab === 'tab2' ? (
-                          <AddOwnerForm
-                            activeTab={activeTab}
-                            handleChangeTab={handleChangeTab}
-                          />
-                        ) : activeTab === 'tab3' ? (
-                          <AdditionalRoleInformation
-                            activeTab={activeTab}
-                            handleChangeTab={handleChangeTab}
-                          />
-                        ) : null}
-                      </div>
+                    <div>
+                      {activeTab === 'tab1' ? (
+                        <AddRoleForm
+                          handleChangeTab={handleChangeTab}
+                          handleSaveFields={(data) => onSubmit(data)}
+                          fields={fields}
+                        />
+                      ) : activeTab === 'tab2' ? (
+                        <AddOwnerForm
+                          handleChangeTab={handleChangeTab}
+                          handleSaveFields={(data) => onSubmit(data)}
+                          fields={fields}
+                        />
+                      ) : activeTab === 'tab3' ? (
+                        <AdditionalRoleInformation
+                          handleSaveFields={(data) => onSubmit(data)}
+                          fields={fields}
+                          handleLastTabButton={handleLastTabButton}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
             </section>
           </div>
         </main>
         <Footer />
-
       </SideBar>
     </AuthRoute>
   );

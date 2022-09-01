@@ -38,10 +38,11 @@ module.exports = {
     'Please reset your password by filling the form below.',
 
   /* 01.Roles */
-  'roles.create': 'Post a role',
+  'roles.create': 'Add Roles',
   'roles.title': 'Roles',
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',
+  'roles.post': 'Post a role',
 
   /* 02.Onboarding */
   'onboarding.lastName': 'Last Name',

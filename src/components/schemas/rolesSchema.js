@@ -31,9 +31,6 @@ export const rolesSchema = Yup.object().shape({
   salary: Yup.string().required('salary is required'),
   department: Yup.string().required('Department is required'),
   rolesOfInterests: Yup.mixed().required('Roles Of Interests is required'),
-  behaviourAttributesStrengths: Yup.mixed().required(
-    'Behaviour/Attributes/Strengths is required'
-  ),
   technicalSkills: Yup.mixed().required('Technical Skills is required'),
   technicalSkillsOther: Yup.string().when('technicalSkills', {
     is: (value) => value === 'Other',

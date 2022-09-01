@@ -1,7 +1,7 @@
 import { Controller } from 'react-hook-form';
 import { Group } from './Group';
 
-export const CheckBox = ({ label, name, control, ...rest }) => {
+export const CheckBox = ({ label, name, control, checked, ...rest }) => {
     return (
       <Group>
         <Controller
@@ -10,6 +10,7 @@ export const CheckBox = ({ label, name, control, ...rest }) => {
               id={name}
               onChange={field.onChange}
               innerRef={field.ref}
+              defaultChecked={checked}
               type="checkbox"
               {...rest}
             />

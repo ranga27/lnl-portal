@@ -1,7 +1,6 @@
 import { Fragment, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { collection, doc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
 import {
   ChevronRightIcon,
@@ -11,7 +10,7 @@ import {
   TrashIcon,
   UserAddIcon,
 } from '@heroicons/react/solid';
-import { auth, firestore } from '../../firebase/clientApp';
+import { firestore } from '../../firebase/clientApp';
 import { AuthContext } from '../components/context/AuthContext';
 import SideBar from '../components/layout/Sidebar';
 import Router from 'next/router';
@@ -64,7 +63,6 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
-  const router = useRouter();
   const {
     userData: { userId },
   } = useContext(AuthContext);
