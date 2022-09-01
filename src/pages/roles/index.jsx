@@ -1,36 +1,36 @@
-import { Fragment, useState, useEffect } from 'react';
-import EmptyComponent from '../../components/layout/EmptyComponent';
+import { useContext } from 'react';
 import Link from 'next/link';
 import SideBar from '../../components/layout/Sidebar';
 import IntlMessages from '../../utils/IntlMessages';
 import { collection, query, where } from 'firebase/firestore';
 import { useFirestoreQuery } from '@react-query-firebase/firestore';
-import RolesListItem from '../../components/containers/RolesListItem';
 import { firestore } from '../../../firebase/clientApp';
 import AuthRoute from '../../components/context/authRoute';
+import { AuthContext } from '../../components/context/AuthContext';
+import RolesContainer from '../../components/containers/rolesContainer';
 
-export default function CompanyProfile() {
-  const { isLoading, data: roles } = useFirestoreQuery(
-    ['roles'],
-    query(
-      collection(firestore, 'roles'),
-      where('companyId', '==', '441vhNMBmyJEXvSfnIr7')
-      // where('companyId', '==', '441vhNMByJEXvSfnIr7')
-    ),
+export default function Roles() {
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
+
+  const { isLoading, data: company } = useFirestoreQuery(
+    ['companyV2'],
+    query(collection(firestore, 'companyV2'), where('userId', '==', userId)),
     {
       subscribe: true,
     },
     {
       // React Query data selector
       select(snapshot) {
-        const rolesData = snapshot.docs.map((document) => ({
-          ...document.data(),
+        const companiesData = snapshot.docs.map((document) => ({
           id: document.id,
         }));
-        return rolesData;
+        return companiesData;
       },
     }
   );
+
   if (isLoading) {
     return <div className='loading' />;
   }
@@ -50,7 +50,7 @@ export default function CompanyProfile() {
                 type='button'
                 className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-0 sm:ml-0'
               >
-                 Share Profile
+                Share Profile
               </button>
               <Link href='/roles/add'>
                 <a className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'>
@@ -64,11 +64,8 @@ export default function CompanyProfile() {
               <IntlMessages id='roles.subtitle' />
             </h2>
           </div>
-          {roles.length === 0 ? (
-            <EmptyComponent />
-          ) : (
-            <RolesListItem roles={roles} />
-          )}
+
+          <RolesContainer companyId={company[0]?.id} />
         </main>
       </SideBar>
     </AuthRoute>

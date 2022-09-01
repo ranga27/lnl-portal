@@ -1,42 +1,14 @@
 import { Fragment, useState } from 'react';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Menu, Transition } from '@headlessui/react';
 import {
   ChevronRightIcon,
   DotsVerticalIcon,
   DuplicateIcon,
   PencilAltIcon,
-  SearchIcon,
-  SelectorIcon,
   TrashIcon,
   UserAddIcon,
 } from '@heroicons/react/solid';
-
-const members = [
-  {
-    name: 'Dries Vincent',
-    handle: 'driesvincent',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Lindsay Walton',
-    handle: 'lindsaywalton',
-    imageUrl:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Courtney Henry',
-    handle: 'courtneyhenry',
-    imageUrl:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Tom Cook',
-    handle: 'tomcook',
-    imageUrl:
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-];
+import Link from 'next/link';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -72,7 +44,7 @@ export default function RolesList({ roles }) {
                   <p className='text-gray-500'>{role.totalMembers} Members</p>
                 </div>
                 <Menu as='div' className='flex-shrink-0 pr-2'>
-                  <Menu.Button className='w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'>
+                  <Menu.Button className='w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                     <span className='sr-only'>Open options</span>
                     <DotsVerticalIcon className='w-5 h-5' aria-hidden='true' />
                   </Menu.Button>
@@ -89,17 +61,18 @@ export default function RolesList({ roles }) {
                       <div className='py-1'>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href='#'
-                              className={classNames(
-                                active
-                                  ? 'bg-gray-100 text-gray-900'
-                                  : 'text-gray-700',
-                                'block px-4 py-2 text-sm'
-                              )}
-                            >
-                              View
-                            </a>
+                            <Link href={`roles/${role.id}`}>
+                              <a
+                                className={classNames(
+                                  active
+                                    ? 'bg-gray-100 text-gray-900'
+                                    : 'text-gray-700',
+                                  'block px-4 py-2 text-sm'
+                                )}
+                              >
+                                View role
+                              </a>
+                            </Link>
                           )}
                         </Menu.Item>
                       </div>
@@ -157,27 +130,26 @@ export default function RolesList({ roles }) {
         >
           {roles.map((role) => (
             <li key={role.id}>
-              <a
-                href='#'
-                className='group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6'
-              >
-                <span className='flex items-center truncate space-x-3'>
-                  <span
-                    className='w-2.5 h-2.5 flex-shrink-0 rounded-full bg-[#F7B919]'
-                    aria-hidden='true'
-                  />
-                  <span className='font-medium truncate text-sm leading-6'>
-                    {role.title}{' '}
-                    <span className='truncate font-normal text-gray-500'>
-                      in {role.department} department
+              <Link href={`roles/${role.id}`}>
+                <a className='group flex items-center justify-between px-4 py-4 hover:bg-gray-50 sm:px-6'>
+                  <span className='flex items-center truncate space-x-3'>
+                    <span
+                      className='w-2.5 h-2.5 flex-shrink-0 rounded-full bg-[#F7B919]'
+                      aria-hidden='true'
+                    />
+                    <span className='font-medium truncate text-sm leading-6'>
+                      {role.title}{' '}
+                      <span className='truncate font-normal text-gray-500'>
+                        in {role.department} department
+                      </span>
                     </span>
                   </span>
-                </span>
-                <ChevronRightIcon
-                  className='ml-4 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                  aria-hidden='true'
-                />
-              </a>
+                  <ChevronRightIcon
+                    className='ml-4 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                    aria-hidden='true'
+                  />
+                </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -193,7 +165,10 @@ export default function RolesList({ roles }) {
                   <span className='lg:pl-2'>Project</span>
                 </th>
                 <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                  Members
+                  Location
+                </th>
+                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                  Start Date
                 </th>
                 <th className='hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
                   Last updated
@@ -210,44 +185,33 @@ export default function RolesList({ roles }) {
                         className='flex-shrink-0 w-2.5 h-2.5 rounded-full bg-[#F7B919]'
                         aria-hidden='true'
                       />
-                      <a href='#' className='truncate hover:text-gray-600'>
-                        <span>
-                          {role.title}{' '}
-                          <span className='text-gray-500 font-normal'>
-                            in {role.department} department
+                      <Link href={`roles/${role.id}`}>
+                        <a className='truncate hover:text-gray-600'>
+                          <span>
+                            {role.title}{' '}
+                            <span className='text-gray-500 font-normal'>
+                              in {role.department} department
+                            </span>
                           </span>
-                        </span>
-                      </a>
-                    </div>
-                  </td>
-                  <td className='px-6 py-3 text-sm text-gray-500 font-medium'>
-                    <div className='flex items-center space-x-2'>
-                      <div className='flex flex-shrink-0 -space-x-1'>
-                        {members.map((member) => (
-                          <img
-                            key={member.handle}
-                            className='max-w-none h-6 w-6 rounded-full ring-2 ring-white'
-                            src={member.imageUrl}
-                            alt={member.name}
-                          />
-                        ))}
-                      </div>
-                      {8 > members.length ? (
-                        <span className='flex-shrink-0 text-xs leading-5 font-medium'>
-                          +{2 - members.length}
-                        </span>
-                      ) : null}
+                        </a>
+                      </Link>
                     </div>
                   </td>
                   <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
-                    {role.lastUpdated}
+                    {role.location}
+                  </td>
+                  <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
+                    {role.startDate}
+                  </td>
+                  <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
+                    {role.updatedAt}
                   </td>
                   <td className='pr-6'>
                     <Menu
                       as='div'
                       className='relative flex justify-end items-center'
                     >
-                      <Menu.Button className='w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'>
+                      <Menu.Button className='w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                         <span className='sr-only'>Open options</span>
                         <DotsVerticalIcon
                           className='w-5 h-5'
@@ -267,21 +231,22 @@ export default function RolesList({ roles }) {
                           <div className='py-1'>
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  href='#'
-                                  className={classNames(
-                                    active
-                                      ? 'bg-gray-100 text-gray-900'
-                                      : 'text-gray-700',
-                                    'group flex items-center px-4 py-2 text-sm'
-                                  )}
-                                >
-                                  <PencilAltIcon
-                                    className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                                    aria-hidden='true'
-                                  />
-                                  Edit
-                                </a>
+                                <Link href='/roles/add'>
+                                  <a
+                                    className={classNames(
+                                      active
+                                        ? 'bg-gray-100 text-gray-900'
+                                        : 'text-gray-700',
+                                      'group flex items-center px-4 py-2 text-sm'
+                                    )}
+                                  >
+                                    <PencilAltIcon
+                                      className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                      aria-hidden='true'
+                                    />
+                                    Edit
+                                  </a>
+                                </Link>
                               )}
                             </Menu.Item>
                             <Menu.Item>

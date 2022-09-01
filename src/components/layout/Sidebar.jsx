@@ -97,7 +97,7 @@ export default function SideBar({ children, jobIndex, dashboard }) {
             leaveFrom='translate-x-0'
             leaveTo='-translate-x-full'
           >
-            <div className='relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white'>
+            <div className='relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-[#F7B919]'>
               <Transition.Child
                 as={Fragment}
                 enter='ease-in-out duration-300'
@@ -118,11 +118,11 @@ export default function SideBar({ children, jobIndex, dashboard }) {
                   </button>
                 </div>
               </Transition.Child>
-              <div className='flex-shrink-0 flex items-center px-4'>
+              <div className='flex-shrink-0 flex text-center mx-auto items-center px-4'>
                 <img
-                  className='h-8 w-auto'
-                  src='https://tailwindui.com/img/logos/workflow-logo-purple-500-mark-gray-700-text.svg'
-                  alt='Workflow'
+                  className='h-16 w-16'
+                  src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2FLoop%20Not%20Luck.png?alt=media&token=ace69d68-8e31-4333-9be1-34d4aac9e20e'
+                  alt='LNL'
                 />
               </div>
               <div className='mt-5 flex-1 h-0 overflow-y-auto'>
@@ -408,7 +408,7 @@ export default function SideBar({ children, jobIndex, dashboard }) {
         <div className='relative z-10 flex-shrink-0 flex h-16 bg-white border-b border-gray-200 lg:hidden'>
           <button
             type='button'
-            className='px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500 lg:hidden'
+            className='px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#F7B919] lg:hidden'
             onClick={() => setSidebarOpen(true)}
           >
             <span className='sr-only'>Open sidebar</span>
@@ -438,7 +438,7 @@ export default function SideBar({ children, jobIndex, dashboard }) {
               {/* Profile dropdown */}
               <Menu as='div' className='ml-3 relative'>
                 <div>
-                  <Menu.Button className='max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500'>
+                  <Menu.Button className='max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                     <span className='sr-only'>Open user menu</span>
                     <img
                       className='h-8 w-8 rounded-full'
