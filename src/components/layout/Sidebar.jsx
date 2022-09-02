@@ -215,7 +215,7 @@ export default function SideBar({ children, jobIndex, dashboard }) {
 
                       <span className='flex-1 flex flex-col min-w-0'>
                         <span className='text-white  text-sm font-bold truncate'>
-                          {user.firstName}
+                          {user.firstName} {user.lastName}
                         </span>
                         <span className='text-gray-100 text-sm truncate'>
                           {user.email}

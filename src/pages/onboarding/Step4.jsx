@@ -61,9 +61,10 @@ export default function Step4({ fields }) {
         button below to submit
       </p>
       <button
-        className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
+        className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8 p-2'
         type='submit'
         onClick={handleSave}
+        disabled={userMutation.isLoading}
       >
         <IntlMessages id='onboarding.confirm' />
       </button>

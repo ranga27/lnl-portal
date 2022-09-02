@@ -77,4 +77,10 @@ module.exports = {
   'onboarding.hearAbout': 'How did you hear about us?',
   'onboarding.confirmation': 'Confirmation',
 
+
+  /* 02.Dashboard */
+  'dashboard.title': 'Dashboard',
+  'dashboard.button_1': 'Share Company Profile',
+  'dashboard.button_2': 'Post Role',
+
 };
