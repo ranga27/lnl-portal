@@ -6,9 +6,8 @@ import {
 } from '@react-query-firebase/firestore';
 import IntlMessages from '../../utils/IntlMessages';
 import { useRouter } from 'next/router';
-import { auth, firestore } from '../../../firebase/clientApp';
+import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
-import { saveOnBoardedCompanyToFireStore } from '../../../firebase/firestoreService';
 import { uploadFile } from '../../utils/uploadFile';
 
 export default function Step4({ fields }) {
@@ -23,7 +22,6 @@ export default function Step4({ fields }) {
   const userMutation = useFirestoreDocumentMutation(userRef, {
     merge: true,
   });
-
 
   const handleSave = async () => {
     if (fields.logoUrl) {

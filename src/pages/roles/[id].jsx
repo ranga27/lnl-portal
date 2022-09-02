@@ -3,11 +3,11 @@ import { ShareIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import { useFirestoreDocument } from '@react-query-firebase/firestore';
 import { format } from 'date-fns';
-import { doc, where } from 'firebase/firestore';
+import Link from 'next/link';
+import { doc } from 'firebase/firestore';
 import AuthRoute from '../../components/context/authRoute';
 import SideBar from '../../components/layout/Sidebar';
 import { firestore } from '../../../firebase/clientApp';
-import { formatDateInArray } from '../../utils/commands';
 import Footer from '../../components/layout/Footer';
 
 const tabs = [
@@ -30,6 +30,13 @@ export default function ViewRole() {
   }
   const snapshot = data.data;
   const role = snapshot.data();
+
+  let startDate = role.startDate
+    ? format(new Date(role.startDate.toDate()), 'dd-MMM-yyyy')
+    : null;
+  let deadline = role.deadline
+    ? format(new Date(role.deadline.toDate()), 'dd-MMM-yyyy')
+    : null;
 
   return (
     <AuthRoute>
@@ -62,25 +69,40 @@ export default function ViewRole() {
                           <div className='sm:hidden 2xl:block mt-6 min-w-0 flex-1'>
                             <h1 className='text-2xl font-bold text-gray-900 truncate'>
                               {role.title}
+                              <span className='text-sm text-gray-600'>
+                                Added on
+                                {format(
+                                  new Date(role.createdAt.toDate()),
+                                  'dd-MMM-yyyy'
+                                )}
+                              </span>
                             </h1>
                           </div>
                           <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                            <button
-                              type='button'
-                              className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
+                            <Link
+                              href={{
+                                pathname: '/roles/add',
+                                query: {
+                                  ...role,
+                                  startDate: startDate,
+                                  deadline: deadline,
+                                },
+                              }}
                             >
-                              <PencilIcon
-                                className='-ml-1 mr-2 h-5 w-5 text-gray-400'
-                                aria-hidden='true'
-                              />
-                              <span>Edit</span>
-                            </button>
+                              <a className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
+                                <PencilIcon
+                                  className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                                  aria-hidden='true'
+                                />
+                                <span>Edit</span>
+                              </a>
+                            </Link>
                             <button
                               type='button'
-                              className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500'
+                              className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                             >
                               <ShareIcon
-                                className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                                className='-ml-1 mr-2 h-5 w-5 text-white'
                                 aria-hidden='true'
                               />
                               <span>Share</span>
@@ -92,6 +114,13 @@ export default function ViewRole() {
                         <h1 className='text-2xl font-bold text-gray-900 truncate'>
                           {role.title}
                         </h1>
+                        <span className='text-sm text-gray-600'>
+                          Added on{'  '}
+                          {format(
+                            new Date(role.createdAt.toDate()),
+                            'dd-MMM-yyyy'
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -101,7 +130,7 @@ export default function ViewRole() {
                     <div className='border-b border-gray-200'>
                       <div className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
                         <nav
-                          className='-mb-px flex space-x-8'
+                          className='-mb-px flex space-x-12'
                           aria-label='Tabs'
                         >
                           {tabs.map((tab) => (
@@ -110,8 +139,8 @@ export default function ViewRole() {
                               href={tab.href}
                               className={classNames(
                                 tab.current
-                                  ? 'border-pink-500 text-gray-900'
-                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                  ? 'border-[#F7B919] text-gray-900'
+                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-[#F7B919]',
                                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
                               )}
                               aria-current={tab.current ? 'page' : undefined}
@@ -225,33 +254,29 @@ export default function ViewRole() {
                         <dt className='text-sm font-medium text-gray-500'>
                           Requires cover letter
                         </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.coverLetter === true ? (
-                            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                              Yes
-                            </dd>
-                          ) : (
-                            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                              No
-                            </dd>
-                          )}
-                        </dd>
+                        {role.coverLetter === true ? (
+                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
+                            Yes
+                          </dd>
+                        ) : (
+                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
+                            No
+                          </dd>
+                        )}
                       </div>
                       <div className='sm:col-span-1'>
                         <dt className='text-sm font-medium text-gray-500'>
                           Requires prescreening
                         </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.prescreening === true ? (
-                            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                              Yes
-                            </dd>
-                          ) : (
-                            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                              No
-                            </dd>
-                          )}
-                        </dd>
+                        {role.prescreening === true ? (
+                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
+                            Yes
+                          </dd>
+                        ) : (
+                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
+                            No
+                          </dd>
+                        )}
                       </div>
 
                       <div className='sm:col-span-1'>
@@ -283,7 +308,7 @@ export default function ViewRole() {
                         </dt>
                         <dd className='mt-1 text-sm text-gray-900'>
                           {format(
-                            new Date(role.createdAt.toDate()),
+                            new Date(role.startDate.toDate()),
                             'dd-MMM-yyyy'
                           )}
                         </dd>
@@ -332,16 +357,16 @@ export default function ViewRole() {
                         <dt className='text-sm font-medium text-gray-500'>
                           Description
                         </dt>
-                        <dd className='mt-1 max-w-prose text-sm text-gray-900 space-y-5'>
+                        <dd className='mt-1 text-sm text-gray-900 space-y-5'>
                           {role.description}
                         </dd>
                       </div>
 
-                      <div className='sm:col-span-2'>
+                      <div className='sm:col-span-2 mb-20'>
                         <dt className='text-sm font-medium text-gray-500'>
                           More Information about the role
                         </dt>
-                        <dd className='mt-1 max-w-prose text-sm text-gray-900 space-y-5'>
+                        <dd className='mt-1 text-sm text-gray-900 space-y-5'>
                           {role.moreRoleInfo}
                         </dd>
                       </div>

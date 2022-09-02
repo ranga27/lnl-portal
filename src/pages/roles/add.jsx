@@ -1,5 +1,7 @@
 import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
+import { format } from 'date-fns';
+import { Timestamp } from 'firebase/firestore';
 import {
   useFirestoreCollectionMutation,
   useFirestoreQuery,
@@ -17,36 +19,47 @@ import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
-
+ 
 export default function AddRole() {
   const mutation = useFirestoreCollectionMutation(
     collection(firestore, 'companyRolesV2')
   );
   const router = useRouter();
+  console.log(router);
+  const { startDate, deadline, ...role } = router.query;
+
+  console.log(startDate);
+  console.log(deadline);
+  console.log(role);
+
+
   const [activeTab, setActiveTab] = useState('tab1');
   const [onClickSubmitButton, setClickSubmitButton] = useState(false);
   const [fields, setFields] = useState({
-    title: '',
-    location: '',
-    department: '',
-    qualification: '',
-    positionType: '',
-    salary: '',
-    description: '',
-    howToApply: '',
-    email: '',
-    website: '',
-    rolling: false,
-    deadline: null,
-    startDate: null,
-    coverLetter: false,
-    prescreening: false,
-    rolesOfInterests: null,
-    technicalSkills: null,
-    managerId: '',
-    moreRoleInfo: '',
-    behaviourAttributesStrengths: null,
-    experience: null,
+    title: role.title || '',
+    location: role.location || '',
+    department: role.department || '',
+    qualification: role.qualification || '',
+    positionType: role.positionType || '',
+    salary: role.salary || '',
+    description: role.description || '',
+    howToApply: role.howToApply || '',
+    email: role.email || '',
+    website: role.website || '',
+    rolling: role.rolling || false,
+    deadline: role.rolling === true || deadline === undefined ? null : new Date(deadline),
+    startDate: deadline !== undefined ? new Date(startDate) : null,
+    coverLetter: role.coverLetter || false,
+    prescreening: role.prescreening || false,
+    rolesOfInterests: role.rolesOfInterests || null,
+    technicalSkills: role.technicalSkills || null,
+    managerId: role.managerId || '',
+    moreRoleInfo: role.moreRoleInfo || '',
+    behaviourAttributesStrengths: role.behaviourAttributesStrengths || null,
+    experience: role.experience || null,
+    technicalSkillsOther: role.technicalSkillsOther
+      ? role.technicalSkillsOther
+      : null,
   });
 
   const {
@@ -148,6 +161,7 @@ export default function AddRole() {
           ...fields,
           ...date,
           companyId: company[0].id,
+          pinned: false,
         };
 
         mutation.mutate(newData, {

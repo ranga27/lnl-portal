@@ -14,7 +14,7 @@ const validationSchema = Yup.object().shape({
     'Behaviour/Attributes/Strengths is required'
   ),
   moreRoleInfo: Yup.string()
-    .max(500, 'Information Too Long!')
+    .max(2000, 'Information Too Long!')
     .required('Please fill this field'),
   experience: Yup.string().required(
     'Please select the experience required for this role'
@@ -45,7 +45,7 @@ export default function AdditionalRoleInformation({
 
   const onSubmit = async (data) => {
     handleSaveFields(data);
-    handleLastTabButton(true)
+    handleLastTabButton(true);
   };
 
   return (

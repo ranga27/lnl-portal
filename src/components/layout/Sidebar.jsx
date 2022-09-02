@@ -39,9 +39,9 @@ const navigation = [
   { name: 'Logout', href: '/logout', icon: LogoutIcon, current: false },
 ];
 const teams = [
-  { name: 'Job 1', href: '#', bgColorClass: 'bg-indigo-500' },
-  { name: 'Job 2', href: '#', bgColorClass: 'bg-green-500' },
-  { name: 'Job 3', href: '#', bgColorClass: 'bg-red-500' },
+  { name: 'Role 1', href: '#', bgColorClass: 'bg-indigo-500' },
+  { name: 'Role 2', href: '#', bgColorClass: 'bg-green-500' },
+  { name: 'Role 3', href: '#', bgColorClass: 'bg-red-500' },
 ];
 
 function classNames(...classes) {

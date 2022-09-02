@@ -8,6 +8,7 @@ import { firestore } from '../../../firebase/clientApp';
 import AuthRoute from '../../components/context/authRoute';
 import { AuthContext } from '../../components/context/AuthContext';
 import RolesContainer from '../../components/containers/rolesContainer';
+import Footer from '../../components/layout/Footer';
 
 export default function Roles() {
   const {
@@ -50,7 +51,7 @@ export default function Roles() {
                 type='button'
                 className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-0 sm:ml-0'
               >
-                Share Profile
+                Share Company Profile
               </button>
               <Link href='/roles/add'>
                 <a className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'>
@@ -64,9 +65,9 @@ export default function Roles() {
               <IntlMessages id='roles.subtitle' />
             </h2>
           </div>
-
           <RolesContainer companyId={company[0]?.id} />
         </main>
+        <Footer />
       </SideBar>
     </AuthRoute>
   );

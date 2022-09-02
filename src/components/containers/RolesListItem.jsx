@@ -1,24 +1,75 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import {
   ChevronRightIcon,
   DotsVerticalIcon,
-  DuplicateIcon,
+  PaperClipIcon,
   PencilAltIcon,
   TrashIcon,
   UserAddIcon,
 } from '@heroicons/react/solid';
 import Link from 'next/link';
+import { useFirestoreDocumentMutation } from '@react-query-firebase/firestore';
+import { serverTimestamp, doc } from 'firebase/firestore';
+import { firestore } from '../../../firebase/clientApp';
+import { getFirstChar } from '../../utils/commands';
+import DeleteRole from './DeleteRole';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function RolesList({ roles }) {
+  const [pinned, setPinned] = useState('3a43ocoGT2');
+  const [deleteStatus, setDeleteStatus] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+
+  const [pinnedValue, setPinnedValue] = useState(false);
   const rolesPinned = roles.filter((role) => role.pinned);
+
+  const roleRef = doc(firestore, 'companyRolesV2', pinned);
+  const rolesMutation = useFirestoreDocumentMutation(roleRef, {
+    merge: true,
+  });
+
+  const handlePin = (role) => {
+    setPinned(role.id);
+    setPinnedValue(role.pinned);
+    handleSave(role);
+  };
+
+  useEffect(() => {
+    if (pinned === '3a43ocoGT2') {
+      return console.log('Error');
+    } else {
+      handleSave();
+    }
+  }, [pinned, pinnedValue]);
+
+  const handleSave = () => {
+    if (pinned != '3a43ocoGT2') {
+      rolesMutation.mutate(
+        { pinned: !pinnedValue, updatedAt: serverTimestamp() },
+        {
+          onSuccess() {
+            console.log('Successful');
+          },
+        }
+      );
+    } else {
+      return null;
+    }
+  };
+
+  const handleDeleteRole = (id) => {
+    setDeleteStatus(true);
+    setDeleteId(id);
+  };
 
   return (
     <main>
+      {deleteStatus && <DeleteRole id={deleteId} />}
+
       <div className='px-4 mt-6 sm:px-6 lg:px-8'>
         <ul
           role='list'
@@ -30,8 +81,7 @@ export default function RolesList({ roles }) {
               className='relative col-span-1 flex shadow-sm rounded-md'
             >
               <div className='flex-shrink-0 flex items-center justify-center w-16 text-white text-sm font-medium rounded-l-md bg-[#F7B919]'>
-                {/* {role.title.split(1)} */}
-                R1
+                {getFirstChar(role.title)}
               </div>
               <div className='flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate'>
                 <div className='flex-1 px-4 py-2 text-sm truncate'>
@@ -41,7 +91,7 @@ export default function RolesList({ roles }) {
                   >
                     {role.title}
                   </a>
-                  <p className='text-gray-500'>{role.totalMembers} Members</p>
+                  <p className='text-gray-500'>{role.department} Department</p>
                 </div>
                 <Menu as='div' className='flex-shrink-0 pr-2'>
                   <Menu.Button className='w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
@@ -65,9 +115,9 @@ export default function RolesList({ roles }) {
                               <a
                                 className={classNames(
                                   active
-                                    ? 'bg-gray-100 text-gray-900'
-                                    : 'text-gray-700',
-                                  'block px-4 py-2 text-sm'
+                                    ? 'bg-gray-100 text-gray-900 '
+                                    : 'text-gray-700 hover:bg-gray-100',
+                                  'group flex items-center px-6 py-2 text-sm'
                                 )}
                               >
                                 View role
@@ -79,17 +129,17 @@ export default function RolesList({ roles }) {
                       <div className='py-1'>
                         <Menu.Item>
                           {({ active }) => (
-                            <a
-                              href='#'
+                            <button
+                              onClick={() => handlePin(role)}
                               className={classNames(
                                 active
-                                  ? 'bg-gray-100 text-gray-900'
+                                  ? 'bg-gray-100 text-gray-900 hover:bg-gray-100'
                                   : 'text-gray-700',
-                                'block px-4 py-2 text-sm'
+                                'block py-2 text-sm min-w-full'
                               )}
                             >
                               Removed from pinned
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                         <Menu.Item>
@@ -100,7 +150,7 @@ export default function RolesList({ roles }) {
                                 active
                                   ? 'bg-gray-100 text-gray-900'
                                   : 'text-gray-700',
-                                'block px-4 py-2 text-sm'
+                                'block px-6 py-2 text-sm'
                               )}
                             >
                               Share
@@ -162,7 +212,7 @@ export default function RolesList({ roles }) {
             <thead>
               <tr className='border-t border-gray-200'>
                 <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                  <span className='lg:pl-2'>Project</span>
+                  <span className='lg:pl-2'>Roles</span>
                 </th>
                 <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                   Location
@@ -231,12 +281,21 @@ export default function RolesList({ roles }) {
                           <div className='py-1'>
                             <Menu.Item>
                               {({ active }) => (
-                                <Link href='/roles/add'>
+                                <Link
+                                  href={{
+                                    pathname: '/roles/add',
+                                    query: {
+                                      ...role,
+                                      startDate: role.startDate || null,
+                                      deadline: role.deadline || null,
+                                    },
+                                  }}
+                                >
                                   <a
                                     className={classNames(
                                       active
-                                        ? 'bg-gray-100 text-gray-900'
-                                        : 'text-gray-700',
+                                        ? 'bg-gray-100 text-gray-900 '
+                                        : 'text-gray-700 hover:bg-gray-100',
                                       'group flex items-center px-4 py-2 text-sm'
                                     )}
                                   >
@@ -251,21 +310,21 @@ export default function RolesList({ roles }) {
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  href='#'
+                                <button
+                                  onClick={() => handlePin(role)}
                                   className={classNames(
                                     active
-                                      ? 'bg-gray-100 text-gray-900'
+                                      ? 'bg-gray-100 text-gray-900 w-full'
                                       : 'text-gray-700',
                                     'group flex items-center px-4 py-2 text-sm'
                                   )}
                                 >
-                                  <DuplicateIcon
+                                  <PaperClipIcon
                                     className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
                                     aria-hidden='true'
                                   />
-                                  Duplicate
-                                </a>
+                                  Pin
+                                </button>
                               )}
                             </Menu.Item>
                             <Menu.Item>
@@ -291,13 +350,13 @@ export default function RolesList({ roles }) {
                           <div className='py-1'>
                             <Menu.Item>
                               {({ active }) => (
-                                <a
-                                  href='#'
+                                <button
+                                  onClick={() => handleDeleteRole(role.id)}
                                   className={classNames(
                                     active
                                       ? 'bg-gray-100 text-gray-900'
                                       : 'text-gray-700',
-                                    'group flex items-center px-4 py-2 text-sm'
+                                    'group flex items-center px-4 py-2 text-sm w-full'
                                   )}
                                 >
                                   <TrashIcon
@@ -305,7 +364,7 @@ export default function RolesList({ roles }) {
                                     aria-hidden='true'
                                   />
                                   Delete
-                                </a>
+                                </button>
                               )}
                             </Menu.Item>
                           </div>
