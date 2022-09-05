@@ -42,13 +42,13 @@ export default function Footer() {
           className='-mx-5 -my-2 flex flex-wrap justify-evenly'
           aria-label='Footer'
         >
-          <div className=''>
+          <div>
             <p c className='text-sm text-gray-900 hover:text-gray-900'>
               &copy; Loop Not Luck 2022
             </p>
           </div>
           <div className='space-evenly flex space-x-3'>
-            <div className=''>
+            <div>
               <a
                 href='https://www.facebook.com/loopnotluck/'
                 target='_blank'
@@ -74,7 +74,7 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-            <div className=''>
+            <div>
               <a
                 href='https://www.instagram.com/loopnotluck/'
                 target='_blank'
@@ -94,7 +94,7 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-            <div className=''>
+            <div>
               <a
                 href='https://www.linkedin.com/company/loopnotluck/'
                 target='_blank'

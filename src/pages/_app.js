@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Head from 'next/head';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppLocale from '../components/lang';
@@ -23,6 +24,9 @@ function MyApp({ Component, pageProps }) {
             locale={currentAppLocale.locale}
             messages={currentAppLocale.messages}
           >
+            <Head>
+              <link rel='icon' href='/assets/black.png' />
+            </Head>
             <Component {...pageProps} />
           </IntlProvider>
         </Suspense>
