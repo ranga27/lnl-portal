@@ -23,13 +23,7 @@ export default function AddRole() {
     collection(firestore, 'companyRolesV2')
   );
   const router = useRouter();
-  console.log(router);
   const { startDate, deadline, ...role } = router.query;
-
-  console.log(startDate);
-  console.log(deadline);
-  console.log(role);
-
 
   const [activeTab, setActiveTab] = useState('tab1');
   const [onClickSubmitButton, setClickSubmitButton] = useState(false);
