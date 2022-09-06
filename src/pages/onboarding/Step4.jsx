@@ -18,7 +18,7 @@ export default function Step4({ fields }) {
     collection(firestore, 'companyV2')
   );
 
-  const userRef = doc(firestore, 'users', userData.userId);
+  const userRef = doc(firestore, 'companyUsers', userData.userId);
   const userMutation = useFirestoreDocumentMutation(userRef, {
     merge: true,
   });

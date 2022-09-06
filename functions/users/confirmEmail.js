@@ -16,10 +16,9 @@ exports.confirmEmail = functions.https.onRequest(async (req, res) => {
   const temporaryUserDoc = querySnapshot.docs[0];
   const { uid, email, firstName, role } = temporaryUserDoc.data();
   await auth.updateUser(uid, { emailVerified: true });
-  await store.collection('users').doc(uid).set({
+  await store.collection('companyUsers').doc(uid).set({
     email,
     firstName,
-    role,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     isOnboarded: false,
     hasCompletedProfile: false,

@@ -14,7 +14,7 @@ export default function Dashboard() {
     userData: { userId },
   } = useContext(AuthContext);
 
-  const collectionRef = collection(firestore, 'users');
+  const collectionRef = collection(firestore, 'companyUsers');
   const ref = doc(collectionRef, userId);
   const { isLoading, data: user } = useFirestoreDocumentData(
     ['userDoc'],

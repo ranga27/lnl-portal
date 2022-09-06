@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { firestore } from './clientApp';
 
 export async function fetchUserProfileDataFromFirestore(uid) {
-  const userDocRef = doc(firestore, 'users', uid);
+  const userDocRef = doc(firestore, 'companyUsers', uid);
   const userDoc = await getDoc(userDocRef);
   const data = userDoc.data();
   return data;
