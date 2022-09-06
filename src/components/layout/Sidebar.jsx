@@ -8,7 +8,8 @@ import {
   UserGroupIcon,
   LogoutIcon,
   CogIcon,
-  UserIcon,
+  ShieldCheckIcon,
+  OfficeBuildingIcon,
 } from '@heroicons/react/outline';
 import { SearchIcon, SelectorIcon } from '@heroicons/react/solid';
 import Avatar from 'react-avatar';
@@ -30,9 +31,15 @@ const navigation = [
     current: false,
   },
   {
-    name: 'Company Profile',
+    name: 'Internal Company Profile',
     href: '/company-profile',
-    icon: UserIcon,
+    icon: ShieldCheckIcon,
+    current: false,
+  },
+  {
+    name: 'External Company Profile',
+    href: '/external-profile',
+    icon: OfficeBuildingIcon,
     current: false,
   },
   { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
@@ -48,7 +55,15 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function SideBar({ children, jobIndex, dashboard }) {
+export default function SideBar({
+  children,
+  jobIndex,
+  dashboard,
+  applicants,
+  companyPrivateProfile,
+  externalProfile,
+  settings,
+}) {
   const [user, setUser] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
@@ -67,6 +82,14 @@ export default function SideBar({ children, jobIndex, dashboard }) {
     navigation[0].current = true;
   } else if (jobIndex === true) {
     navigation[1].current = true;
+  } else if (applicants === true) {
+    navigation[2].current = true;
+  } else if (companyPrivateProfile === true) {
+    navigation[3].current = true;
+  } else if (externalProfile === true) {
+    navigation[4].current = true;
+  } else if (settings === true) {
+    navigation[5].current = true;
   }
 
   return (

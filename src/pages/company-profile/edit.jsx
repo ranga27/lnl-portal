@@ -6,7 +6,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/react/solid';
 import { TextInput } from '../../components/UI/Form/Input';
 import SideBar from '../../components/layout/Sidebar';
 import { companySchema } from '../../components/schemas/companySchema';
-import { locations } from '../../data/location';
+import { locations } from '../../components/data/location';
 import { SelectField } from '../../components/UI/Form/SelectField';
 import { TextArea } from '../../components/UI/Form/TextArea';
 

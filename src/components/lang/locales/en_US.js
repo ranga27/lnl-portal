@@ -37,14 +37,14 @@ module.exports = {
   'user.resetPasswordText':
     'Please reset your password by filling the form below.',
 
-  /* 01.Roles */
+  /* 03.Roles */
   'roles.create': 'Add Role',
   'roles.title': 'Roles',
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',
   'roles.post': 'Post a role',
 
-  /* 02.Onboarding */
+  /* 04.Onboarding */
   'onboarding.lastName': 'Last Name',
   'onboarding.mobileNumber': 'Mobile Number',
   'onboarding.nextVariant1': 'Next: Company Info',
@@ -77,10 +77,17 @@ module.exports = {
   'onboarding.hearAbout': 'How did you hear about us?',
   'onboarding.confirmation': 'Confirmation',
 
-
-  /* 02.Dashboard */
+  /* 05.Dashboard */
   'dashboard.title': 'Dashboard',
   'dashboard.button_1': 'Share Company Profile',
   'dashboard.button_2': 'Post Role',
 
+  /* 06.Applicants */
+  'applicant.title': 'Applicants',
+
+  /* 07.Settings */
+  'settings.title': 'Settings',
+
+  /* 08.external-profile */
+  'external-profile.title': 'External Profile',
 };
