@@ -37,7 +37,7 @@ export default function Footer() {
     // </footer>
 
     <footer>
-      <div className='max-w-7xl mx-auto px-4  sm:px-6 lg:px-8 border border-t py-6'>
+      <div className='max-w-7xl mx-auto px-4  sm:px-6 lg:px-8 border-t py-6'>
         <nav
           className='-mx-5 -my-2 flex flex-wrap justify-evenly'
           aria-label='Footer'

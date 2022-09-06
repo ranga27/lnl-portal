@@ -82,7 +82,6 @@ export default function Step2(props) {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          console.log(values);
           props.update(values);
           props.nextStep();
           window.scrollTo(0, 0);
@@ -270,6 +269,12 @@ export default function Step2(props) {
                     />
                   </label>
                 </div>
+
+                {values && values.logoUrl && (
+                  <div className='company-img-container'>
+                    <p className='text-sm italic'>Image uploaded</p>
+                  </div>
+                )}
                 <ErrorMessage name='logoUrl' render={renderError} />
               </div>
 

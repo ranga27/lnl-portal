@@ -21,9 +21,7 @@ export const AuthProvider = ({ children }) => {
         const requiredData = {
           userProviderId: user.providerData[0].providerId,
           userId: user.uid,
-          userName: user.firstName,
           userEmail: user.email,
-          userPhotoLink: user.photoURL,
         };
         setUserData(requiredData);
         setCurrentUser(user);
@@ -37,7 +35,6 @@ export const AuthProvider = ({ children }) => {
   if (loading) {
     return <div className='loading'></div>;
   }
-
   return (
     <AuthContext.Provider
       value={{

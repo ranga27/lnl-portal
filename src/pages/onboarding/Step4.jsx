@@ -24,17 +24,38 @@ export default function Step4({ fields }) {
   });
 
   const handleSave = async () => {
-    if (fields.logoUrl) {
-      const newLogoUrl = await uploadFile(
-        fields.logoUrl,
-        fields.companyName,
-        'companyLogos'
-      );
-      fields.logoUrl = newLogoUrl;
+    const {
+      mobileNumber,
+      location,
+      jobRole,
+      lastName,
+      ats,
+      companyLocation,
+      companyName,
+      companyValues,
+      description,
+      diversity,
+      hearAbout,
+      industry,
+      linkedinUrl,
+      logoUrl,
+      visa,
+    } = fields;
+
+    if (logoUrl) {
+      const newLogoUrl = await uploadFile(logoUrl, companyName, 'companyLogos');
+      logoUrl = newLogoUrl;
     }
 
     userMutation.mutate(
-      { isOnboarded: true },
+      {
+        isOnboarded: true,
+        mobileNumber,
+        location,
+        jobRole,
+        lastName,
+        updatedAt: serverTimestamp(),
+      },
       {
         onSuccess() {
           console.log('Successful');
@@ -43,10 +64,21 @@ export default function Step4({ fields }) {
     );
 
     createCompany.mutate({
-      ...fields,
+      companyValues,
+      companyName,
+      description,
+      diversity,
+      hearAbout,
+      industry,
+      linkedinUrl,
+      ats,
+      logoUrl,
+      companyLocation,
+      visa,
       isOnboarded: true,
       userId: userData.userId,
       createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
     router.push('/dashboard');
   };

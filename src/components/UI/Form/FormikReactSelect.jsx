@@ -36,6 +36,7 @@ export const FormikReactSelect = ({
       onChange={(value) => {
         onChange(value);
       }}
+      closeMenuOnSelect={isMulti === true ? false : true}
       value={defaultValue(options, value)}
     />
   );

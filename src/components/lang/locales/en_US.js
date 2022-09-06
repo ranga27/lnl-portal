@@ -90,4 +90,7 @@ module.exports = {
 
   /* 08.external-profile */
   'external-profile.title': 'External Profile',
+
+  /* 09.internal-profile */
+  'internal-profile.title': 'Internal Profile',
 };

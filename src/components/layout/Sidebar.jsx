@@ -92,6 +92,7 @@ export default function SideBar({
     navigation[5].current = true;
   }
 
+  const fullName = user.firstName + ' ' + user.lastName;
   return (
     <div className='relative h-screen flex overflow-hidden bg-white'>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -218,7 +219,7 @@ export default function SideBar({
 
       {/* Static sidebar for desktop */}
       <div className='hidden lg:flex lg:flex-shrink-0'>
-        <div className='flex flex-col w-64 border-r border-gray-200 pt-5 pb-4 bg-[#F7B919]'>
+        <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-[#F7B919]'>
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
@@ -231,7 +232,7 @@ export default function SideBar({
                   <span className='flex w-full justify-between items-center'>
                     <span className='flex min-w-0 items-center justify-between space-x-3'>
                       <Avatar
-                        name={user.firstName}
+                        name={fullName}
                         size='45px'
                         className='rounded-full flex-shrink-0'
                       />
