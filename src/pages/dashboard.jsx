@@ -4,10 +4,10 @@ import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
 import { firestore } from '../../firebase/clientApp';
 import { AuthContext } from '../components/context/AuthContext';
 import SideBar from '../components/layout/Sidebar';
-import Router from 'next/router';
 import AuthRoute from '../components/context/authRoute';
 import Footer from '../components/layout/Footer';
 import IntlMessages from '../utils/IntlMessages';
+import Onboarding from './onboarding';
 
 export default function Dashboard() {
   const {
@@ -35,7 +35,10 @@ export default function Dashboard() {
     return <div className='loading' />;
   }
 
-  if (!user.isOnboarded) return Router.push('onboarding');
+  if (!isLoading && !user.isOnboarded) {
+    return <Onboarding />;
+  }
+
   return (
     <AuthRoute>
       <SideBar dashboard={true}>

@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import StepWizard from 'react-step-wizard';
 import { collection, doc } from 'firebase/firestore';
-import { useRouter } from 'next/router';
 import { useFirestoreDocumentData } from '@react-query-firebase/firestore';
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -9,11 +8,10 @@ import Step3 from './Step3';
 import Step4 from './Step4';
 import Stepper from './Stepper';
 import { AuthContext } from '../../components/context/AuthContext';
-import { auth, firestore } from '../../../firebase/clientApp';
+import {  firestore } from '../../../firebase/clientApp';
 import Dashboard from '../dashboard';
 
 const Onboarding = () => {
-  const router = useRouter();
   const [fields, setFields] = useState({
     lastName: '',
     diversity: '',
