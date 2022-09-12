@@ -92,7 +92,10 @@ export default function AdditionalRoleInformation({
           </div>
         </div>
         <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
-          <button type='submit' className=''>
+          <button
+            type='submit'
+            className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+          >
             <IntlMessages id='general.submit' />
           </button>
         </div>

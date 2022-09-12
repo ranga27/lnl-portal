@@ -58,16 +58,14 @@ export default function Dashboard() {
               </button>
               <button
                 type='button'
-                className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'
+                className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'
               >
                 <IntlMessages id='dashboard.button_2' />
               </button>
             </div>
           </div>
 
-          <h1 className='mx-auto text-bold pt-56 text-center text-5xl'>
-            Work in Progress
-          </h1>
+          <img src={'/assets/coming.svg'} className='w-4/5 h-4/5 mx-auto text-center' />
         </main>
         <Footer />
       </SideBar>

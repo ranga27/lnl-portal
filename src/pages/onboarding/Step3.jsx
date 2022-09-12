@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../../components/UI/Form/Button';
 import IntlMessages from '../../utils/IntlMessages';
 
 export default function Step3(props) {
@@ -14,23 +15,25 @@ export default function Step3(props) {
         width='100%'
       />
       <p className='py-6'>Stripe integration coming soon</p>
-      <div className='flex flex-row space-x-6'>
-        <button
-          className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
-          type='button'
+      <div className='my-12 flex flex-row space-x-6'>
+        <Button
           onClick={() => props.previousStep()}
-        >
-          <IntlMessages id='onboarding.backVariant2' />
-        </button>
-        <button
-          className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
-          type='submit'
+          text={'onboarding.backVariant2'}
+          type='button'
+          width='w-full'
+          color='text-black'
+          bg='bg-gray-100'
+        />
+        <Button
           onClick={() => {
             props.nextStep(), window.scrollTo(0, 0);
           }}
-        >
-          <IntlMessages id='onboarding.nextVariant3' />
-        </button>
+          text={'onboarding.nextVariant3'}
+          type='submit'
+          width='w-full'
+          color='text-white'
+          bg='bg-gray-900'
+        />
       </div>{' '}
     </div>
   );

@@ -99,10 +99,10 @@ export default function ViewRole() {
                             </Link>
                             <button
                               type='button'
-                              className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-white bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                              className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                             >
                               <ShareIcon
-                                className='-ml-1 mr-2 h-5 w-5 text-white'
+                                className='-ml-1 mr-2 h-5 w-5 text-black'
                                 aria-hidden='true'
                               />
                               <span>Share</span>

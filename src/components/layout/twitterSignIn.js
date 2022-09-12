@@ -25,7 +25,7 @@ const TwitterSignIn = () => {
       type='button'
       data-mdb-ripple='true'
       data-mdb-ripple-color='light'
-      className='inline-block p-3 bg-[#F7B919] text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-[#26ADB4] hover:shadow-lg focus:bg-[#26ADB4] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#26ADB4] active:shadow-lg transition duration-150 ease-in-out mx-1'
+      className='inline-block p-3 bg-gray-900 text-white font-medium text-xs leading-tight rounded-full shadow-md hover:bg-[#26ADB4] hover:shadow-lg focus:bg-[#26ADB4] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#26ADB4] active:shadow-lg transition duration-150 ease-in-out mx-1'
       onClick={loginHandler}
     >
       <svg

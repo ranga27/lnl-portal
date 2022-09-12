@@ -5,11 +5,11 @@ import IntlMessages from '../../utils/IntlMessages';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { locations } from '../../components/data/location';
 import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
+import Button from '../../components/UI/Form/Button';
 
 const phoneRegExp = /^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$/;
 
 const validationSchema = Yup.object().shape({
-  lastName: Yup.string().required('Last Name is required'),
   mobileNumber: Yup.string()
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('Phone number is required')
@@ -42,14 +42,13 @@ export default function Step1(props) {
   );
 
   return (
-    <div className='max-w-5xl'>
+    <div className='max-w-4xl mx-auto'>
       <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
         <IntlMessages id='onboarding.accountHeader' />
       </h2>
 
       <Formik
         initialValues={{
-          lastName: '',
           mobileNumber: '',
           jobRole: '',
           location: '',
@@ -57,34 +56,16 @@ export default function Step1(props) {
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          props.update(values)
+          props.update(values);
           props.nextStep();
           window.scrollTo(0, 0);
         }}
       >
         {({ errors, touched, setFieldValue, values }) => (
           <Form>
-            <div className='mt-6 grid grid-cols-4 gap-x-6 gay-y-2'>
+            <div className='mt-6 grid grid-cols-4 gap-x-8 gap-y-2'>
               <div className='col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
-                  <IntlMessages id='onboarding.lastName' />
-                </label>
-                <Field
-                  name='lastName'
-                  placeholder='Doe'
-                  variant='outlined'
-                  data-cy='onboarding-lastName-input'
-                  className={classnames(
-                    'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#F7B919] focus:outline-none',
-                    {
-                      'border-red-500': errors.lastName && touched.lastName,
-                    }
-                  )}
-                />
-                <ErrorMessage name='lastName' render={renderError} />
-              </div>
-              <div className='col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.mobileNumber' />
                 </label>
                 <Field
@@ -102,14 +83,14 @@ export default function Step1(props) {
                 <ErrorMessage name='mobileNumber' render={renderError} />
               </div>
 
-              <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+              <div className='col-span-4 sm:col-span-2'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.jobRole' />
                 </label>
                 <Field
                   name='jobRole'
                   placeholder='Human Resources'
-                  data-cy='onboarding-lastName-input'
+                  data-cy='onboarding-jobRole-input'
                   className={classnames(
                     'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#F7B919] focus:outline-none',
                     {
@@ -120,7 +101,7 @@ export default function Step1(props) {
                 <ErrorMessage name='jobRole' render={renderError} />
               </div>
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.location' />
                 </label>
                 <FormikReactSelect
@@ -137,8 +118,8 @@ export default function Step1(props) {
                 />
                 <ErrorMessage name='location' render={renderError} />
               </div>
-              <div className='mt-4 col-span-4 sm:col-span-4'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+              <div className='mt-4 col-span-4 sm:col-span-2'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.linkedinUrl' />
                 </label>
                 <Field
@@ -156,13 +137,9 @@ export default function Step1(props) {
                 <ErrorMessage name='linkedinUrl' render={renderError} />
               </div>
             </div>
-
-            <button
-              className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8 p-2'
-              type='submit'
-            >
-              Next
-            </button>
+            <div className='mt-12'>
+              <Button text={'Next'} type='submit' width='w-full' color="text-white" bg="bg-gray-900"/>
+            </div>
           </Form>
         )}
       </Formik>

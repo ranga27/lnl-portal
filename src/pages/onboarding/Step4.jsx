@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
 import { uploadFile } from '../../utils/uploadFile';
+import Button from '../../components/UI/Form/Button';
 
 export default function Step4({ fields }) {
   const router = useRouter();
@@ -92,14 +93,17 @@ export default function Step4({ fields }) {
         Please confirm you have filled in the required details and click on the
         button below to submit
       </p>
-      <button
-        className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8 p-2'
-        type='submit'
-        onClick={handleSave}
-        disabled={userMutation.isLoading}
-      >
-        <IntlMessages id='onboarding.confirm' />
-      </button>
+      <div className='my-12'>
+        <Button
+          text={'onboarding.confirm'}
+          type='submit'
+          onClick={handleSave}
+          disabled={userMutation.isLoading}
+          width='w-full'
+          color='text-white'
+          bg='bg-gray-900'
+        />
+      </div>
     </div>
   );
 }

@@ -170,7 +170,7 @@ export default function RolesList({ roles }) {
       {/* FOR MOBILE VIEW */}
       <div className='mt-10 sm:hidden'>
         <div className='px-4 sm:px-6'>
-          <h2 className='text-gray-500 text-xs font-medium uppercase tracking-wide'>
+          <h2 className='text-gray-500 text-xs font-medium tracking-wide'>
             Roles
           </h2>
         </div>
@@ -211,19 +211,19 @@ export default function RolesList({ roles }) {
           <table className='min-w-full'>
             <thead>
               <tr className='border-t border-gray-200'>
-                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500  tracking-wider'>
                   <span className='lg:pl-2'>Roles</span>
                 </th>
-                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500  tracking-wider'>
                   Location
                 </th>
-                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                <th className='px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs font-medium text-gray-500  tracking-wider'>
                   Start Date
                 </th>
-                <th className='hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                <th className='hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500  tracking-wider'>
                   Last updated
                 </th>
-                <th className='pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider' />
+                <th className='pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500  tracking-wider' />
               </tr>
             </thead>
             <tbody className='bg-white divide-y divide-gray-100'>

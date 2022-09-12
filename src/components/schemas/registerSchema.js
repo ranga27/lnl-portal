@@ -6,6 +6,10 @@ export const signUpSchema = yup.object().shape({
     .string()
     .required('Please enter your First Name')
     .min(2, 'Name is too short - should be 2 chars minimum'),
+    lastName: yup
+    .string()
+    .required('Please enter your Last Name')
+    .min(2, 'Name is too short - should be 2 chars minimum'),
   email: yup
     .string()
     .email('Invalid email address')

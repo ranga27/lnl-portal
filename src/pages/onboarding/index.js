@@ -13,7 +13,6 @@ import Dashboard from '../dashboard';
 
 const Onboarding = () => {
   const [fields, setFields] = useState({
-    lastName: '',
     diversity: '',
     location: '',
     companyLocation: '',

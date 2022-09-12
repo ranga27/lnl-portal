@@ -14,11 +14,13 @@ exports.confirmEmail = functions.https.onRequest(async (req, res) => {
     return res.redirect('https://loop-luck.web.app/email-confirmation/failure');
   }
   const temporaryUserDoc = querySnapshot.docs[0];
-  const { uid, email, firstName, role } = temporaryUserDoc.data();
+  const { uid, email, firstName, lastName, role } = temporaryUserDoc.data();
   await auth.updateUser(uid, { emailVerified: true });
   await store.collection('companyUsers').doc(uid).set({
     email,
     firstName,
+    lastName,
+    role,
     createdAt: admin.firestore.FieldValue.serverTimestamp(),
     isOnboarded: false,
     hasCompletedProfile: false,

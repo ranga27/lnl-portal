@@ -20,7 +20,6 @@ import CompanyAside from '../../components/layout/companyAside';
 // Company Internal Information: Contains VAT, Roles posted, the on-boarding info. update logo. See how many credits they have.
 // invite team mates. internal business. and stuff related to loop not luck account,
 // basically what candidates want see.
-// Update company information. View information / View what candidates see and a modal pops up with the view.
 // - Role Permissions: Select a particular person to be a role adder / poster or hiring managers.
 // - Users: Table -> Add more users, selects how many they want, they do not need to pay immediately, it gets added to their next monthly bill.
 
@@ -79,7 +78,14 @@ export default function CompanyProfile() {
                         </p>
                       </div>
                       <div className='mt-4 flex space-x-3 md:mt-0'>
-                        <Link href='/company-profile/edit'>
+                        <Link
+                          href={{
+                            pathname: '/company-profile/edit',
+                            query: {
+                              ...company[0],
+                            },
+                          }}
+                        >
                           <a className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-0 sm:ml-0'>
                             <PencilIcon
                               className='-ml-1 mr-2 h-5 w-5 text-gray-400'
@@ -277,7 +283,11 @@ export default function CompanyProfile() {
                   </div>
                 </div>
               </div>
-            <CompanyAside id={company[0].id} img={company[0].logoUrl} updatedAt={company[0].updatedAt}/>
+              <CompanyAside
+                id={company[0].id}
+                img={company[0].logoUrl}
+                updatedAt={company[0].updatedAt}
+              />
             </div>
           </div>
         </main>

@@ -24,7 +24,6 @@ import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
-import { useEffect } from 'react';
 
 export default function AddRole() {
   const mutation = useFirestoreCollectionMutation(
@@ -65,10 +64,12 @@ export default function AddRole() {
       : null,
   });
 
-  const roleRef = doc(firestore, 'companyRolesV2', role.id);
+  // if (role && role.id) {
+  const roleRef = doc(firestore, 'companyRolesV2', role.id || '1');
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
     merge: true,
   });
+  // }
 
   const {
     userData: { userId },

@@ -15,9 +15,8 @@ export default function ExternalProfile() {
               </h1>
             </div>
           </div>
-          <h1 className='mx-auto text-bold pt-56 text-center text-5xl'>
-            Work in Progress
-          </h1>
+                   <img src={'/assets/coming.svg'} className='w-4/5 h-4/5 mx-auto text-center' />
+
         </main>
         <Footer />
       </SideBar>

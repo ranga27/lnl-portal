@@ -27,6 +27,7 @@ import { TermsInfo } from '../components/layout/TermsInfo';
 export default function Register() {
   const defaultValues = {
     firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -59,7 +60,7 @@ export default function Register() {
     collection(firestore, 'temporaryUsers')
   );
   const handleUserSignUp = async (values) => {
-    const { email, password, firstName, termsSelected } = values;
+    const { email, password, firstName, lastName, termsSelected } = values;
     if (!createUser.isLoading && termsSelected === true) {
       createUser.mutate(
         { email, password },
@@ -71,6 +72,7 @@ export default function Register() {
               uid,
               email,
               firstName,
+              lastName,
               role: 'company',
               confirmationHash,
               createdAt: serverTimestamp(),
@@ -105,21 +107,17 @@ export default function Register() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
-
   const handleOpenModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   return (
     <div>
-      <section className='h-screen'>
+      <section className='h-screen max-w-5xl mx-auto'>
         <div className='px-6 xl:px-24 h-full text-gray-800'>
-          <div className='flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6'>
-            <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
-              <div className='w-48 h-48 xl:w-96 lg:w-24 md:w-24 xl:h-96 lg:h-24 md:h-24 relative text-center mx-auto'>
+          <div className='flex xl:justify-between lg:justify-between justify-center items-center flex-wrap h-full g-6'>
+            <div className=''>
+              <div className='w-48 h-48 relative text-center mx-auto'>
                 <Image
                   src='/assets/white.png'
                   alt='Loop Not Luck'
@@ -132,10 +130,12 @@ export default function Register() {
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
               <form onSubmit={handleSubmit(handleUserSignUp)}>
                 <div className='flex flex-row items-center justify-center lg:justify-start'>
-                  <p className='text-lg mb-0 mr-4'>
+                  <p className='text-3xl font-extrabold text-gray-900 mb-8 mr-4'>
                     {' '}
                     <IntlMessages id='user.registerWith' />
                   </p>
+                </div>
+                <div className='mx-auto text-center mb-8'>
                   <GoogleSignIn />
 
                   <TwitterSignIn />
@@ -148,39 +148,61 @@ export default function Register() {
                     <IntlMessages id='user.or' />
                   </p>
                 </div>
-                <TextInput
-                  name='firstName'
-                  label='First Name'
-                  errors={errors.firstName}
-                  control={control}
-                  data-cy='register-first-name-input'
-                />
+                <div className='grid grid-cols-4 gap-x-6'>
+                  <div className='col-span-4 sm:col-span-4'>
+                    <TextInput
+                      name='email'
+                      placeholder='Email address'
+                      label='Email address'
+                      errors={errors.email}
+                      control={control}
+                      data-cy='register-email-input'
+                    />
+                  </div>
+                  <div className='mt-4 col-span-4 sm:col-span-2'>
+                    <TextInput
+                      name='firstName'
+                      placeholder='First Name'
+                      label='First Name'
+                      errors={errors.firstName}
+                      control={control}
+                      data-cy='register-first-name-input'
+                    />
+                  </div>
+                  <div className='mt-4 col-span-4 sm:col-span-2'>
+                    <TextInput
+                      name='lastName'
+                      placeholder='Last Name'
+                      label='Last Name'
+                      errors={errors.lastName}
+                      control={control}
+                      data-cy='register-last-name-input'
+                    />
+                  </div>
 
-                <TextInput
-                  name='email'
-                  label='Email address'
-                  errors={errors.email}
-                  control={control}
-                  data-cy='register-email-input'
-                />
-                <TextInput
-                  name='password'
-                  label='Password'
-                  errors={errors.password}
-                  control={control}
-                  type='password'
-                  data-cy='register-password-input'
-                />
-
-                <TextInput
-                  name='confirmPassword'
-                  label='Confirm Password'
-                  errors={errors.confirmPassword}
-                  control={control}
-                  type='password'
-                  data-cy='register-confirm-password-input'
-                />
-
+                  <div className='mt-4 col-span-4 sm:col-span-2'>
+                    <TextInput
+                      name='password'
+                      label='Password'
+                      placeholder='Enter Password'
+                      errors={errors.password}
+                      control={control}
+                      type='password'
+                      data-cy='register-password-input'
+                    />
+                  </div>
+                  <div className='mt-4 col-span-4 sm:col-span-2'>
+                    <TextInput
+                      name='confirmPassword'
+                      label='Confirm Password'
+                      placeholder='Confirm your Password'
+                      errors={errors.confirmPassword}
+                      control={control}
+                      type='password'
+                      data-cy='register-confirm-password-input'
+                    />
+                  </div>
+                </div>
                 <div className='flex'>
                   <CheckBox
                     name='termsSelected'
@@ -190,7 +212,7 @@ export default function Register() {
                   />
                   <button
                     type='button'
-                    className='text-sm h-16 text-[#F7B919]'
+                    className='text-sm h-16 text-gray-900 underline hover:text-[#F7B919]'
                     onClick={() => handleOpenModal()}
                   >
                     <IntlMessages id='user.terms' />
@@ -203,25 +225,25 @@ export default function Register() {
                     setOpen={setIsModalOpen}
                     cancelButton={true}
                     confirmButton={true}
-                    modalSize='2xl'
+                    modalSize='xl'
                     title='TERMS AND CONDITIONS'
                     showIcon={false}
                     Content={TermsInfo}
                   />
                 )}
 
-                <div className='text-center lg:text-left'>
+                <div className='mt-4 text-center lg:text-left'>
                   <button
                     type='submit'
                     data-cy='register-submit-button'
-                    className='inline-block px-7 py-3 bg-[#F7B919] text-white font-bold text-sm leading-snug uppercase rounded shadow-md hover:bg-[#F7B919] hover:shadow-lg focus:bg-[#F7B919] focus:shadow-lg focus:outline-none focus:ring-0 active:bg-[#F7B919] active:shadow-lg transition duration-150 ease-in-out'
+                    className='text-center mx-auto px-7 py-3 bg-gray-900 text-white font-semibold text-sm leading-snug rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out'
                   >
                     <IntlMessages id='user.register' />
                   </button>
-                  <p className='text-sm font-normal mt-2 pt-1 mb-0'>
+                  <p className='text-sm font-normal mt-4 pt-1 mb-0'>
                     <IntlMessages id='user.redirectLogin' />
                     <Link href='/login'>
-                      <a className='text-[#F7B919] hover:text-[#F7B919] focus:text-[#F7B919] transition duration-200 ease-in-out'>
+                      <a className='text-gray-900 underline hover:text-[#F7B919] focus:text-[#F7B919] transition duration-200 ease-in-out'>
                         <IntlMessages id='user.login' />
                       </a>
                     </Link>

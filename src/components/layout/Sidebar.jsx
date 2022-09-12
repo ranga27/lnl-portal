@@ -11,6 +11,8 @@ import {
   ShieldCheckIcon,
   OfficeBuildingIcon,
 } from '@heroicons/react/outline';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { SearchIcon, SelectorIcon } from '@heroicons/react/solid';
 import Avatar from 'react-avatar';
 import { AuthContext } from '../context/AuthContext';
@@ -56,42 +58,18 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function SideBar({
-  children,
-  jobIndex,
-  dashboard,
-  applicants,
-  companyPrivateProfile,
-  externalProfile,
-  settings,
-}) {
+export default function SideBar({ children }) {
   const [user, setUser] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     userData: { userId },
   } = useContext(AuthContext);
-
-  fetchUserProfileDataFromFirestore;
-
+  const { pathname } = useRouter();
   useEffect(() => {
     fetchUserProfileDataFromFirestore(userId).then((results) => {
       setUser(results);
     });
   }, [userId]);
-
-  if (dashboard === true) {
-    navigation[0].current = true;
-  } else if (jobIndex === true) {
-    navigation[1].current = true;
-  } else if (applicants === true) {
-    navigation[2].current = true;
-  } else if (companyPrivateProfile === true) {
-    navigation[3].current = true;
-  } else if (externalProfile === true) {
-    navigation[4].current = true;
-  } else if (settings === true) {
-    navigation[5].current = true;
-  }
 
   const fullName = user.firstName + ' ' + user.lastName;
   return (
@@ -180,10 +158,10 @@ export default function SideBar({
                   </div>
                   <div className='mt-8'>
                     <h3
-                      className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider'
+                      className='px-3 text-xs font-semibold text-gray-500 tracking-wider'
                       id='mobile-teams-headline'
                     >
-                      Teams
+                      Roles
                     </h3>
                     <div
                       className='mt-1 space-y-1'
@@ -220,7 +198,7 @@ export default function SideBar({
 
       {/* Static sidebar for desktop */}
       <div className='hidden lg:flex lg:flex-shrink-0'>
-        <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-[#F7B919]'>
+        <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-gray-800'>
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
@@ -369,32 +347,32 @@ export default function SideBar({
             <nav className='px-3 mt-6'>
               <div className='space-y-1'>
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current
-                        ? 'bg-white text-gray-900 font-bold'
-                        : 'text-white hover:text-gray-900 hover:bg-gray-50 font-bold',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                    )}
-                    aria-current={item.current ? 'page' : undefined}
-                  >
-                    <item.icon
+                  <Link href={item.href} passHref>
+                    <a
+                      key={item.name}
                       className={classNames(
-                        item.current
-                          ? 'text-gray-500'
-                          : 'text-white group-hover:text-gray-500',
-                        'mr-3 flex-shrink-0 h-6 w-6'
+                        item.href === pathname
+                          ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                          : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                       )}
-                      aria-hidden='true'
-                    />
-                    {item.name}
-                  </a>
+                      aria-current={item.current ? 'page' : undefined}
+                    >
+                      <item.icon
+                        className={classNames(
+                          item.current
+                            ? 'text-gray-900'
+                            : 'text-white group-hover:text-gray-500',
+                          'mr-3 flex-shrink-0 h-6 w-6'
+                        )}
+                        aria-hidden='true'
+                      />
+                      {item.name}
+                    </a>
+                  </Link>
                 ))}
               </div>
-              <RolesList userId = {userId}/>
-             
+              <RolesList userId={userId} />
             </nav>
           </div>
         </div>

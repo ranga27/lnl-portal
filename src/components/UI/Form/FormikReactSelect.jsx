@@ -11,6 +11,11 @@ const customStyles = {
     boxShadow: state.isFocused ? '0px 0px 0px rgb(209 213 219)' : 'none',
     '&:hover': {},
   }),
+  indicatorSeparator: (provided) => ({
+    ...provided,
+    display: 'none',
+    outline: 0,
+  }),
 };
 
 export const FormikReactSelect = ({

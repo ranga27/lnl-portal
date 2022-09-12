@@ -9,6 +9,7 @@ import { positionTypes } from '../../components/data/positionTypes';
 import { diversityTypes } from '../../components/data/diversity';
 import { visaRequiredOptions } from '../../components/data/visaRequiredOptions';
 import { jobValuesOptions } from '../../components/data/jobValuesOptions';
+import Button from '../../components/UI/Form/Button';
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
@@ -62,7 +63,7 @@ export default function Step2(props) {
   );
 
   return (
-    <div className='max-w-5xl'>
+    <div className='max-w-4xl mx-auto'>
       <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
         <IntlMessages id='onboarding.companyHeader' />
       </h2>
@@ -89,9 +90,9 @@ export default function Step2(props) {
       >
         {({ errors, touched, setFieldValue, values }) => (
           <Form>
-            <div className='mt-6 grid grid-cols-4 gap-x-6 gay-y-2'>
+            <div className='mt-6 grid grid-cols-4 gap-x-8 gap-y-2'>
               <div className='col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.companyName' />
                 </label>
                 <Field
@@ -111,7 +112,7 @@ export default function Step2(props) {
               </div>
 
               <div className='col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.companyLocation' />
                 </label>
                 <FormikReactSelect
@@ -132,7 +133,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-8 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.industry' />
                 </label>
                 <FormikReactSelect
@@ -155,7 +156,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.diversity' />
                 </label>
                 <FormikReactSelect
@@ -178,7 +179,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.visa' />
                 </label>
                 <FormikReactSelect
@@ -196,7 +197,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.values' />
                 </label>
                 <FormikReactSelect
@@ -220,7 +221,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.description' />
                 </label>
                 <Field
@@ -242,11 +243,11 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.companyLogo' />
                 </label>
                 <div className='flex w-full items-center justify-center bg-grey-lighter'>
-                  <label className='w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide uppercase border border-blue cursor-pointer hover:bg-[#F7B919] hover:text-white'>
+                  <label className='w-full flex flex-col items-center px-4 py-6 bg-white text-blue rounded-lg shadow-sm tracking-wide border border-blue cursor-pointer hover:bg-[#F7B919] hover:text-white'>
                     <svg
                       className='w-8 h-8'
                       fill='currentColor'
@@ -279,7 +280,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.ats' />
                 </label>
                 <Field
@@ -293,7 +294,7 @@ export default function Step2(props) {
               </div>
 
               <div className='mt-4 col-span-4 sm:col-span-2'>
-                <label className='py-2 block text-sm font-medium text-gray-900'>
+                <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.hearAbout' />
                 </label>
                 <Field
@@ -311,20 +312,23 @@ export default function Step2(props) {
               </div>
             </div>
 
-            <div className='flex flex-row space-x-6'>
-              <button
-                className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
-                type='button'
+            <div className='my-12 flex flex-row space-x-6'>
+              <Button
                 onClick={() => props.previousStep()}
-              >
-                <IntlMessages id='onboarding.backVariant1' />
-              </button>
-              <button
-                className='w-full rounded-md bg-[#F7B919] font-medium text-white my-8  p-2'
+                text={'onboarding.backVariant1'}
+                type='button'
+                width='w-full'
+                color='text-black'
+                bg='bg-gray-100'
+                hover="bg-gray-100"
+              />
+              <Button
+                text={'onboarding.nextVariant1'}
                 type='submit'
-              >
-                <IntlMessages id='onboarding.nextVariant1' />
-              </button>
+                width='w-full'
+                color='text-white'
+                bg='bg-gray-900'
+              />
             </div>
           </Form>
         )}

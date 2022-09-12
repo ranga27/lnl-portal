@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { RadioGroup, Switch } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -49,6 +50,38 @@ function classNames(...classes) {
 export default function UpdateCompany() {
   const [selectedPlan, setSelectedPlan] = useState(plans[1]);
   const [annualBillingEnabled, setAnnualBillingEnabled] = useState(true);
+  const router = useRouter();
+  const { startDate, deadline, ...company } = router.query;
+
+  const [fields, setFields] = useState({
+    companyName: role.title || '',
+    location: role.location || '',
+    department: role.department || '',
+    qualification: role.qualification || '',
+    positionType: role.positionType || '',
+    salary: role.salary || '',
+    description: role.description || '',
+    howToApply: role.howToApply || '',
+    email: role.email || '',
+    website: role.website || '',
+    rolling: role.rolling || false,
+    deadline:
+      role.rolling === true || deadline === undefined
+        ? null
+        : new Date(deadline),
+    startDate: deadline !== undefined ? new Date(startDate) : null,
+    coverLetter: role.coverLetter || false,
+    prescreening: role.prescreening || false,
+    rolesOfInterests: role.rolesOfInterests || null,
+    technicalSkills: role.technicalSkills || null,
+    managerId: role.managerId || '',
+    moreRoleInfo: role.moreRoleInfo || '',
+    behaviourAttributesStrengths: role.behaviourAttributesStrengths || null,
+    experience: role.experience || null,
+    technicalSkillsOther: role.technicalSkillsOther
+      ? role.technicalSkillsOther
+      : null,
+  });
 
   const defaultValues = {
     companyName: '',
@@ -388,19 +421,19 @@ export default function UpdateCompany() {
                           <tr>
                             <th
                               scope='col'
-                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider'
                             >
                               Date
                             </th>
                             <th
                               scope='col'
-                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider'
                             >
                               Description
                             </th>
                             <th
                               scope='col'
-                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              className='px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider'
                             >
                               Amount
                             </th>
@@ -409,7 +442,7 @@ export default function UpdateCompany() {
                               */}
                             <th
                               scope='col'
-                              className='relative px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'
+                              className='relative px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider'
                             >
                               <span className='sr-only'>View receipt</span>
                             </th>

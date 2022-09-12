@@ -18,7 +18,7 @@ export default function RolesList({ userId }) {
     <div className='mt-8'>
       {roles.length !== 0 && (
         <h3
-          className='px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider'
+          className='px-3 text-xs font-semibold text-gray-500 tracking-wider'
           id='desktop-teams-headline'
         >
           Roles
