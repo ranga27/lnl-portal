@@ -23,7 +23,7 @@ export async function getCompanyRoles(uid) {
   const companyDocRef = collection(firestore, 'companyV2');
   const companyDoc = await query(companyDocRef, where('userId', '==', uid));
   const querySnapshot = await getDocs(companyDoc);
-  const data =  querySnapshot.docs.map((docu) => ({
+  const data = querySnapshot.docs.map((docu) => ({
     ...docu.data(),
     id: docu.id,
   }));
@@ -34,7 +34,18 @@ export async function getCompanyRoles(uid) {
     where('companyId', '==', data[0].id)
   );
   const rolesQuerySnapshot = await getDocs(rolesDoc);
-  const roles =  rolesQuerySnapshot.docs.map((docu) => ({
+  const roles = rolesQuerySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  return roles;
+}
+
+export async function getRoles(uid) {
+  const rolesDocRef = collection(firestore, 'companyRolesV2');
+  const rolesDoc = await query(rolesDocRef, where('companyId', '==', uid));
+  const rolesQuerySnapshot = await getDocs(rolesDoc);
+  const roles = rolesQuerySnapshot.docs.map((docu) => ({
     ...docu.data(),
     id: docu.id,
   }));

@@ -15,6 +15,7 @@ import { collection, query, where } from 'firebase/firestore';
 import { useFirestoreQuery } from '@react-query-firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
+import CompanyAside from '../../components/layout/companyAside';
 
 // Company Internal Information: Contains VAT, Roles posted, the on-boarding info. update logo. See how many credits they have.
 // invite team mates. internal business. and stuff related to loop not luck account,
@@ -63,7 +64,6 @@ export default function CompanyProfile() {
               </h1>
             </div>
           </div>
-
           <div className='py-8 xl:py-10'>
             <div className='max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 xl:max-w-5xl xl:grid xl:grid-cols-3'>
               <div className='xl:col-span-2 xl:pr-8 xl:border-r xl:border-gray-200'>
@@ -277,35 +277,7 @@ export default function CompanyProfile() {
                   </div>
                 </div>
               </div>
-              <aside className='hidden xl:block xl:pl-8'>
-                <h2 className='sr-only'>Details</h2>
-                <div className='space-y-5 mt-24'>
-                  <img
-                    src={company[0].logoUrl}
-                    alt='Company logo'
-                    className='text-center mx-auto rounded-full w-36 h-36'
-                  />
-
-                  <div className='flex items-center space-x-2'>
-                    <ChatAltIcon
-                      className='h-5 w-5 text-gray-400'
-                      aria-hidden='true'
-                    />
-                    <span className='text-gray-900 text-sm font-medium'>
-                      4 published roles
-                    </span>
-                  </div>
-                  <div className='flex items-center space-x-2'>
-                    <CalendarIcon
-                      className='h-5 w-5 text-gray-400'
-                      aria-hidden='true'
-                    />
-                    <span className='text-gray-900 text-sm font-medium'>
-                      Last updated on {company[0].updatedAt}
-                    </span>
-                  </div>
-                </div>
-              </aside>
+            <CompanyAside id={company[0].id} img={company[0].logoUrl} updatedAt={company[0].updatedAt}/>
             </div>
           </div>
         </main>
