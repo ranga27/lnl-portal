@@ -2,11 +2,18 @@ import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import {
   useFirestoreCollectionMutation,
+  useFirestoreDocumentMutation,
   useFirestoreQuery,
 } from '@react-query-firebase/firestore';
 import 'react-datepicker/dist/react-datepicker.css';
 import Swal from 'sweetalert2';
-import { collection, serverTimestamp, query, where } from 'firebase/firestore';
+import {
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  doc,
+} from 'firebase/firestore';
 import SideBar from '../../components/layout/Sidebar';
 import { AuthContext } from '../../components/context/AuthContext';
 import IntlMessages from '../../utils/IntlMessages';
@@ -17,7 +24,8 @@ import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
- 
+import { useEffect } from 'react';
+
 export default function AddRole() {
   const mutation = useFirestoreCollectionMutation(
     collection(firestore, 'companyRolesV2')
@@ -39,7 +47,10 @@ export default function AddRole() {
     email: role.email || '',
     website: role.website || '',
     rolling: role.rolling || false,
-    deadline: role.rolling === true || deadline === undefined ? null : new Date(deadline),
+    deadline:
+      role.rolling === true || deadline === undefined
+        ? null
+        : new Date(deadline),
     startDate: deadline !== undefined ? new Date(startDate) : null,
     coverLetter: role.coverLetter || false,
     prescreening: role.prescreening || false,
@@ -52,6 +63,11 @@ export default function AddRole() {
     technicalSkillsOther: role.technicalSkillsOther
       ? role.technicalSkillsOther
       : null,
+  });
+
+  const roleRef = doc(firestore, 'companyRolesV2', role.id);
+  const rolesMutation = useFirestoreDocumentMutation(roleRef, {
+    merge: true,
   });
 
   const {
@@ -89,13 +105,7 @@ export default function AddRole() {
     }
   };
 
-  const handleLastTabButton = async (data) => {
-    if (data) {
-      setClickSubmitButton(true);
-    }
-  };
-
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     const newFields = { ...fields, ...data };
     setFields(newFields);
     const {
@@ -117,7 +127,6 @@ export default function AddRole() {
       behaviourAttributesStrengths,
       experience,
     } = newFields;
-
     if (onClickSubmitButton) {
       if (
         !title ||
@@ -155,27 +164,49 @@ export default function AddRole() {
           companyId: company[0].id,
           pinned: false,
         };
-
-        mutation.mutate(newData, {
-          onSuccess() {
-            Swal.fire({
-              title: 'Success!',
-              text: 'New Role Added.',
-              icon: 'success',
-              iconColor: '#3085d6',
-              showConfirmButton: false,
-            });
-            window.setTimeout(() => {
-              router.push('/roles');
-            }, 2000);
-          },
-          onError() {
-            Swal.fire('Oops!', 'Failed to Add Role.', 'error');
-          },
-          onMutate() {
-            console.info('Adding role...');
-          },
-        });
+        if (role && role.id) {
+          rolesMutation.mutate(newData, {
+            onSuccess() {
+              Swal.fire({
+                title: 'Success!',
+                text: 'Role Updated.',
+                icon: 'success',
+                iconColor: '#3085d6',
+                showConfirmButton: false,
+              });
+              window.setTimeout(() => {
+                router.push('/roles');
+              }, 2000);
+            },
+            onError() {
+              Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+            },
+            onMutate() {
+              console.info('Adding role...');
+            },
+          });
+        } else {
+          mutation.mutate(newData, {
+            onSuccess() {
+              Swal.fire({
+                title: 'Success!',
+                text: 'New Role Added.',
+                icon: 'success',
+                iconColor: '#3085d6',
+                showConfirmButton: false,
+              });
+              window.setTimeout(() => {
+                router.push('/roles');
+              }, 2000);
+            },
+            onError() {
+              Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+            },
+            onMutate() {
+              console.info('Adding role...');
+            },
+          });
+        }
       }
     }
   };
@@ -214,12 +245,17 @@ export default function AddRole() {
                           handleChangeTab={handleChangeTab}
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
+                          handleLastTabButton={(data) =>
+                            setClickSubmitButton(data)
+                          }
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
-                          handleLastTabButton={handleLastTabButton}
+                          handleLastTabButton={(data) =>
+                            setClickSubmitButton(data)
+                          }
                         />
                       ) : null}
                     </div>

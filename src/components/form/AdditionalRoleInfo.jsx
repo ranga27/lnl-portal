@@ -43,9 +43,9 @@ export default function AdditionalRoleInformation({
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = async (data) => {
-    handleSaveFields(data);
+  const onSubmit = (data) => {
     handleLastTabButton(true);
+    handleSaveFields(data);
   };
 
   return (
@@ -92,10 +92,7 @@ export default function AdditionalRoleInformation({
           </div>
         </div>
         <div className='px-4 py-3 bg-gray-50 text-right sm:px-6'>
-          <button
-            type='submit'
-            className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-          >
+          <button type='submit' className=''>
             <IntlMessages id='general.submit' />
           </button>
         </div>

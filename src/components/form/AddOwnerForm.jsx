@@ -7,6 +7,7 @@ import { users } from '../data/users';
 
 export default function AddOwnerForm({
   handleChangeTab,
+  handleLastTabButton,
   handleSaveFields,
   fields,
 }) {
@@ -25,6 +26,7 @@ export default function AddOwnerForm({
   const onSubmit = async (data) => {
     handleSaveFields(data);
     handleChangeTab('tab3');
+    handleLastTabButton(true)
   };
 
   return (
