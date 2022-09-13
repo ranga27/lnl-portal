@@ -1,5 +1,5 @@
-import { Fragment, useState, useContext, useEffect } from 'react';
-import { Dialog, Menu, Transition } from '@headlessui/react';
+import { Fragment, useState, useContext, useEffect } from "react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   DesktopComputerIcon,
   MenuAlt1Icon,
@@ -10,52 +10,52 @@ import {
   CogIcon,
   ShieldCheckIcon,
   OfficeBuildingIcon,
-} from '@heroicons/react/outline';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { SearchIcon, SelectorIcon } from '@heroicons/react/solid';
-import Avatar from 'react-avatar';
-import { AuthContext } from '../context/AuthContext';
-import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
-import RolesList from './RolesList';
+} from "@heroicons/react/outline";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { SearchIcon, SelectorIcon } from "@heroicons/react/solid";
+import Avatar from "react-avatar";
+import { AuthContext } from "../context/AuthContext";
+import { fetchUserProfileDataFromFirestore } from "../../../firebase/firestoreService";
+import RolesList from "./RolesList";
 
 const navigation = [
   {
-    name: 'Dashboard',
-    href: '/dashboard',
+    name: "Dashboard",
+    href: "/dashboard",
     icon: DesktopComputerIcon,
     current: false,
   },
-  { name: 'Roles', href: '/roles', icon: BriefcaseIcon, current: false },
+  { name: "Roles", href: "/roles", icon: BriefcaseIcon, current: false },
   {
-    name: 'Manage Applicants',
-    href: '/applicants',
+    name: "Manage Applicants",
+    href: "/applicants",
     icon: UserGroupIcon,
     current: false,
   },
   {
-    name: 'Internal Company Profile',
-    href: '/company-profile',
+    name: "Internal Company Profile",
+    href: "/company-profile",
     icon: ShieldCheckIcon,
     current: false,
   },
   {
-    name: 'External Company Profile',
-    href: '/external-profile',
+    name: "External Company Profile",
+    href: "/external-profile",
     icon: OfficeBuildingIcon,
     current: false,
   },
-  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
-  { name: 'Logout', href: '/logout', icon: LogoutIcon, current: false },
+  { name: "Settings", href: "/settings", icon: CogIcon, current: false },
+  { name: "Logout", href: "/logout", icon: LogoutIcon, current: false },
 ];
 const teams = [
-  { name: 'Role 1', href: '#', bgColorClass: 'bg-indigo-500' },
-  { name: 'Role 2', href: '#', bgColorClass: 'bg-green-500' },
-  { name: 'Role 3', href: '#', bgColorClass: 'bg-red-500' },
+  { name: "Role 1", href: "#", bgColorClass: "bg-indigo-500" },
+  { name: "Role 2", href: "#", bgColorClass: "bg-green-500" },
+  { name: "Role 3", href: "#", bgColorClass: "bg-red-500" },
 ];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function SideBar({ children }) {
@@ -71,7 +71,7 @@ export default function SideBar({ children }) {
     });
   }, [userId]);
 
-  const fullName = user.firstName + ' ' + user.lastName;
+  const fullName = user.firstName + " " + user.lastName;
   return (
     <div className='relative h-screen flex overflow-hidden bg-white'>
       <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -137,18 +137,18 @@ export default function SideBar({ children }) {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? 'bg-gray-100 text-gray-900'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
-                          'group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md'
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50",
+                          "group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         <item.icon
                           className={classNames(
                             item.current
-                              ? 'text-gray-500'
-                              : 'text-gray-400 group-hover:text-gray-500',
-                            'mr-3 flex-shrink-0 h-6 w-6'
+                              ? "text-gray-500"
+                              : "text-gray-400 group-hover:text-gray-500",
+                            "mr-3 flex-shrink-0 h-6 w-6"
                           )}
                           aria-hidden='true'
                         />
@@ -177,7 +177,7 @@ export default function SideBar({ children }) {
                           <span
                             className={classNames(
                               team.bgColorClass,
-                              'w-2.5 h-2.5 mr-4 rounded-full'
+                              "w-2.5 h-2.5 mr-4 rounded-full"
                             )}
                             aria-hidden='true'
                           />
@@ -250,9 +250,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           View profile
@@ -265,9 +265,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           Settings
@@ -280,9 +280,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           Post Role
@@ -297,9 +297,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           FAQ
@@ -312,9 +312,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           Support
@@ -329,9 +329,9 @@ export default function SideBar({ children }) {
                           href='#'
                           className={classNames(
                             active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
+                              ? "bg-gray-100 text-gray-900"
+                              : "text-gray-700",
+                            "block px-4 py-2 text-sm"
                           )}
                         >
                           Logout
@@ -347,23 +347,23 @@ export default function SideBar({ children }) {
             <nav className='px-3 mt-6'>
               <div className='space-y-1'>
                 {navigation.map((item) => (
-                  <Link href={item.href} passHref>
+                  <Link href={item.href} key={item.name} passHref>
                     <a
                       key={item.name}
                       className={classNames(
                         item.href === pathname
-                          ? 'bg-[#F7B919] text-gray-900 font-semibold'
-                          : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
-                        'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                          ? "bg-[#F7B919] text-gray-900 font-semibold"
+                          : "text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold",
+                        "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
-                      aria-current={item.current ? 'page' : undefined}
+                      aria-current={item.current ? "page" : undefined}
                     >
                       <item.icon
                         className={classNames(
                           item.current
-                            ? 'text-gray-900'
-                            : 'text-white group-hover:text-gray-500',
-                          'mr-3 flex-shrink-0 h-6 w-6'
+                            ? "text-gray-900"
+                            : "text-white group-hover:text-gray-500",
+                          "mr-3 flex-shrink-0 h-6 w-6"
                         )}
                         aria-hidden='true'
                       />
@@ -439,9 +439,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             View profile
@@ -454,9 +454,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             Settings
@@ -469,9 +469,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             Notifications
@@ -486,9 +486,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             Get desktop app
@@ -501,9 +501,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             Support
@@ -518,9 +518,9 @@ export default function SideBar({ children }) {
                             href='#'
                             className={classNames(
                               active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             Logout
