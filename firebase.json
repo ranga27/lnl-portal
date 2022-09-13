@@ -5,13 +5,20 @@
   },
   "functions": {
     "source": ".",
-    "predeploy": ["npm install", "npm run build"],
+    "predeploy": [
+      "npm install",
+      "npm run build"
+    ],
     "runtime": "nodejs14"
   },
   "hosting": {
     "target": "lnl-portal",
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
