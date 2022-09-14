@@ -31,8 +31,10 @@ Change back into the main directory
 Set up the Emulator Suite. This command starts a configuration wizard. 
 ### `firebase init emulators`
 Select the following emulators to download the corresponding emulator binary files. 
+* auth
 * functions
 * firestore
+* hosting
 * storage
 
 Select default options so that it will preserve the current emulator configuration as per `firebase.json` file.</br></br>

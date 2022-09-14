@@ -1,7 +1,7 @@
-import SideBar from '../../components/layout/Sidebar';
-import AuthRoute from '../../components/context/authRoute';
-import Footer from '../../components/layout/Footer';
-import IntlMessages from '../../utils/IntlMessages';
+import SideBar from "../../components/layout/Sidebar";
+import AuthRoute from "../../components/context/authRoute";
+import Footer from "../../components/layout/Footer";
+import IntlMessages from "../../utils/IntlMessages";
 
 export default function ExternalProfile() {
   return (
@@ -15,8 +15,10 @@ export default function ExternalProfile() {
               </h1>
             </div>
           </div>
-                   <img src={'/assets/coming.svg'} className='w-4/5 h-4/5 mx-auto text-center' />
-
+          <img
+            src={"/assets/coming.svg"}
+            className='w-4/5 h-4/5 mx-auto text-center'
+          />
         </main>
         <Footer />
       </SideBar>
