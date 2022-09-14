@@ -1,36 +1,36 @@
-import { useState } from 'react';
-import Image from 'next/image';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { collection, serverTimestamp } from 'firebase/firestore';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
+import { useState } from "react";
+import Image from "next/image";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { collection, serverTimestamp } from "firebase/firestore";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore";
 import {
   useAuthCreateUserWithEmailAndPassword,
   useAuthSignOut,
-} from '@react-query-firebase/auth';
-import { useRouter } from 'next/router';
-import IntlMessages from '../utils/IntlMessages';
-import { signUpSchema } from '../components/schemas/registerSchema';
-import { auth, firestore } from '../../firebase/clientApp';
-import { TextInput } from '../components/UI/Form/Input';
-import { CheckBox } from '../components/UI/Form/CheckBox';
-import GoogleSignIn from '../components/layout/googleSignIn';
-import TwitterSignIn from '../components/layout/twitterSignIn';
-import FacebookSignIn from '../components/layout/facebookSignIn';
-import { v4 as uuidv4 } from 'uuid';
-import { Modal } from '../components/UI/Modal';
-import { TermsInfo } from '../components/layout/TermsInfo';
+} from "@react-query-firebase/auth";
+import { useRouter } from "next/router";
+import IntlMessages from "../utils/IntlMessages";
+import { signUpSchema } from "../components/schemas/registerSchema";
+import { auth, firestore } from "../../firebase/clientApp";
+import { TextInput } from "../components/UI/Form/Input";
+import { CheckBox } from "../components/UI/Form/CheckBox";
+import GoogleSignIn from "../components/layout/googleSignIn";
+import TwitterSignIn from "../components/layout/twitterSignIn";
+import FacebookSignIn from "../components/layout/facebookSignIn";
+import { v4 as uuidv4 } from "uuid";
+import { Modal } from "../components/UI/Modal";
+import { TermsInfo } from "../components/layout/TermsInfo";
 
 export default function Register() {
   const defaultValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     termsSelected: false,
   };
   const router = useRouter();
@@ -43,21 +43,21 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    mode: 'onBlur',
+    mode: "onBlur",
     defaultValues,
     resolver: yupResolver(signUpSchema),
   });
   const createUser = useAuthCreateUserWithEmailAndPassword(auth, {
     onError(error) {
       alert.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: getUserError(error.message),
       });
     },
   });
   const createTempUser = useFirestoreCollectionMutation(
-    collection(firestore, 'temporaryUsers')
+    collection(firestore, "temporaryUsers")
   );
   const handleUserSignUp = async (values) => {
     const { email, password, firstName, lastName, termsSelected } = values;
@@ -67,28 +67,28 @@ export default function Register() {
         {
           onSuccess(data) {
             const { uid } = data.user;
-            console.log(uid, 'created');
+            console.log(uid, "created");
             createTempUser.mutate({
               uid,
               email,
               firstName,
               lastName,
-              role: 'company',
+              role: "company",
               confirmationHash,
               createdAt: serverTimestamp(),
             });
             alert
               .fire({
-                title: 'Awesome!',
-                text: 'You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).',
-                icon: 'success',
-                confirmButtonColor: '#3085d6',
-                iconColor: '#3085d6',
+                title: "Awesome!",
+                text: "You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).",
+                icon: "success",
+                confirmButtonColor: "#3085d6",
+                iconColor: "#3085d6",
               })
               .then((result) => {
                 if (result.isConfirmed || result.isDismissed) {
                   signOut.mutate();
-                  router.push('/login');
+                  router.push("/login");
                 }
               });
           },
@@ -96,9 +96,9 @@ export default function Register() {
       );
     } else {
       alert.fire({
-        title: 'Agree with T&Cs',
-        text: 'Please agree with our terms and conditions before continuing',
-        icon: 'error',
+        title: "Agree with T&Cs",
+        text: "Please agree with our terms and conditions before continuing",
+        icon: "error",
         imageHeight: 80,
         imageWidth: 80,
       });
@@ -131,7 +131,7 @@ export default function Register() {
               <form onSubmit={handleSubmit(handleUserSignUp)}>
                 <div className='flex flex-row items-center justify-center lg:justify-start'>
                   <p className='text-3xl font-extrabold text-gray-900 mb-8 mr-4'>
-                    {' '}
+                    {" "}
                     <IntlMessages id='user.registerWith' />
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export default function Register() {
                 </div>
                 <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                   <p className='text-center font-semibold mx-4 mb-0'>
-                    {' '}
+                    {" "}
                     <IntlMessages id='user.or' />
                   </p>
                 </div>

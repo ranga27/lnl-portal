@@ -3,7 +3,7 @@
   "main": "firebaseFunctions.js",
   "scripts": {
     "dev": "next",
-    "emulator": "firebase emulators:start --import ./functions/firestore",
+    "emulators": "firebase emulators:start --import ./test-data",
     "cypress": "cypress open",
     "build": "next build src/",
     "start": "next start src/",
