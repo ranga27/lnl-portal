@@ -16,7 +16,12 @@ import { DatePicker } from '../../components/UI/Form/DatePicker';
 import IntlMessages from '../../utils/IntlMessages';
 import 'react-datepicker/dist/react-datepicker.css';
 
-function AddRoleForm({ handleChangeTab, handleSaveFields, fields }) {
+function AddRoleForm({
+  handleChangeTab,
+  handleSaveFields,
+  fields,
+  companyName,
+}) {
   const defaultValues = {
     title: fields.title || '',
     location: fields.location || '',
@@ -26,13 +31,12 @@ function AddRoleForm({ handleChangeTab, handleSaveFields, fields }) {
     salary: fields.salary || '',
     description: fields.description || '',
     howToApply: fields.howToApply || '',
-    email: fields.email || '',
+    meetingLink: fields.meetingLink || '',
     website: fields.website || '',
     rolling: fields.rolling || false,
     deadline: fields.deadline || null,
     startDate: fields.startDate || null,
     coverLetter: fields.coverLetter || false,
-    prescreening: fields.prescreening || false,
     rolesOfInterests: fields.rolesOfInterests || null,
     technicalSkills: fields.technicalSkills || null,
     technicalSkillsOther: fields.technicalSkillsOther || '',
@@ -53,6 +57,8 @@ function AddRoleForm({ handleChangeTab, handleSaveFields, fields }) {
   const howToApply = watch('howToApply');
   const rolling = watch('rolling');
   const technicalSkillsOther = watch('technicalSkills');
+  const roleTitle = watch('title');
+  const meetingLinkValue = watch('meetingLink');
 
   const onSubmit = async (data) => {
     handleSaveFields(data);
@@ -145,18 +151,46 @@ function AddRoleForm({ handleChangeTab, handleSaveFields, fields }) {
             </div>
             <div className='col-span-4 sm:col-span-4'>
               {howToApply === 'Email to Hiring Manager' && (
-                <TextInput
-                  name='email'
-                  label='Hiring Manager Email'
-                  control={control}
-                  errors={errors.email}
-                  data-cy='role-email-input'
-                />
+                <>
+                  <TextInput
+                    name='meetingLink'
+                    label='Meeting Link'
+                    control={control}
+                    errors={errors.meetingLink}
+                    data-cy='role-meetingLink-input'
+                  />
+
+                  <div className='pt-6'>
+                    <p>
+                      Hello [candidate name],
+                      <br /> <br />
+                      Congratulations! You've been invited on to the next stage
+                      for the position of{' '}
+                      <span className='font-bold'>
+                        {roleTitle ? roleTitle : '[role name]'}
+                      </span>{' '}
+                      at{' '}
+                      <span className='font-bold'>
+                        {companyName ? companyName : '[Company Name]'}.
+                      </span>{' '}
+                      Please book a meeting with a member of the team here -{' '}
+                      <span className='font-bold'>
+                        {meetingLinkValue
+                          ? meetingLinkValue
+                          : ' [meeting link]'}
+                      </span>{' '}
+                      <br /> <br />
+                      Best,
+                      <br />
+                      Loop Not Luck Team
+                    </p>
+                  </div>
+                </>
               )}
               {howToApply === 'Apply on website' && (
                 <TextInput
                   name='website'
-                  label='Website'
+                  label='Link to application on website'
                   control={control}
                   errors={errors.website}
                   data-cy='role-website-input'
@@ -231,16 +265,6 @@ function AddRoleForm({ handleChangeTab, handleSaveFields, fields }) {
                     errors={errors.technicalSkillsOther}
                   />
                 )}
-            </div>
-            <div className='col-span-4 sm:col-span-4'>
-              {' '}
-              <CheckBox
-                name='prescreening'
-                label='Requires prescreening'
-                control={control}
-                checked={defaultValues.prescreening}
-                data-cy='role-prescreening-checkbox'
-              />
             </div>
             <div className='col-span-4 sm:col-span-4'>
               {' '}

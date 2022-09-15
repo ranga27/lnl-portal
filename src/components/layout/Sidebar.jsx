@@ -18,6 +18,7 @@ import Avatar from 'react-avatar';
 import { AuthContext } from '../context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 import RolesList from './RolesList';
+import Image from 'next/image';
 
 const navigation = [
   {
@@ -46,7 +47,6 @@ const navigation = [
     current: false,
   },
   { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
-  { name: 'Logout', href: '/logout', icon: LogoutIcon, current: false },
 ];
 const teams = [
   { name: 'Role 1', href: '#', bgColorClass: 'bg-indigo-500' },
@@ -100,7 +100,7 @@ export default function SideBar({ children }) {
             leaveFrom='translate-x-0'
             leaveTo='-translate-x-full'
           >
-            <div className='relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-[#F7B919]'>
+            <div className='relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800'>
               <Transition.Child
                 as={Fragment}
                 enter='ease-in-out duration-300'
@@ -122,9 +122,11 @@ export default function SideBar({ children }) {
                 </div>
               </Transition.Child>
               <div className='flex-shrink-0 flex text-center mx-auto items-center px-4'>
-                <img
+                <Image
                   className='h-16 w-16'
-                  src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2FLoop%20Not%20Luck.png?alt=media&token=ace69d68-8e31-4333-9be1-34d4aac9e20e'
+                  src='/assets/black.png'
+                  width={50}
+                  height={50}
                   alt='LNL'
                 />
               </div>
@@ -132,61 +134,51 @@ export default function SideBar({ children }) {
                 <nav className='px-2'>
                   <div className='space-y-1'>
                     {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? 'bg-gray-100 text-gray-900'
-                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50',
-                          'group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        <item.icon
-                          className={classNames(
-                            item.current
-                              ? 'text-gray-500'
-                              : 'text-gray-400 group-hover:text-gray-500',
-                            'mr-3 flex-shrink-0 h-6 w-6'
-                          )}
-                          aria-hidden='true'
-                        />
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className='mt-8'>
-                    <h3
-                      className='px-3 text-xs font-semibold text-gray-500 tracking-wider'
-                      id='mobile-teams-headline'
-                    >
-                      Roles
-                    </h3>
-                    <div
-                      className='mt-1 space-y-1'
-                      role='group'
-                      aria-labelledby='mobile-teams-headline'
-                    >
-                      {teams.map((team) => (
+                      <Link href={item.href} key={item.name} passHref>
                         <a
-                          key={team.name}
-                          href={team.href}
-                          className='group flex items-center px-3 py-2 text-base leading-5 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50'
+                          className={classNames(
+                            item.href === pathname
+                              ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                              : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                            'group flex items-center px-2 py-2 text-base leading-5 font-medium rounded-md'
+                          )}
+                          aria-current={item.current ? 'page' : undefined}
                         >
-                          <span
+                          <item.icon
                             className={classNames(
-                              team.bgColorClass,
-                              'w-2.5 h-2.5 mr-4 rounded-full'
+                              item.href === pathname
+                                ? 'text-gray-900'
+                                : 'text-white group-hover:text-gray-900',
+                              'mr-3 flex-shrink-0 h-6 w-6'
                             )}
                             aria-hidden='true'
                           />
-                          <span className='truncate'>{team.name}</span>
+                          {item.name}
                         </a>
-                      ))}
-                    </div>
+                      </Link>
+                    ))}
                   </div>
+
+                  <RolesList userId={userId} />
                 </nav>
+              </div>
+              <div className='flex-shrink-0 flex border-t border-gray-400 pt-4 px-3'>
+                <Link href='/logout' passHref>
+                  <a
+                    className={classNames(
+                      'logout' === pathname
+                        ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                        : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                      'group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                    )}
+                  >
+                    <LogoutIcon
+                      className='mr-3 flex-shrink-0 h-6 w-6 group-hover:text-gray-900 text-white'
+                      aria-hidden='true'
+                    />
+                    Logout
+                  </a>
+                </Link>
               </div>
             </div>
           </Transition.Child>
@@ -199,12 +191,20 @@ export default function SideBar({ children }) {
       {/* Static sidebar for desktop */}
       <div className='hidden lg:flex lg:flex-shrink-0'>
         <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-gray-800'>
-          {/* Sidebar component, swap this element with another sidebar if you like */}
+          <div className='flex-shrink-0 flex text-center mx-auto items-center px-4 pt-4'>
+            <Image
+              className='h-16 w-16'
+              src='/assets/black.png'
+              width={50}
+              height={50}
+              alt='LNL'
+            />
+          </div>
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
             <Menu
               as='div'
-              className='px-3 mt-6 relative inline-block text-left'
+              className='px-3 mt-2 relative inline-block text-left'
             >
               <div>
                 <Menu.Button className='group w-full rounded-md px-3.5 py-2 text-sm text-left font-medium focus:outline-none focus:ring-2 focus:ring-[#F7B919]'>
@@ -246,96 +246,102 @@ export default function SideBar({ children }) {
                   <div className='py-1'>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          View profile
-                        </a>
+                        <Link href='/company-profile' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Company profile
+                          </a>
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          Settings
-                        </a>
+                        <Link href='/settings' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Settings
+                          </a>
+                        </Link>
                       )}
                     </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          Post Role
-                        </a>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className='py-1'>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          FAQ
-                        </a>
-                      )}
-                    </Menu.Item>
-                    <Menu.Item>
-                      {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          Support
-                        </a>
+                        <Link href='/roles' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Post Role
+                          </a>
+                        </Link>
                       )}
                     </Menu.Item>
                   </div>
                   <div className='py-1'>
                     <Menu.Item>
                       {({ active }) => (
-                        <a
-                          href='#'
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm'
-                          )}
-                        >
-                          Logout
-                        </a>
+                        <Link href='/faq' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            FAQ
+                          </a>
+                        </Link>
+                      )}
+                    </Menu.Item>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link href='/terms-and-conditions' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            T&Cs
+                          </a>
+                        </Link>
+                      )}
+                    </Menu.Item>
+                  </div>
+                  <div className='py-1'>
+                    <Menu.Item>
+                      {({ active }) => (
+                        <Link href='/logout' passHref>
+                          <a
+                            className={classNames(
+                              active
+                                ? 'bg-gray-100 text-gray-900'
+                                : 'text-gray-700',
+                              'block px-4 py-2 text-sm'
+                            )}
+                          >
+                            Logout
+                          </a>
+                        </Link>
                       )}
                     </Menu.Item>
                   </div>
@@ -347,7 +353,7 @@ export default function SideBar({ children }) {
             <nav className='px-3 mt-6'>
               <div className='space-y-1'>
                 {navigation.map((item) => (
-                  <Link href={item.href} passHref>
+                  <Link href={item.href} key={item.name} passHref>
                     <a
                       key={item.name}
                       className={classNames(
@@ -360,9 +366,9 @@ export default function SideBar({ children }) {
                     >
                       <item.icon
                         className={classNames(
-                          item.current
+                          item.href === pathname
                             ? 'text-gray-900'
-                            : 'text-white group-hover:text-gray-500',
+                            : 'text-white group-hover:text-gray-900',
                           'mr-3 flex-shrink-0 h-6 w-6'
                         )}
                         aria-hidden='true'
@@ -374,6 +380,24 @@ export default function SideBar({ children }) {
               </div>
               <RolesList userId={userId} />
             </nav>
+          </div>
+          <div className='flex-shrink-0 flex border-t border-gray-400 pt-4 px-3'>
+            <Link href='/logout' passHref>
+              <a
+                className={classNames(
+                  'logout' === pathname
+                    ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                    : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                  'group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                )}
+              >
+                <LogoutIcon
+                  className='mr-3 flex-shrink-0 h-6 w-6 group-hover:text-gray-900 text-white'
+                  aria-hidden='true'
+                />
+                Logout
+              </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -415,10 +439,11 @@ export default function SideBar({ children }) {
                 <div>
                   <Menu.Button className='max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                     <span className='sr-only'>Open user menu</span>
-                    <img
-                      className='h-8 w-8 rounded-full'
-                      src='https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-                      alt=''
+                    <Avatar
+                      name={fullName}
+                      size='45px'
+                      className='rounded-full flex-shrink-0'
+                      color='#26ADB4'
                     />
                   </Menu.Button>
                 </div>
@@ -435,96 +460,102 @@ export default function SideBar({ children }) {
                     <div className='py-1'>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            View profile
-                          </a>
+                          <Link href='/company-profile' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              Company profile
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            Settings
-                          </a>
+                          <Link href='/settings' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              Settings
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            Notifications
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </div>
-                    <div className='py-1'>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            Get desktop app
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            Support
-                          </a>
+                          <Link href='/roles' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              Post Role
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </div>
                     <div className='py-1'>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href='#'
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            Logout
-                          </a>
+                          <Link href='/faq' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              FAQ
+                            </a>
+                          </Link>
+                        )}
+                      </Menu.Item>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link href='/terms-and-conditions' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              T&Cs
+                            </a>
+                          </Link>
+                        )}
+                      </Menu.Item>
+                    </div>
+                    <div className='py-1'>
+                      <Menu.Item>
+                        {({ active }) => (
+                          <Link href='/logout' passHref>
+                            <a
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              Logout
+                            </a>
+                          </Link>
                         )}
                       </Menu.Item>
                     </div>

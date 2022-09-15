@@ -6,7 +6,7 @@ import IntlMessages from '../../utils/IntlMessages';
 export default function ExternalProfile() {
   return (
     <AuthRoute>
-      <SideBar externalProfile={true}>
+      <SideBar>
         <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
           <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
             <div className='flex-1 min-w-0'>
@@ -15,8 +15,10 @@ export default function ExternalProfile() {
               </h1>
             </div>
           </div>
-                   <img src={'/assets/coming.svg'} className='w-4/5 h-4/5 mx-auto text-center' />
-
+          <img
+            src={'/assets/coming.svg'}
+            className='w-4/5 h-4/5 mx-auto text-center'
+          />
         </main>
         <Footer />
       </SideBar>

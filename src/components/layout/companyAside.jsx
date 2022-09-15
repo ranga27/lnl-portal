@@ -18,7 +18,7 @@ const CompanyAside = ({ id, img, updatedAt }) => {
         <img
           src={img}
           alt='Company logo'
-          className='text-center mx-auto rounded-full w-36 h-36'
+          className='text-center mx-auto rounded-md w-36 h-36'
         />
 
         <div className='flex items-center space-x-2'>

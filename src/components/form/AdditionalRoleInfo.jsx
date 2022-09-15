@@ -44,7 +44,6 @@ export default function AdditionalRoleInformation({
   });
 
   const onSubmit = (data) => {
-    handleLastTabButton(true);
     handleSaveFields(data);
   };
 
@@ -55,7 +54,7 @@ export default function AdditionalRoleInformation({
           <div className='grid grid-cols-4 gap-x-6 gay-y-2'>
             <div className='col-span-4 sm:col-span-4'>
               <SelectField
-                label='Experience level'
+                label='Years of experience required'
                 name='experience'
                 control={control}
                 options={experience}

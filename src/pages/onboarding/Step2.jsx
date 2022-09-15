@@ -73,13 +73,13 @@ export default function Step2(props) {
           companyName: '',
           visa: '',
           companyLocation: '',
-          companyValues: [],
+          companyValues: null,
           description: '',
           logoUrl: '',
-          industry: [],
+          industry: null,
           hearAbout: '',
           ats: '',
-          diversity: [],
+          diversity: null,
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {

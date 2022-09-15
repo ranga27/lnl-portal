@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
 import { ShareIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
@@ -9,11 +10,14 @@ import AuthRoute from '../../components/context/authRoute';
 import SideBar from '../../components/layout/Sidebar';
 import { firestore } from '../../../firebase/clientApp';
 import Footer from '../../components/layout/Footer';
+import RoleInfo from '../../components/containers/RoleInfo';
+import RoleApplicants from '../../components/containers/RoleApplicants';
+import RoleOwner from '../../components/containers/RoleOwner';
 
 const tabs = [
-  { name: 'Role', href: '#', current: true },
-  { name: 'Applicants', href: '#', current: false },
-  { name: 'Hiring Managers', href: '#', current: false },
+  { tab: 'tab1', name: 'Role', href: '#', current: true },
+  { tab: 'tab2', name: 'Applicants', href: '#', current: false },
+  { tab: 'tab3', name: 'Hiring Manager', href: '#', current: false },
 ];
 
 function classNames(...classes) {
@@ -22,6 +26,7 @@ function classNames(...classes) {
 
 export default function ViewRole() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState('tab1');
   const { id } = router.query;
   const ref = doc(firestore, 'companyRolesV2', id);
   const data = useFirestoreDocument(['companyRolesV2', id], ref);
@@ -29,14 +34,25 @@ export default function ViewRole() {
     return <div>Loading...</div>;
   }
   const snapshot = data.data;
-  const role = snapshot.data();
+  const roleSnapshot = snapshot.data();
 
+  const role = { id, ...roleSnapshot };
   let startDate = role.startDate
     ? format(new Date(role.startDate.toDate()), 'dd-MMM-yyyy')
     : null;
   let deadline = role.deadline
     ? format(new Date(role.deadline.toDate()), 'dd-MMM-yyyy')
     : null;
+
+  const handleChangeTab = async (data) => {
+    if (data === 'tab1') {
+      setActiveTab('tab1');
+    } else if (data === 'tab2') {
+      setActiveTab('tab2');
+    } else {
+      setActiveTab('tab3');
+    }
+  };
 
   return (
     <AuthRoute>
@@ -57,7 +73,7 @@ export default function ViewRole() {
                       className='-ml-2 h-5 w-5 text-gray-400'
                       aria-hidden='true'
                     />
-                    <span>Directory</span>
+                    <span>Role</span>
                   </a>
                 </nav>
 
@@ -110,7 +126,7 @@ export default function ViewRole() {
                           </div>
                         </div>
                       </div>
-                      <div className='hidden sm:block 2xl:hidden mt-6 min-w-0 flex-1'>
+                      <div className='hidden sm:block 2xl:hidden mt-6 min-w-0 flex1'>
                         <h1 className='text-2xl font-bold text-gray-900 truncate'>
                           {role.title}
                         </h1>
@@ -134,11 +150,11 @@ export default function ViewRole() {
                           aria-label='Tabs'
                         >
                           {tabs.map((tab) => (
-                            <a
+                            <button
+                              onClick={() => handleChangeTab(tab.tab)}
                               key={tab.name}
-                              href={tab.href}
                               className={classNames(
-                                tab.current
+                                tab.tab === activeTab
                                   ? 'border-[#F7B919] text-gray-900'
                                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-[#F7B919]',
                                 'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
@@ -146,232 +162,19 @@ export default function ViewRole() {
                               aria-current={tab.current ? 'page' : undefined}
                             >
                               {tab.name}
-                            </a>
+                            </button>
                           ))}
                         </nav>
                       </div>
                     </div>
                   </div>
-
-                  {/* Description list */}
-                  <div className='mt-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
-                    <dl className='grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2'>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Location
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.location}
-                        </dd>
-                      </div>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Department
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.department}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Experience
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.experience}
-                        </dd>
-                      </div>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Qualification
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.qualification}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          How To Apply
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.howToApply}
-                        </dd>
-                      </div>
-                      {role.website && (
-                        <div className='sm:col-span-1'>
-                          <dt className='text-sm font-medium text-gray-500'>
-                            Website
-                          </dt>
-                          <dd className='mt-1 text-sm text-gray-900'>
-                            {role.website}
-                          </dd>
-                        </div>
-                      )}
-                      {role.email && (
-                        <div className='sm:col-span-1'>
-                          <dt className='text-sm font-medium text-gray-500'>
-                            Email
-                          </dt>
-                          <dd className='mt-1 text-sm text-gray-900'>
-                            {role.email}
-                          </dd>
-                        </div>
-                      )}
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Behaviour Attributes Strengths
-                        </dt>
-                        <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                          {role.behaviourAttributesStrengths
-                            ? role.behaviourAttributesStrengths.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))
-                            : null}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Technical Skills
-                        </dt>
-                        <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                          {role.technicalSkills
-                            ? role.technicalSkills.map((item) => (
-                                <li key={item}>{item}</li>
-                              ))
-                            : null}
-
-                          <p className='pt-2'>
-                            Other information about the skills:{' '}
-                            {role.technicalSkillsOther}
-                          </p>
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Requires cover letter
-                        </dt>
-                        {role.coverLetter === true ? (
-                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                            Yes
-                          </dd>
-                        ) : (
-                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                            No
-                          </dd>
-                        )}
-                      </div>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Requires prescreening
-                        </dt>
-                        {role.prescreening === true ? (
-                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                            Yes
-                          </dd>
-                        ) : (
-                          <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-                            No
-                          </dd>
-                        )}
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Role posted on
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {format(
-                            new Date(role.createdAt.toDate()),
-                            'dd-MMM-yyyy'
-                          )}
-                        </dd>
-                      </div>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Role last edited on
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {format(
-                            new Date(role.updatedAt.toDate()),
-                            'dd-MMM-yyyy'
-                          )}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Start Date
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {format(
-                            new Date(role.startDate.toDate()),
-                            'dd-MMM-yyyy'
-                          )}
-                        </dd>
-                      </div>
-                      {!role.rolling ? (
-                        <div className='sm:col-span-1'>
-                          <dt className='text-sm font-medium text-gray-500'>
-                            Deadline
-                          </dt>
-                          <dd className='mt-1 text-sm text-gray-900'>
-                            {format(
-                              new Date(role.updatedAt.toDate()),
-                              'dd-MMM-yyyy'
-                            )}
-                          </dd>
-                        </div>
-                      ) : (
-                        <div className='sm:col-span-1'>
-                          <dt className='text-sm font-medium text-gray-500'>
-                            Rolling
-                          </dt>
-                          <dd className='mt-1 text-sm text-gray-900'>
-                            {role.rolling}
-                          </dd>
-                        </div>
-                      )}
-
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Position Type
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.positionType}
-                        </dd>
-                      </div>
-                      <div className='sm:col-span-1'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Salary
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900'>
-                          {role.salary}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-2'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          Description
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900 space-y-5'>
-                          {role.description}
-                        </dd>
-                      </div>
-
-                      <div className='sm:col-span-2 mb-20'>
-                        <dt className='text-sm font-medium text-gray-500'>
-                          More Information about the role
-                        </dt>
-                        <dd className='mt-1 text-sm text-gray-900 space-y-5'>
-                          {role.moreRoleInfo}
-                        </dd>
-                      </div>
-                    </dl>
-                  </div>
+                  {activeTab === 'tab1' ? (
+                    <RoleInfo role={role} />
+                  ) : activeTab === 'tab2' ? (
+                    <RoleApplicants />
+                  ) : activeTab === 'tab3' ? (
+                    <RoleOwner />
+                  ) : null}
                 </article>
               </main>
             </div>

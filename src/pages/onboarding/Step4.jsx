@@ -29,7 +29,6 @@ export default function Step4({ fields }) {
       mobileNumber,
       location,
       jobRole,
-      lastName,
       ats,
       companyLocation,
       companyName,
@@ -54,7 +53,6 @@ export default function Step4({ fields }) {
         mobileNumber,
         location,
         jobRole,
-        lastName,
         updatedAt: serverTimestamp(),
       },
       {

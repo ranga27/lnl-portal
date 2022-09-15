@@ -23,10 +23,9 @@ export default function AddOwnerForm({
     defaultValues,
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     handleSaveFields(data);
     handleChangeTab('tab3');
-    handleLastTabButton(true)
   };
 
   return (
