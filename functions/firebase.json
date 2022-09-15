@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "source": ".",
+    "predeploy": ["npm run lint"],
+    "ignore": [
+      "**/node_modules/**",
+      "**/.eslintignore",
+      "**/.eslintrc.*",
+      ".firebaserc",
+      ".git",
+      ".gitignore",
+      "**/*.log",
+      "**/firebase.json",
+      "**/package-lock.*",
+      "**/README.*"
+    ]
+  }
+}

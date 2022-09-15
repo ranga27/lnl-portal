@@ -21,26 +21,27 @@ Log into Firebase using your Google account
 This command connects your local machine to Firebase and grants you access to your Firebase projects.
 
 Test that the CLI is properly installed and accessing your account by listing your Firebase projects. Run the following command
-### `firebase projects:list`
-
-Next, change into the functions subdirectory and install the dependecies required for cloud functions
-### `cd functions`
-### `npm i`
+```bash
+firebase projects:list
+```
+Next, change into the functions directory and install the dependecies required for cloud functions
+```bash
+cd functions
+npm i
+```
 Change back into the main directory
-### `cd ..`</br></br>
-Set up the Emulator Suite. This command starts a configuration wizard. 
-### `firebase init emulators`
-Select the following emulators to download the corresponding emulator binary files. 
-* auth
-* functions
-* firestore
-* hosting
-* storage
+```bash
+cd..
+```
 
-Select default options so that it will preserve the current emulator configuration as per `firebase.json` file.</br></br>
-First, run the development server:
-### `npm run dev`</br></br>
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To run the app locally for testing:
+```bash
+npm run serve
+# or
+yarn serve
+```
+
+Open the hosting emulator URL with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
@@ -53,4 +54,17 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 Creating a new user 
 
 Navigate to register page 
-## Deploy on Firebase
+## Deploy the app to the cloud with Firebase
+```bash
+npm run deploy
+# or
+yarn deploy
+```
+This depolys the next build to cloud functions
+For other cloud functions
+```bash
+cd functions
+npm run deploy
+# or
+yarn deploy
+```

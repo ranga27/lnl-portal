@@ -3,14 +3,13 @@
   "main": "firebaseFunctions.js",
   "scripts": {
     "dev": "next",
-    "emulators": "firebase emulators:start --import ./test-data",
     "cypress": "cypress open",
     "build": "next build src/",
     "start": "next start src/",
     "lint": "next lint",
-    "serve": "npm run build && firebase emulators:start --only functions,hosting",
+    "serve": "npm run build && firebase emulators:start --import ./test-data",
     "shell": "npm run build && firebase functions:shell",
-    "deploy": "firebase deploy --only functions,hosting",
+    "deploy": "firebase deploy --only hosting,functions:nextjsFunc",
     "logs": "firebase functions:log",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
