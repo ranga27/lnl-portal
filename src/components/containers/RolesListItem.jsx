@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import {
   ChevronRightIcon,
@@ -13,7 +13,9 @@ import { useFirestoreDocumentMutation } from '@react-query-firebase/firestore';
 import { serverTimestamp, doc } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import { getFirstChar } from '../../utils/commands';
+import { AuthContext } from '../../components/context/AuthContext';
 import DeleteRole from './DeleteRole';
+import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -23,9 +25,12 @@ export default function RolesList({ roles }) {
   const [pinned, setPinned] = useState('3a43ocoGT2');
   const [deleteStatus, setDeleteStatus] = useState(false);
   const [deleteId, setDeleteId] = useState();
-
   const [pinnedValue, setPinnedValue] = useState(false);
+  const [user, setUser] = useState([]);
   const rolesPinned = roles.filter((role) => role.pinned);
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
 
   const roleRef = doc(firestore, 'companyRolesV2', pinned);
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
@@ -37,6 +42,12 @@ export default function RolesList({ roles }) {
     setPinnedValue(role.pinned);
     handleSave(role);
   };
+
+  useEffect(() => {
+    fetchUserProfileDataFromFirestore(userId).then((results) => {
+      setUser(results);
+    });
+  }, []);
 
   useEffect(() => {
     if (pinned === '3a43ocoGT2') {
@@ -279,35 +290,37 @@ export default function RolesList({ roles }) {
                       >
                         <Menu.Items className='mx-3 origin-top-right absolute right-7 top-0 w-48 mt-1 rounded-md shadow-lg z-10 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none'>
                           <div className='py-1'>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  href={{
-                                    pathname: '/roles/add',
-                                    query: {
-                                      ...role,
-                                      startDate: role.startDate || null,
-                                      deadline: role.deadline || null,
-                                    },
-                                  }}
-                                >
-                                  <a
-                                    className={classNames(
-                                      active
-                                        ? 'bg-gray-100 text-gray-900 '
-                                        : 'text-gray-700 hover:bg-gray-100',
-                                      'group flex items-center px-4 py-2 text-sm'
-                                    )}
+                            {user.role === 'super' && (
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <Link
+                                    href={{
+                                      pathname: '/roles/add',
+                                      query: {
+                                        ...role,
+                                        startDate: role.startDate || null,
+                                        deadline: role.deadline || null,
+                                      },
+                                    }}
                                   >
-                                    <PencilAltIcon
-                                      className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                                      aria-hidden='true'
-                                    />
-                                    Edit
-                                  </a>
-                                </Link>
-                              )}
-                            </Menu.Item>
+                                    <a
+                                      className={classNames(
+                                        active
+                                          ? 'bg-gray-100 text-gray-900 '
+                                          : 'text-gray-700 hover:bg-gray-100',
+                                        'group flex items-center px-4 py-2 text-sm'
+                                      )}
+                                    >
+                                      <PencilAltIcon
+                                        className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                        aria-hidden='true'
+                                      />
+                                      Edit
+                                    </a>
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            )}
                             <Menu.Item>
                               {({ active }) => (
                                 <button

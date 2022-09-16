@@ -139,7 +139,6 @@ export default function AddRole() {
       !description ||
       !howToApply ||
       !startDate ||
-      !coverLetter ||
       !rolesOfInterests ||
       !technicalSkills ||
       !moreRoleInfo ||

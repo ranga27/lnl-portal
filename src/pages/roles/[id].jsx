@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ChevronLeftIcon, PencilIcon } from '@heroicons/react/solid';
 import { ShareIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
@@ -13,6 +13,8 @@ import Footer from '../../components/layout/Footer';
 import RoleInfo from '../../components/containers/RoleInfo';
 import RoleApplicants from '../../components/containers/RoleApplicants';
 import RoleOwner from '../../components/containers/RoleOwner';
+import { AuthContext } from '../../components/context/AuthContext';
+import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 
 const tabs = [
   { tab: 'tab1', name: 'Role', href: '#', current: true },
@@ -25,14 +27,24 @@ function classNames(...classes) {
 }
 
 export default function ViewRole() {
+  useEffect(() => {
+    fetchUserProfileDataFromFirestore(userId).then((results) => {
+      setUser(results);
+    });
+  }, [userId, user]);
   const router = useRouter();
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('tab1');
+  const [user, setUser] = useState([]);
   const { id } = router.query;
   const ref = doc(firestore, 'companyRolesV2', id);
   const data = useFirestoreDocument(['companyRolesV2', id], ref);
   if (data.isLoading) {
     return <div>Loading...</div>;
   }
+
   const snapshot = data.data;
   const roleSnapshot = snapshot.data();
 
@@ -95,24 +107,26 @@ export default function ViewRole() {
                             </h1>
                           </div>
                           <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                            <Link
-                              href={{
-                                pathname: '/roles/add',
-                                query: {
-                                  ...role,
-                                  startDate: startDate,
-                                  deadline: deadline,
-                                },
-                              }}
-                            >
-                              <a className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
-                                <PencilIcon
-                                  className='-ml-1 mr-2 h-5 w-5 text-gray-400'
-                                  aria-hidden='true'
-                                />
-                                <span>Edit</span>
-                              </a>
-                            </Link>
+                            {user.role === 'super' && (
+                              <Link
+                                href={{
+                                  pathname: '/roles/add',
+                                  query: {
+                                    ...role,
+                                    startDate: startDate,
+                                    deadline: deadline,
+                                  },
+                                }}
+                              >
+                                <a className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
+                                  <PencilIcon
+                                    className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                                    aria-hidden='true'
+                                  />
+                                  <span>Edit</span>
+                                </a>
+                              </Link>
+                            )}
                             <button
                               type='button'
                               className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'

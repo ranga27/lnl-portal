@@ -39,6 +39,7 @@ module.exports = {
 
   /* 03.Roles */
   'roles.create': 'Add Role',
+  'roles.new': 'New Role',
   'roles.title': 'Roles',
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',

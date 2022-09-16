@@ -8,6 +8,7 @@
     "start": "next start src/",
     "lint": "next lint",
     "serve": "npm run build && firebase emulators:start --import ./test-data",
+    "emulator": "firebase emulators:start --import ./test-data",
     "shell": "npm run build && firebase functions:shell",
     "deploy": "firebase deploy --only hosting,functions",
     "logs": "firebase functions:log",
