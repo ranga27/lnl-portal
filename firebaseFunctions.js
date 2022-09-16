@@ -1,7 +1,8 @@
 const { join } = require("path");
-const { https } = require("firebase-functions");
+const { onRequest } = require("firebase-functions/v2/https");
 const { default: next } = require("next");
-// The goal is to host the Next.js app on Firebase Cloud Functions with Firebase Hosting rewrite rules so our app is served from our Firebase Hosting URL. Each individual page bundle is served in a new call to this Cloud Function which performs the initial server render.
+/* The goal is to host the Next.js app on Firebase Cloud Functions with Firebase Hosting rewrite rules so our app is served from our Firebase Hosting URL. 
+Each individual page bundle is served in a new call to this Cloud Function which performs the initial server render. */
 const nextjsDistDir = join("src", require("./src/next.config").distDir);
 
 const nextjsServer = next({
@@ -12,6 +13,7 @@ const nextjsServer = next({
 });
 const nextjsHandle = nextjsServer.getRequestHandler();
 
-exports.nextjsFunc = https.onRequest((req, res) => {
-  return nextjsServer.prepare().then(() => nextjsHandle(req, res));
+exports.nextjsfunc = onRequest(async (req, res) => {
+  await nextjsServer.prepare();
+  return await nextjsHandle(req, res);
 });

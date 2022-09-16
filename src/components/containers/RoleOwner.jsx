@@ -1,10 +1,12 @@
+import Image from "next/image";
+
 const people = [
   {
-    name: 'Lindsay Walton',
-    role: 'Human Resource Manager',
+    name: "Lindsay Walton",
+    role: "Human Resource Manager",
     imageUrl:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80',
-    linkedinUrl: 'www.linkedIn.com/lindsay-walton',
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
+    linkedinUrl: "www.linkedIn.com/lindsay-walton",
   },
 ];
 
@@ -14,9 +16,9 @@ export default function RoleOwner() {
       <div className='mx-auto py-2 px-4 max-w-7xl sm:px-6 lg:px-8 lg:py-2'>
         <div className='space-y-12'>
           {people.map((person) => (
-            <div className='space-y-4'>
+            <div key={person.name} className='space-y-4'>
               <div className='aspect-w-3 aspect-h-2 text-center mx-auto'>
-                <img
+                <Image
                   className='h-64 w-64 text-center mx-auto object-cover shadow-lg rounded-full'
                   src={person.imageUrl}
                   alt={person.name}

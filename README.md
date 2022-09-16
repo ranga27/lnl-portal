@@ -14,7 +14,7 @@ To clone within VSCode, follow these [steps](https://docs.microsoft.com/en-us/az
 ## Install
 In the cloned local project directory, install dependecies required for the project
 ```bash
-npm i --legacy-peer-deps
+yarn install
 ```
 Install the Firebase CLI globally
 ```bash
@@ -34,7 +34,7 @@ firebase projects:list
 Next, change into the functions directory and install the dependecies required for cloud functions
 ```bash
 cd functions
-npm i
+yarn install
 ```
 Change back into the main directory
 ```bash

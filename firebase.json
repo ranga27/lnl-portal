@@ -35,7 +35,8 @@
         "**/postcss.*",
         "**/README.*",
         "**/storage.*",
-        "**/tailwind.*"
+        "**/tailwind.*",
+        "**/yarn.*"
       ]
     },
     {
@@ -52,7 +53,8 @@
         "**/*.log",
         "**/firebase.json",
         "**/package-lock.*",
-        "**/README.*"
+        "**/README.*",
+        "**/yarn.*"
       ]
     }
   ],
@@ -63,7 +65,7 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "nextjsFunc"
+        "function": "nextjsfunc"
       }
     ]
   },
