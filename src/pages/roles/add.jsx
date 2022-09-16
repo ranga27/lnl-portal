@@ -33,7 +33,6 @@ export default function AddRole() {
   const { startDate, deadline, ...role } = router.query;
 
   const [activeTab, setActiveTab] = useState('tab1');
-  const [onClickSubmitButton, setClickSubmitButton] = useState(false);
   const [fields, setFields] = useState({
     title: role.title || '',
     location: role.location || '',
@@ -43,7 +42,7 @@ export default function AddRole() {
     salary: role.salary || '',
     description: role.description || '',
     howToApply: role.howToApply || '',
-    email: role.email || '',
+    meetingLink: role.meetingLink || '',
     website: role.website || '',
     rolling: role.rolling || false,
     deadline:
@@ -52,7 +51,6 @@ export default function AddRole() {
         : new Date(deadline),
     startDate: deadline !== undefined ? new Date(startDate) : null,
     coverLetter: role.coverLetter || false,
-    prescreening: role.prescreening || false,
     rolesOfInterests: role.rolesOfInterests || null,
     technicalSkills: role.technicalSkills || null,
     managerId: role.managerId || '',
@@ -64,12 +62,10 @@ export default function AddRole() {
       : null,
   });
 
-  // if (role && role.id) {
   const roleRef = doc(firestore, 'companyRolesV2', role.id || '1');
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
     merge: true,
   });
-  // }
 
   const {
     userData: { userId },
@@ -86,6 +82,7 @@ export default function AddRole() {
       select(snapshot) {
         const companiesData = snapshot.docs.map((document) => ({
           id: document.id,
+          companyName: document.data().companyName,
         }));
         return companiesData;
       },
@@ -106,9 +103,13 @@ export default function AddRole() {
     }
   };
 
+  const updateForm = (values) => {
+    const newFields = { ...fields, ...values };
+    setFields(newFields);
+  };
+
   const onSubmit = (data) => {
     const newFields = { ...fields, ...data };
-    setFields(newFields);
     const {
       title,
       location,
@@ -121,96 +122,95 @@ export default function AddRole() {
       howToApply,
       startDate,
       coverLetter,
-      prescreening,
       rolesOfInterests,
       technicalSkills,
       moreRoleInfo,
       behaviourAttributesStrengths,
       experience,
     } = newFields;
-    if (onClickSubmitButton) {
-      if (
-        !title ||
-        !location ||
-        !department ||
-        !qualification ||
-        !positionType ||
-        !salary ||
-        !description ||
-        !howToApply ||
-        !startDate ||
-        !coverLetter ||
-        !prescreening ||
-        !rolesOfInterests ||
-        !technicalSkills ||
-        !moreRoleInfo ||
-        !behaviourAttributesStrengths ||
-        !experience ||
-        !managerId
-      ) {
-        return Swal.fire({
-          icon: 'error',
-          title: 'Empty Fields',
-          text: 'Please fill all fields before submitting',
+
+    if (
+      !title ||
+      !location ||
+      !department ||
+      !qualification ||
+      !positionType ||
+      !salary ||
+      !description ||
+      !howToApply ||
+      !startDate ||
+      !coverLetter ||
+      !rolesOfInterests ||
+      !technicalSkills ||
+      !moreRoleInfo ||
+      !behaviourAttributesStrengths ||
+      !experience ||
+      !managerId
+    ) {
+      return Swal.fire({
+        icon: 'error',
+        title: 'Empty Fields',
+        text: 'Please fill all fields before submitting',
+      });
+    } else {
+      const date = {
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+
+      const newData = {
+        ...fields,
+        ...date,
+        ...data,
+        companyId: company[0].id,
+        pinned: false,
+      };
+      if (role && role.id) {
+        rolesMutation.mutate(newData, {
+          onSuccess() {
+            Swal.fire({
+              title: 'Success!',
+              text: 'Role Updated.',
+              icon: 'success',
+              iconColor: '#3085d6',
+              showConfirmButton: false,
+            });
+            window.setTimeout(() => {
+              router.push('/roles');
+            }, 2000);
+          },
+          onError() {
+            Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+          },
+          onMutate() {
+            console.info('Adding role...');
+          },
         });
       } else {
-        const date = {
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-        };
-
-        const newData = {
-          ...fields,
-          ...date,
-          companyId: company[0].id,
-          pinned: false,
-        };
-        if (role && role.id) {
-          rolesMutation.mutate(newData, {
-            onSuccess() {
-              Swal.fire({
-                title: 'Success!',
-                text: 'Role Updated.',
-                icon: 'success',
-                iconColor: '#3085d6',
-                showConfirmButton: false,
-              });
-              window.setTimeout(() => {
-                router.push('/roles');
-              }, 2000);
-            },
-            onError() {
-              Swal.fire('Oops!', 'Failed to Add Role.', 'error');
-            },
-            onMutate() {
-              console.info('Adding role...');
-            },
-          });
-        } else {
-          mutation.mutate(newData, {
-            onSuccess() {
-              Swal.fire({
-                title: 'Success!',
-                text: 'New Role Added.',
-                icon: 'success',
-                iconColor: '#3085d6',
-                showConfirmButton: false,
-              });
-              window.setTimeout(() => {
-                router.push('/roles');
-              }, 2000);
-            },
-            onError() {
-              Swal.fire('Oops!', 'Failed to Add Role.', 'error');
-            },
-            onMutate() {
-              console.info('Adding role...');
-            },
-          });
-        }
+        mutation.mutate(newData, {
+          onSuccess() {
+            Swal.fire({
+              title: 'Success!',
+              text: 'New Role Added.',
+              icon: 'success',
+              iconColor: '#3085d6',
+              showConfirmButton: false,
+            });
+            window.setTimeout(() => {
+              router.push('/roles');
+            }, 2000);
+          },
+          onError() {
+            Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+          },
+          onMutate() {
+            console.info('Adding role...');
+          },
+        });
       }
     }
   };
+
   return (
     <AuthRoute>
       <SideBar>
@@ -238,25 +238,20 @@ export default function AddRole() {
                       {activeTab === 'tab1' ? (
                         <AddRoleForm
                           handleChangeTab={handleChangeTab}
-                          handleSaveFields={(data) => onSubmit(data)}
+                          handleSaveFields={updateForm}
                           fields={fields}
+                          companyName={company[0].companyName}
                         />
                       ) : activeTab === 'tab2' ? (
                         <AddOwnerForm
                           handleChangeTab={handleChangeTab}
-                          handleSaveFields={(data) => onSubmit(data)}
+                          handleSaveFields={updateForm}
                           fields={fields}
-                          handleLastTabButton={(data) =>
-                            setClickSubmitButton(data)
-                          }
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
-                          handleLastTabButton={(data) =>
-                            setClickSubmitButton(data)
-                          }
                         />
                       ) : null}
                     </div>

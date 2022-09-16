@@ -4,7 +4,7 @@ import IntlMessages from '../../utils/IntlMessages';
 
 export default function EmptyComponent() {
   return (
-    <div className='mt-56 text-center'>
+    <div className='mt-48 text-center'>
       <svg
         className='mx-auto h-12 w-12 text-gray-400'
         fill='none'
