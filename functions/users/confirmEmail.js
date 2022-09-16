@@ -11,7 +11,10 @@ exports.confirmEmail = functions.https.onRequest(async (req, res) => {
     .where('confirmationHash', '==', confirmationHash)
     .get();
   if (querySnapshot.size === 0) {
-    return res.redirect('https://loop-luck.web.app/email-confirmation/failure');
+    // TODO: change URL to reflect the portal URLs. Ideally this shouldn't be hardcoded
+    return res.redirect(
+      'https://lnl-portal.web.app/email-confirmation/failure'
+    );
   }
   const temporaryUserDoc = querySnapshot.docs[0];
   const { uid, email, firstName, lastName, role } = temporaryUserDoc.data();
@@ -26,5 +29,5 @@ exports.confirmEmail = functions.https.onRequest(async (req, res) => {
     hasCompletedProfile: false,
   });
   await store.collection('temporaryUsers').doc(temporaryUserDoc.id).delete();
-  return res.redirect('https://loop-luck.web.app/email-confirmation/success');
+  return res.redirect('https://lnl-portal.web.app/email-confirmation/success');
 });
