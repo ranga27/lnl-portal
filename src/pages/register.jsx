@@ -57,7 +57,7 @@ export default function Register() {
     },
   });
   const createTempUser = useFirestoreCollectionMutation(
-    collection(firestore, "temporaryUsers")
+    collection(firestore, "temporaryCompanyUsers")
   );
   const handleUserSignUp = async (values) => {
     const { email, password, firstName, lastName, termsSelected } = values;

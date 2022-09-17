@@ -1,17 +1,11 @@
-const functions = require("firebase-functions");
-const admin = require("firebase-admin");
+// Firestore Triggers are not yet available in V2
+const functions = require("firebase-functions/v1");
 const { sendEmail } = require("./sendEmail");
 
-exports.sendVerificationEmail = functions.firestore
-  .document("temporaryUsers/{uid}")
-  .onCreate(async (snapshot, context) => {
-    const uid = context.params.uid;
-    const querySnapshot = await admin
-      .firestore()
-      .collection("temporaryUsers")
-      .doc(uid)
-      .get();
-    console.log("Testing for user: ", querySnapshot.data());
+exports.sendVerificationEmail = functions
+  .region("europe-west2")
+  .firestore.document("temporaryCompanyUsers/{uid}")
+  .onCreate(async (snapshot) => {
     const tempUserInfo = snapshot.data();
     const { email, confirmationHash, firstName, lastName } = tempUserInfo;
 
@@ -22,6 +16,6 @@ exports.sendVerificationEmail = functions.firestore
       firstName,
       lastName,
       // TODO: change URL to reflect the portal URLs. Ideally this shouldn't be hardcoded
-      message: `https://us-central1-loop-luck.cloudfunctions.net/confirmEmail?conf=${confirmationHash}`,
+      message: `${process.env.CONFIRMURL}/confirmEmail?conf=${confirmationHash}`,
     });
   });

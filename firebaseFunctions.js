@@ -13,7 +13,13 @@ const nextjsServer = next({
 });
 const nextjsHandle = nextjsServer.getRequestHandler();
 
-exports.nextjsfunc = onRequest(async (req, res) => {
-  await nextjsServer.prepare();
-  return await nextjsHandle(req, res);
-});
+// V2 functions in EU are only available in europe-west1
+exports.nextjsfunc = onRequest(
+  {
+    region: "europe-west2",
+  },
+  async (req, res) => {
+    await nextjsServer.prepare();
+    return await nextjsHandle(req, res);
+  }
+);
