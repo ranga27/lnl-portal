@@ -13,7 +13,6 @@ const nextjsServer = next({
 });
 const nextjsHandle = nextjsServer.getRequestHandler();
 
-// V2 functions in EU are only available in europe-west1
 exports.nextjsfunc = onRequest(
   {
     region: "europe-west2",

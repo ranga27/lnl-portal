@@ -65,7 +65,8 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "nextjsfunc"
+        "function": "nextjsfunc",
+        "region": "europe-west2"
       }
     ]
   },
