@@ -41,13 +41,18 @@ Change back into the main directory
 cd..
 ```
 
+Add following environment variables:
+
+GOOGLE_APPLICATION_CREDENTIALS=<credential.json>
+
 To run the app locally for testing:
 ```bash
-npm run serve
+npm run dev
 # or
-yarn serve
+yarn dev
 ```
-Open the hosting emulator URL with your browser to see the result.
+It runs 2 services: next.js client/server at http://localhost:3000 and firebase emulator at http://localhost:4000
+Access both in separate browser tabs to test the flow
 
 ## Deploy the app to the cloud with Firebase
 ```bash
