@@ -15,10 +15,7 @@ import { firestore } from '../../../firebase/clientApp';
 import { getFirstChar } from '../../utils/commands';
 import { AuthContext } from '../../components/context/AuthContext';
 import DeleteRole from './DeleteRole';
-import {
-  fetchUserProfileDataFromFirestore,
-  sendOnboardingEmail,
-} from '../../../firebase/firestoreService';
+import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -70,8 +67,6 @@ export default function RolesList({ roles }) {
           },
         }
       );
-      // await axios.post('/api/onboarding/', { email: userEmail });
-      await  sendOnboardingEmail({ email: userEmail });
     } else {
       return null;
     }

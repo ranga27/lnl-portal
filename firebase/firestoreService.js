@@ -57,31 +57,23 @@ export async function sendOnboardingEmail(data) {
   try {
     const sendOnboardingEmailFunction = httpsCallable(
       functions,
-      'sendonboardingemail'
+      'users-sendonboardingemail'
     );
-    console.log(data);
-    console.log(sendOnboardingEmailFunction);
 
     sendOnboardingEmailFunction({
-      email: data.email,
+      data: {
+        email: data.email,
+      },
     })
       .then((doc) => {
         console.log(doc);
       })
       .catch((error) => {
         console.log(error);
-        if(error) {
-          // handle error
-          throw new functions.https.HttpsError('calc-error', 'some error message');
-      }
       });
 
-    // return sendOnboardingEmailFunction(data);
+    return sendOnboardingEmailFunction(data);
   } catch (e) {
     console.error(e);
   }
-
-  // console.log(data);
-
-  // console.log(sendOnboardingEmailFunction);
 }
