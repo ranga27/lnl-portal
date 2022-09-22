@@ -10,7 +10,8 @@ import {
   query,
   getDocs,
 } from 'firebase/firestore';
-import { firestore } from './clientApp';
+import { httpsCallable } from 'firebase/functions';
+import { firestore, functions } from './clientApp';
 
 export async function fetchUserProfileDataFromFirestore(uid) {
   const userDocRef = doc(firestore, 'companyUsers', uid);
@@ -50,4 +51,37 @@ export async function getRoles(uid) {
     id: docu.id,
   }));
   return roles;
+}
+
+export async function sendOnboardingEmail(data) {
+  try {
+    const sendOnboardingEmailFunction = httpsCallable(
+      functions,
+      'sendonboardingemail'
+    );
+    console.log(data);
+    console.log(sendOnboardingEmailFunction);
+
+    sendOnboardingEmailFunction({
+      email: data.email,
+    })
+      .then((doc) => {
+        console.log(doc);
+      })
+      .catch((error) => {
+        console.log(error);
+        if(error) {
+          // handle error
+          throw new functions.https.HttpsError('calc-error', 'some error message');
+      }
+      });
+
+    // return sendOnboardingEmailFunction(data);
+  } catch (e) {
+    console.error(e);
+  }
+
+  // console.log(data);
+
+  // console.log(sendOnboardingEmailFunction);
 }

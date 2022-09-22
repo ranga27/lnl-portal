@@ -15,7 +15,10 @@ import { firestore } from '../../../firebase/clientApp';
 import { getFirstChar } from '../../utils/commands';
 import { AuthContext } from '../../components/context/AuthContext';
 import DeleteRole from './DeleteRole';
-import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
+import {
+  fetchUserProfileDataFromFirestore,
+  sendOnboardingEmail,
+} from '../../../firebase/firestoreService';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -29,7 +32,7 @@ export default function RolesList({ roles }) {
   const [user, setUser] = useState([]);
   const rolesPinned = roles.filter((role) => role.pinned);
   const {
-    userData: { userId },
+    userData: { userId, userEmail },
   } = useContext(AuthContext);
 
   const roleRef = doc(firestore, 'companyRolesV2', pinned);
@@ -57,7 +60,7 @@ export default function RolesList({ roles }) {
     }
   }, [pinned, pinnedValue]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (pinned != '3a43ocoGT2') {
       rolesMutation.mutate(
         { pinned: !pinnedValue, updatedAt: serverTimestamp() },
@@ -67,6 +70,8 @@ export default function RolesList({ roles }) {
           },
         }
       );
+      // await axios.post('/api/onboarding/', { email: userEmail });
+      await  sendOnboardingEmail({ email: userEmail });
     } else {
       return null;
     }

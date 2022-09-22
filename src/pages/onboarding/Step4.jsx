@@ -10,10 +10,11 @@ import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
 import { uploadFile } from '../../utils/uploadFile';
 import Button from '../../components/UI/Form/Button';
+import { sendOnboardingEmail } from '../../../firebase/firestoreService';
 
 export default function Step4({ fields }) {
   const router = useRouter();
-  const { userData } = useContext(AuthContext);
+  const { userData, userEmail } = useContext(AuthContext);
 
   const createCompany = useFirestoreCollectionMutation(
     collection(firestore, 'companyV2')
@@ -79,6 +80,8 @@ export default function Step4({ fields }) {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
+
+    await sendOnboardingEmail(userEmail);
     router.push('/dashboard');
   };
 
