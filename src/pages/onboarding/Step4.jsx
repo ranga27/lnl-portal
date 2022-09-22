@@ -10,16 +10,19 @@ import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
 import { uploadFile } from '../../utils/uploadFile';
 import Button from '../../components/UI/Form/Button';
+import { sendOnboardingEmail } from '../../../firebase/firestoreService';
 
 export default function Step4({ fields }) {
   const router = useRouter();
-  const { userData } = useContext(AuthContext);
+  const {
+    userData: { userId, userEmail },
+  } = useContext(AuthContext);
 
   const createCompany = useFirestoreCollectionMutation(
     collection(firestore, 'companyV2')
   );
 
-  const userRef = doc(firestore, 'companyUsers', userData.userId);
+  const userRef = doc(firestore, 'companyUsers', userId);
   const userMutation = useFirestoreDocumentMutation(userRef, {
     merge: true,
   });
@@ -75,10 +78,11 @@ export default function Step4({ fields }) {
       companyLocation,
       visa,
       isOnboarded: true,
-      userId: userData.userId,
+      userId: userId,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
+    await sendOnboardingEmail({ email: userEmail });
     router.push('/dashboard');
   };
 

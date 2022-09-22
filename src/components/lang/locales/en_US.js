@@ -4,8 +4,10 @@ Table of Contents
 
 01.General
 02.User Login, Logout, Register
-03.Menu
-04.Error Page
+03.Roles
+04.Onboarding
+05.Dashboard
+
 */
 
 module.exports = {

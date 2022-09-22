@@ -138,7 +138,7 @@ export default function Login() {
                   </button>
                   <p className='text-sm font-normal mt-2 pt-1 mb-0'>
                     <IntlMessages id='user.redirectSignUp' />
-                    <Link href='/register'>
+                    <Link href='/register' passHref>
                       <a className='text-black underline hover:text-[#F7B919] focus:text-[#F7B919] transition duration-200 ease-in-out'>
                         <IntlMessages id='user.registerSmall' />
                       </a>

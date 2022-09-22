@@ -10,7 +10,7 @@ const firebase = initializeApp(firebaseConfig);
 
 const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);
-const functions = getFunctions(getApp());
+const functions = getFunctions(getApp(), 'europe-west2');
 const storage = getStorage();
 if (process.env.NODE_ENV !== "production") {
   connectAuthEmulator(auth, "http://localhost:9099");
@@ -20,4 +20,4 @@ if (process.env.NODE_ENV !== "production") {
   connectFirestoreEmulator(firestore, "localhost", 8080);
 }
 
-export { auth, firestore };
+export { auth, firestore, functions };
