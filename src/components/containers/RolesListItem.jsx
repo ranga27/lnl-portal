@@ -29,7 +29,7 @@ export default function RolesList({ roles }) {
   const [user, setUser] = useState([]);
   const rolesPinned = roles.filter((role) => role.pinned);
   const {
-    userData: { userId, userEmail },
+    userData: { userId },
   } = useContext(AuthContext);
 
   const roleRef = doc(firestore, 'companyRolesV2', pinned);
@@ -57,7 +57,7 @@ export default function RolesList({ roles }) {
     }
   }, [pinned, pinnedValue]);
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (pinned != '3a43ocoGT2') {
       rolesMutation.mutate(
         { pinned: !pinnedValue, updatedAt: serverTimestamp() },
