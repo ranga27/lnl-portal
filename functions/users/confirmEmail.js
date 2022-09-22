@@ -1,12 +1,9 @@
-const { onRequest } = require("firebase-functions/v2/https");
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-
-// V2 functions in EU are only available in europe-west1
-exports.confirmemail = onRequest(
-  {
-    region: "europe-west2",
-  },
-  async (req, res) => {
+const { FieldValue } = require("firebase-admin/firestore");
+exports.confirmemail = functions
+  .region("europe-west2")
+  .https.onRequest(async (req, res) => {
     const confirmationHash = req.query.conf;
     const auth = admin.auth();
     const store = admin.firestore();
@@ -16,10 +13,7 @@ exports.confirmemail = onRequest(
       .where("confirmationHash", "==", confirmationHash)
       .get();
     if (querySnapshot.size === 0) {
-      // TODO: change URL to reflect the portal URLs. Ideally this shouldn't be hardcoded
-      return res.redirect(
-        "https://lnl-portal.web.app/email-confirmation/failure"
-      );
+      return res.redirect(`${process.env.FAILURE_URL}`);
     }
     const temporaryUserDoc = querySnapshot.docs[0];
     const { uid, email, firstName, lastName, role } = temporaryUserDoc.data();
@@ -29,7 +23,7 @@ exports.confirmemail = onRequest(
       firstName,
       lastName,
       role,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
       isOnboarded: false,
       hasCompletedProfile: false,
     });
@@ -37,8 +31,5 @@ exports.confirmemail = onRequest(
       .collection("temporaryCompanyUsers")
       .doc(temporaryUserDoc.id)
       .delete();
-    return res.redirect(
-      "https://lnl-portal.web.app/email-confirmation/success"
-    );
-  }
-);
+    return res.redirect(`${process.env.SUCCESS_URL}`);
+  });

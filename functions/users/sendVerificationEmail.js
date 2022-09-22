@@ -16,6 +16,6 @@ exports.sendVerificationEmail = functions
       firstName,
       lastName,
       // TODO: change URL to reflect the portal URLs. Ideally this shouldn't be hardcoded
-      message: `${process.env.CONFIRMURL}/confirmEmail?conf=${confirmationHash}`,
+      message: `${process.env.CONFIRM_URL}/confirmEmail?conf=${confirmationHash}`,
     });
   });

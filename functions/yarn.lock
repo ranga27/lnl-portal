@@ -4274,10 +4274,17 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   "version" "2.4.0"
 
+<<<<<<< HEAD
 "twilio@^3.79.0":
   "integrity" "sha512-Vn4J3tklWGL5YpNG9H7tRT8FfnYrzvh3ORotJsE+AlN9oXWFPE8ALzbl24x3FfPqJ2Pja0eepfamb3pQKGdNzA=="
   "resolved" "https://registry.npmjs.org/twilio/-/twilio-3.79.0.tgz"
   "version" "3.79.0"
+=======
+"twilio@^3.82.1":
+  "integrity" "sha512-3OIFYUjd0g25x2uZbCqsuT1o5r1r9o2/VDYcl1s+WS6323wxm/dvcMfAlMnLx0+YfG2XB7XS3u7BWZGNJoxtGA=="
+  "resolved" "https://registry.npmjs.org/twilio/-/twilio-3.82.1.tgz"
+  "version" "3.82.1"
+>>>>>>> origin
   dependencies:
     "axios" "^0.26.1"
     "dayjs" "^1.8.29"
