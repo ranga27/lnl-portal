@@ -1,9 +1,11 @@
-const functions = require("firebase-functions");
+const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const { FieldValue } = require("firebase-admin/firestore");
-exports.confirmemail = functions
-  .region("europe-west2")
-  .https.onRequest(async (req, res) => {
+exports.confirmemail = onRequest(
+  {
+    region: "europe-west2",
+  },
+  async (req, res) => {
     const confirmationHash = req.query.conf;
     const auth = admin.auth();
     const store = admin.firestore();
@@ -32,4 +34,5 @@ exports.confirmemail = functions
       .doc(temporaryUserDoc.id)
       .delete();
     return res.redirect(`${process.env.SUCCESS_URL}`);
-  });
+  }
+);
