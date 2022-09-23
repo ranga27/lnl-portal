@@ -23,6 +23,7 @@ import FacebookSignIn from '../components/layout/facebookSignIn';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
 import { TermsInfo } from '../components/layout/TermsInfo';
+import { getUserError } from '../utils/getUserError';
 
 export default function Register() {
   const defaultValues = {
@@ -50,15 +51,13 @@ export default function Register() {
 
   const createUser = useAuthCreateUserWithEmailAndPassword(auth, {
     onError(error) {
-      if (error.code === 'auth/email-already-in-use') {
-        alert.fire({
-          title: 'Error',
-          text: 'Email address already taken.',
-          icon: 'error',
-          imageHeight: 80,
-          imageWidth: 80,
-        });
-      }
+      alert.fire({
+        title: 'Error',
+        text: getUserError(error.code),
+        icon: 'error',
+        imageHeight: 80,
+        imageWidth: 80,
+      });
     },
   });
 
@@ -97,10 +96,10 @@ export default function Register() {
                 }
               });
           },
-          onError() {
+          onError(error) {
             alert.fire({
-              title: 'Error Registering',
-              text: 'Please try again',
+              title: 'Error',
+              text: getUserError(error.code),
               icon: 'error',
               imageHeight: 80,
               imageWidth: 80,

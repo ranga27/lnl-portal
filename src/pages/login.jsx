@@ -1,9 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthSignInWithEmailAndPassword } from '@react-query-firebase/auth';
 import IntlMessages from '../utils/IntlMessages';
@@ -14,9 +15,11 @@ import GoogleSignIn from '../components/layout/googleSignIn';
 import TwitterSignIn from '../components/layout/twitterSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
+import { getUserError } from '../utils/getUserError';
 
 export default function Login({ errorText }) {
   const router = useRouter();
+  const alert = withReactContent(Swal);
   const defaultValues = {
     email: '',
     password: '',
@@ -39,27 +42,12 @@ export default function Login({ errorText }) {
       }
     },
     onError(error) {
-      if (error.code === 'auth/user-not-found') {
-        alert.fire({
-          title: 'Error',
-          text: 'The email you entered isn’t connected to an account. Please register',
-          icon: 'error',
-          imageHeight: 80,
-          imageWidth: 80,
-        });
-      } else if (error.code === 'auth/wrong-password') {
-        alert.fire({
-          title: 'Error',
-          text: 'Incorrect password entered. Please try again.',
-          icon: 'error',
-          imageHeight: 80,
-          imageWidth: 80,
-        });
-      }
-      Swal.fire({
+      alert.fire({
+        title: 'Error',
+        text: getUserError(error.code),
         icon: 'error',
-        title: 'Oops...',
-        text: 'Please try again or create an account if you have not done that',
+        imageHeight: 80,
+        imageWidth: 80,
       });
     },
   });
