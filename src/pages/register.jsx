@@ -23,6 +23,7 @@ import FacebookSignIn from '../components/layout/facebookSignIn';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
 import { TermsInfo } from '../components/layout/TermsInfo';
+import { getUserError } from '../utils/getUserError';
 
 export default function Register() {
   const defaultValues = {
@@ -47,15 +48,19 @@ export default function Register() {
     defaultValues,
     resolver: yupResolver(signUpSchema),
   });
+
   const createUser = useAuthCreateUserWithEmailAndPassword(auth, {
     onError(error) {
       alert.fire({
+        title: 'Error',
+        text: getUserError(error.code),
         icon: 'error',
-        title: 'Oops...',
-        text: getUserError(error.message),
+        imageHeight: 80,
+        imageWidth: 80,
       });
     },
   });
+
   const createTempUser = useFirestoreCollectionMutation(
     collection(firestore, 'temporaryCompanyUsers')
   );
@@ -67,30 +72,38 @@ export default function Register() {
         {
           onSuccess(data) {
             const { uid } = data.user;
-            console.log(uid, "created");
             createTempUser.mutate({
               uid,
               email,
               firstName,
               lastName,
-              role: "company",
+              role: 'company',
               confirmationHash,
               createdAt: serverTimestamp(),
             });
             alert
               .fire({
-                title: "Awesome!",
-                text: "You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).",
-                icon: "success",
-                confirmButtonColor: "#3085d6",
-                iconColor: "#3085d6",
+                title: 'Awesome!',
+                text: 'You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                iconColor: '#3085d6',
               })
               .then((result) => {
                 if (result.isConfirmed || result.isDismissed) {
                   signOut.mutate();
-                  router.push("/login");
+                  router.push('/login');
                 }
               });
+          },
+          onError(error) {
+            alert.fire({
+              title: 'Error',
+              text: getUserError(error.code),
+              icon: 'error',
+              imageHeight: 80,
+              imageWidth: 80,
+            });
           },
         }
       );
