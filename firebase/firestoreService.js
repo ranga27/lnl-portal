@@ -29,6 +29,8 @@ export async function getCompanyRoles(uid) {
     id: docu.id,
   }));
 
+  if (data.length === 0) return [];
+
   const rolesDocRef = collection(firestore, 'companyRolesV2');
   const rolesDoc = await query(
     rolesDocRef,
@@ -40,6 +42,17 @@ export async function getCompanyRoles(uid) {
     id: docu.id,
   }));
   return roles;
+}
+
+export async function getCompany(uid) {
+  const companyDocRef = collection(firestore, 'companyV2');
+  const companyDoc = await query(companyDocRef, where('userId', '==', uid));
+  const querySnapshot = await getDocs(companyDoc);
+  const company = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  return company;
 }
 
 export async function getRoles(uid) {
@@ -62,7 +75,9 @@ export async function sendOnboardingEmail(data) {
 
     sendOnboardingEmailFunction({
       data: {
-        email: data.email,
+        data: {
+          email: JSON.stringify(data.email),
+        },
       },
     })
       .then((doc) => {

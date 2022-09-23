@@ -60,16 +60,21 @@ function classNames(...classes) {
 
 export default function SideBar({ children }) {
   const [user, setUser] = useState([]);
+  const { pathname } = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     userData: { userId },
   } = useContext(AuthContext);
-  const { pathname } = useRouter();
+
   useEffect(() => {
     fetchUserProfileDataFromFirestore(userId).then((results) => {
       setUser(results);
     });
   }, [userId]);
+
+  if (user && user.isOnboarded === false) {
+    return <Onboarding />;
+  }
 
   const fullName = user.firstName + ' ' + user.lastName;
   return (
@@ -158,8 +163,7 @@ export default function SideBar({ children }) {
                       </Link>
                     ))}
                   </div>
-
-                  <RolesList userId={userId} />
+                  {user.isOnboarded && <RolesList userId={userId} />}
                 </nav>
               </div>
               <div className='flex-shrink-0 flex border-t border-gray-400 pt-4 px-3'>

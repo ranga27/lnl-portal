@@ -47,15 +47,21 @@ export default function Register() {
     defaultValues,
     resolver: yupResolver(signUpSchema),
   });
+
   const createUser = useAuthCreateUserWithEmailAndPassword(auth, {
     onError(error) {
-      alert.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: getUserError(error.message),
-      });
+      if (error.code === 'auth/email-already-in-use') {
+        alert.fire({
+          title: 'Error',
+          text: 'Email address already taken.',
+          icon: 'error',
+          imageHeight: 80,
+          imageWidth: 80,
+        });
+      }
     },
   });
+
   const createTempUser = useFirestoreCollectionMutation(
     collection(firestore, 'temporaryCompanyUsers')
   );
@@ -67,30 +73,38 @@ export default function Register() {
         {
           onSuccess(data) {
             const { uid } = data.user;
-            console.log(uid, "created");
             createTempUser.mutate({
               uid,
               email,
               firstName,
               lastName,
-              role: "company",
+              role: 'company',
               confirmationHash,
               createdAt: serverTimestamp(),
             });
             alert
               .fire({
-                title: "Awesome!",
-                text: "You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).",
-                icon: "success",
-                confirmButtonColor: "#3085d6",
-                iconColor: "#3085d6",
+                title: 'Awesome!',
+                text: 'You are nearly in the loop. Please check your email to verify your account (check your spam/junk/promotions folder).',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+                iconColor: '#3085d6',
               })
               .then((result) => {
                 if (result.isConfirmed || result.isDismissed) {
                   signOut.mutate();
-                  router.push("/login");
+                  router.push('/login');
                 }
               });
+          },
+          onError() {
+            alert.fire({
+              title: 'Error Registering',
+              text: 'Please try again',
+              icon: 'error',
+              imageHeight: 80,
+              imageWidth: 80,
+            });
           },
         }
       );

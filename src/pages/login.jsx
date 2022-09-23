@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,14 +14,9 @@ import GoogleSignIn from '../components/layout/googleSignIn';
 import TwitterSignIn from '../components/layout/twitterSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
-import { AuthContext } from '../components/context/AuthContext';
-export default function Login() {
-  const router = useRouter();
-  const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    router.push('/dashboard');
-  }
 
+export default function Login({ errorText }) {
+  const router = useRouter();
   const defaultValues = {
     email: '',
     password: '',
@@ -43,7 +38,24 @@ export default function Login() {
         router.push('/dashboard');
       }
     },
-    onError() {
+    onError(error) {
+      if (error.code === 'auth/user-not-found') {
+        alert.fire({
+          title: 'Error',
+          text: 'The email you entered isn’t connected to an account. Please register',
+          icon: 'error',
+          imageHeight: 80,
+          imageWidth: 80,
+        });
+      } else if (error.code === 'auth/wrong-password') {
+        alert.fire({
+          title: 'Error',
+          text: 'Incorrect password entered. Please try again.',
+          icon: 'error',
+          imageHeight: 80,
+          imageWidth: 80,
+        });
+      }
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
@@ -144,6 +156,7 @@ export default function Login() {
                       </a>
                     </Link>
                   </p>
+                  <p className='py-6 font-semibold'>{errorText}</p>
                 </div>
               </form>
             </div>
