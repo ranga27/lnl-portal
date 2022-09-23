@@ -7,7 +7,6 @@
     {
       "source": ".",
       "codebase": "next",
-      "predeploy": ["npm run build"],
       "runtime": "nodejs16",
       "ignore": [
         "**/.firebase/**",
@@ -42,7 +41,9 @@
     {
       "source": "functions",
       "codebase": "backend",
-      "predeploy": ["npm run lint"],
+      "predeploy": [
+        "npm run lint"
+      ],
       "ignore": [
         "**/node_modules/**",
         "**/.eslintignore",
@@ -61,7 +62,11 @@
   "hosting": {
     "target": "lnl-portal",
     "public": "public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
       {
         "source": "**",
