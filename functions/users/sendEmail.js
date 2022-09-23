@@ -1,12 +1,12 @@
-const nodemailer = require('nodemailer');
-//HACK: creds hardcoded - big red flag! - remove and use api endpoint
+const nodemailer = require("nodemailer");
+
 const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.sendinblue.com',
-  port: 465,
+  host: process.env.NODEMAILER_HOST_URL,
+  port: process.env.NODEMAILER_PORT,
   secure: true,
   auth: {
-    user: 'sarang@loopnotluck.com',
-    pass: '0MU6cxAR5wYsvZFD',
+    user: process.env.NODEMAILER_AUTH_USER,
+    pass: process.env.NODEMAILER_AUTH_PASSWORD,
   },
 });
 
@@ -40,7 +40,9 @@ exports.sendEmail = ({ to, from, subject, message, firstName }) => {
                         </tr>
                         <tr>
                           <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
+
                             <h5 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Hi ${firstName}</h2>
+
                           </td>
                         </tr>
                         <tr>
