@@ -7,7 +7,9 @@ import { locations } from '../../components/data/location';
 import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
 import Button from '../../components/UI/Form/Button';
 
-const phoneRegExp = /^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$/;
+const phoneRegExp = /^\+?((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1|0)(?:\W*\d){0,13}\d$/;
+const linkedInRegExp =
+  /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile|company)/gm;
 
 const validationSchema = Yup.object().shape({
   mobileNumber: Yup.string()
@@ -16,7 +18,9 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Phone Number is too short - should be 4 chars minimum'),
   jobRole: Yup.string().required('Job Role is required'),
   location: Yup.string().required('Location is required'),
-  linkedinUrl: Yup.string().required('LinkedIn url is required'),
+  linkedinUrl: Yup.string()
+    .matches(linkedInRegExp, 'Linkedin url is not valid')
+    .required('LinkedIn url is required'),
 });
 
 const customStyles = {
