@@ -6,8 +6,7 @@ name: Deploy to Firebase Hosting on PR
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
-    runs-on: ubuntu-latest
-    container: node:16.17.0-buster-slim
+    runs-on: macos-12
     steps:
       - uses: actions/checkout@v2
       - run: yarn install && yarn build
