@@ -1,25 +1,38 @@
+import { useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
+import { AuthContext } from '../../components/context/AuthContext';
 import SideBar from '../../components/layout/Sidebar';
-import AuthRoute from '../../components/context/authRoute';
 import Footer from '../../components/layout/Footer';
 import IntlMessages from '../../utils/IntlMessages';
 import ApplicantsList from '../../components/containers/Applicants';
 
 export default function Applicants() {
+  const router = useRouter();
+  const { currentUser } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (currentUser == null) {
+      router.push('/login');
+    }
+  }, [currentUser]);
+
+  if (!currentUser) {
+    return null;
+  }
+
   return (
-    <AuthRoute>
-      <SideBar>
-        <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
-          <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
-            <div className='flex-1 min-w-0'>
-              <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
-                <IntlMessages id='applicant.title' />
-              </h1>
-            </div>
+    <SideBar>
+      <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
+        <div className='border-b border-gray-200 px-4 py-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8'>
+          <div className='flex-1 min-w-0'>
+            <h1 className='text-lg font-medium leading-6 text-gray-900 sm:truncate'>
+              <IntlMessages id='applicant.title' />
+            </h1>
           </div>
-          <ApplicantsList />
-        </main>
-        <Footer />
-      </SideBar>
-    </AuthRoute>
+        </div>
+        <ApplicantsList />
+      </main>
+      <Footer />
+    </SideBar>
   );
 }
