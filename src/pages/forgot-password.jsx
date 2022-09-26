@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import IntlMessages from '../utils/IntlMessages';
 import { TextInput } from '../components/UI/Form/Input';
 import { auth } from '../../firebase/clientApp';
+import { getForgotPasswordError } from '../utils/getForgotPasswordError';
 
 const validateEmail = yup.object().shape({
   email: yup
@@ -38,15 +39,24 @@ export default function ForgotPassword() {
   const onForgotPassword = (data) => {
     sendPasswordResetEmail(auth, data.email, {
       url: 'http://localhost:3000/login',
-    });
-    alert.fire({
-      title: 'Awesome!',
-      text: 'You are nearly done resetting your password. Please click the link the email just sent to reset your password.',
-      icon: 'success',
-      confirmButtonColor: '#3085d6',
-      iconColor: '#3085d6',
-    });
-    console.log('Password reset email sent');
+    }).then(() => {
+      alert.fire({
+        title: 'Awesome!',
+        text: 'You are nearly done resetting your password. Please click the link the email just sent to reset your password.',
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        iconColor: '#3085d6',
+      });
+      console.log('Password reset email sent');
+    }).catch(error => {
+      alert.fire({
+        title: 'Error!',
+        text: getForgotPasswordError(error.code),
+        icon: 'error',
+        imageHeight: 80,
+        imageWidth: 80,
+      });
+    })
   };
 
   return (
