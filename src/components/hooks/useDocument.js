@@ -2,7 +2,7 @@ import { useFirestoreDocument } from '@react-query-firebase/firestore';
 import { collection, doc } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 
-const useDocument = async (collectionName, id) => {
+const useDocument = (collectionName, id) => {
   const collectionRef = collection(firestore, collectionName);
   const ref = doc(collectionRef, id);
 

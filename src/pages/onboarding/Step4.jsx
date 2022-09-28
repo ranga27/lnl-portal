@@ -1,87 +1,32 @@
 import React, { useContext } from 'react';
-import { collection, serverTimestamp, doc } from 'firebase/firestore';
-import {
-  useFirestoreCollectionMutation,
-  useFirestoreDocumentMutation,
-} from '@react-query-firebase/firestore';
 import IntlMessages from '../../utils/IntlMessages';
 import { useRouter } from 'next/router';
-import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
-import { uploadFile } from '../../utils/uploadFile';
 import Button from '../../components/UI/Form/Button';
 import { sendOnboardingEmail } from '../../../firebase/firestoreService';
+import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 
-export default function Step4({ fields }) {
+export default function Step4({ company }) {
   const router = useRouter();
   const {
     userData: { userId, userEmail },
   } = useContext(AuthContext);
 
-  const createCompany = useFirestoreCollectionMutation(
-    collection(firestore, 'companyV2')
-  );
+  const { isLoading: isUserMutationLoading, mutateDocument: mutateUser } =
+    useDocumentMutation('companyUsers', userId);
 
-  const userRef = doc(firestore, 'companyUsers', userId);
-  const userMutation = useFirestoreDocumentMutation(userRef, {
-    merge: true,
-  });
+  const { isLoading: isCompanyMutationLoading, mutateDocument: mutateCompany } =
+    useDocumentMutation('companyV2', company?.id || 'noId');
 
   const handleSave = async () => {
-    const {
-      mobileNumber,
-      location,
-      jobRole,
-      ats,
-      companyLocation,
-      companyName,
-      companyValues,
-      description,
-      diversity,
-      hearAbout,
-      industry,
-      linkedinUrl,
-      logoUrl,
-      visa,
-    } = fields;
-
-    if (logoUrl) {
-      const newLogoUrl = await uploadFile(logoUrl, companyName, 'companyLogos');
-      logoUrl = newLogoUrl;
-    }
-
-    userMutation.mutate(
-      {
-        isOnboarded: true,
-        mobileNumber,
-        location,
-        jobRole,
-        updatedAt: serverTimestamp(),
-      },
-      {
-        onSuccess() {
-          console.log('Successful');
-        },
-      }
-    );
-
-    createCompany.mutate({
-      companyValues,
-      companyName,
-      description,
-      diversity,
-      hearAbout,
-      industry,
-      linkedinUrl,
-      ats,
-      logoUrl,
-      companyLocation,
-      visa,
+    mutateUser({
       isOnboarded: true,
-      userId: userId,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
     });
+
+    mutateCompany({
+      isOnboarded: true,
+    });
+
     await sendOnboardingEmail({ email: userEmail });
     router.push('/dashboard');
   };
@@ -100,7 +45,7 @@ export default function Step4({ fields }) {
           text={'onboarding.confirm'}
           type='submit'
           onClick={handleSave}
-          disabled={userMutation.isLoading}
+          disabled={isUserMutationLoading && isCompanyMutationLoading}
           width='w-full'
           color='text-white'
           bg='bg-gray-900'
