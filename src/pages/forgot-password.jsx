@@ -99,7 +99,7 @@ export default function ForgotPassword() {
                   label='Email address'
                   errors={errors.email}
                   control={control}
-                  placeHolder='Enter email address'
+                  placeholder='Enter email address'
                   data-cy='forgot-password-email-input'
                 />
 

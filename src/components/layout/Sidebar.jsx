@@ -19,7 +19,7 @@ import { AuthContext } from '../context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 import RolesList from './RolesList';
 import Image from 'next/image';
-
+import Onboarding from '../../pages/onboarding';
 const navigation = [
   {
     name: 'Dashboard',
