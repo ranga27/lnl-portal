@@ -10,6 +10,9 @@ import { diversityTypes } from '../../components/data/diversity';
 import { visaRequiredOptions } from '../../components/data/visaRequiredOptions';
 import { jobValuesOptions } from '../../components/data/jobValuesOptions';
 import Button from '../../components/UI/Form/Button';
+import { uploadFile } from '../../utils/uploadFile';
+import useDocumentMutation from '../../components/hooks/useDocumentMutation';
+import useCollectionMutation from '../../components/hooks/useCollectionMutation';
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
@@ -57,34 +60,86 @@ const customStyles = {
   },
 };
 
-export default function Step2(props) {
+export default function Step2({ nextStep, previousStep, userId, company }) {
   const renderError = (message) => (
     <p className='text-sm pt-1 text-red-600'>{message}</p>
   );
 
+  const { mutateDocument } = useDocumentMutation(
+    'companyV2',
+    company?.id || 'noId'
+  );
+  const { mutateCollection } = useCollectionMutation('companyV2');
+
+  const handleSave = async (values) => {
+    const {
+      ats,
+      companyLocation,
+      companyName,
+      companyValues,
+      description,
+      diversity,
+      hearAbout,
+      industry,
+      visa,
+      logoUrl,
+    } = values;
+
+    if (logoUrl) {
+      const newLogoUrl = await uploadFile(logoUrl, companyName, 'companyLogos');
+      logoUrl = newLogoUrl;
+    }
+
+    if (company?.userId === userId) {
+      mutateDocument({
+        ats,
+        companyLocation,
+        companyName,
+        companyValues,
+        description,
+        diversity,
+        hearAbout,
+        industry,
+        visa,
+        logoUrl,
+      });
+    } else {
+      mutateCollection({
+        ats,
+        companyLocation,
+        companyName,
+        companyValues,
+        description,
+        diversity,
+        hearAbout,
+        industry,
+        visa,
+        userId,
+      });
+    }
+  };
   return (
     <div className='max-w-4xl mx-auto'>
       <h2 className='mt-6 text-3xl font-extrabold text-gray-900'>
         <IntlMessages id='onboarding.companyHeader' />
       </h2>
-
       <Formik
         initialValues={{
-          companyName: '',
-          visa: '',
-          companyLocation: '',
-          companyValues: null,
-          description: '',
-          logoUrl: '',
-          industry: null,
-          hearAbout: '',
-          ats: '',
-          diversity: null,
+          companyName: company?.companyName || '',
+          visa: company?.visa || '',
+          companyLocation: company?.companyLocation || '',
+          companyValues: company?.companyValues || null,
+          description: company?.description || '',
+          logoUrl: company?.logoUrl || '',
+          industry: company?.industry || null,
+          hearAbout: company?.hearAbout || '',
+          ats: company?.ats || '',
+          diversity: company?.diversity || null,
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          props.update(values);
-          props.nextStep();
+          handleSave(values);
+          nextStep();
           window.scrollTo(0, 0);
         }}
       >
@@ -314,13 +369,16 @@ export default function Step2(props) {
 
             <div className='my-12 flex flex-row space-x-6'>
               <Button
-                onClick={() => props.previousStep()}
+                onClick={() => {
+                  handleSave(values);
+                  previousStep();
+                }}
                 text={'onboarding.backVariant1'}
                 type='button'
                 width='w-full'
                 color='text-black'
                 bg='bg-gray-100'
-                hover="bg-gray-100"
+                hover='bg-gray-100'
               />
               <Button
                 text={'onboarding.nextVariant1'}
