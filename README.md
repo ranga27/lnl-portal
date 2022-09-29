@@ -62,3 +62,21 @@ yarn deploy
 ```
 This depolys the hosting, next build & cloud functions
 
+## Google Cloud Build 
+Initial Setup 
+
+For Ubuntu 20.04(focal)
+Create a VM to perform the following 
+installation of cloud cli goes here
+
+Create a custom builder
+
+Docker version installed should be same as the one used in GCB. At the time of writing it was 20.10.4. For latest check: https://cloud.google.com/build/docs/interacting-with-dockerhub-images#working_with_docker_client_versions
+
+Follow: https://docs.docker.com/engine/install/ubuntu/
+
+sudo apt-get install docker-ce=5:20.10.4~3-0~ubuntu-focal
+ docker-ce-cli=5:20.10.4~3-0~ubuntu-focal
+ containerd.io docker-compose-plugin
+
+

@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/$PROJECT_ID/bullseye-slim:latest'
+    args:
+      - yarn
+      - 'hosting:deploy'
+    dir: /app

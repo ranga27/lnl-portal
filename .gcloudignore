@@ -1,0 +1,13 @@
+node_modules
+build
+Dockerfile.prod
+public
+npm-debug.log
+yarn-error.log
+.git
+.gitignore
+.cache
+.DS_Store
+.dockerignore
+.npmrc
+*.md
