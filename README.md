@@ -1,11 +1,7 @@
 # Loop Not Luck Portal
 
 ## Overview
-MVP: For Customers
-
-RC1: For Admins
-
-RC2: For Candidates
+Customer Portal for customers to register, buy credits, post roles, review and invite candidates
 
 ## Clone
 The repo [lnl-portal](https://github.com/ranga27/lnl-portal) to a local project directory
@@ -63,13 +59,14 @@ yarn deploy
 This depolys the hosting, next build & cloud functions
 
 ## Google Cloud Build 
-Initial Setup 
+### Initial Setup 
 
 This is for creating new builders or optimising existing one. Skip this step if an image exists in the Artifactory Registry
 
-Create a firebase builder
+### Create a firebase builder
 
-Custom Firebase builder
+**Custom Firebase builder**
+
 https://cloud.google.com/build/docs/configuring-builds/use-community-and-custom-builders?hl=en-GB#creating_a_custom_builder
 
 Use Ubuntu 20.04(focal) to create the comtanier image.
@@ -81,7 +78,8 @@ Follow: https://docs.docker.com/engine/install/ubuntu/
 sudo apt-get install docker-ce=5:20.10.4~3-0~ubuntu-focal docker-ce-cli=5:20.10.4~3-0~ubuntu-focal containerd.io docker-compose-plugin
 ```
 
-Community provided Firebase builder
+**Community provided Firebase builder**
+
 By default, the firebase tool is not available on the npm image, so we used the custom builder. But sometimes its to use community builder.
 
 You will need to clone the repo from the cloud builder community.
@@ -92,7 +90,7 @@ gcloud builds submit --config cloudbuild.yaml .
 After the process is completed, you can delete the repo from your computer.
 
 
-Upload the Firbase builder 
+**Upload the Firbase builder**
 
 We will be using Kaniko workers for building. this will enable Kaniko cache in the docker builds.
 
