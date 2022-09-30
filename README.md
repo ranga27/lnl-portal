@@ -65,7 +65,7 @@ This depolys the hosting, next build & cloud functions
 ## Google Cloud Build 
 Initial Setup 
 
-This is for creating new builders or optimising existing one. Skip this step if an image exists in the Container/Artifactory Registry
+This is for creating new builders or optimising existing one. Skip this step if an image exists in the Artifactory Registry
 
 Create a firebase builder
 
