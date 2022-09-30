@@ -5,22 +5,23 @@
 # Slim for smaller footprint
 FROM node:16.17.0-bullseye-slim
 
+# Optimise for production
+ENV NODE_ENV production
+
 # Create working app directory
 WORKDIR /app
 
-# Ensure both package.json AND yarn.lock are copied
-COPY package.json yarn.lock ./
+# Copy all files excluding dockerignore ones to working directory
+COPY . ./
 
 # Only install prod specific node modules
 RUN yarn install --prod
 
-# install firebase tools
+# Install dependencies for Firebase functions
+WORKDIR /app/functions
+RUN yarn install --prod
+
+# Install firebase tools
 RUN yarn global add firebase-tools
-
-# Bundle app source
-COPY . .
-
-# Build assets & deploy app - moved to deploy.cloudbuild.yaml
-# CMD ["yarn", "deploy"]
 
 # TODO: For development emulators will be needed.
