@@ -65,18 +65,51 @@ This depolys the hosting, next build & cloud functions
 ## Google Cloud Build 
 Initial Setup 
 
-For Ubuntu 20.04(focal)
-Create a VM to perform the following 
-installation of cloud cli goes here
+This is for creating new builders or optimising existing one. Skip this step if an image exists in the Container/Artifactory Registry
 
-Create a custom builder
+Create a firebase builder
 
-Docker version installed should be same as the one used in GCB. At the time of writing it was 20.10.4. For latest check: https://cloud.google.com/build/docs/interacting-with-dockerhub-images#working_with_docker_client_versions
+Custom Firebase builder
+https://cloud.google.com/build/docs/configuring-builds/use-community-and-custom-builders?hl=en-GB#creating_a_custom_builder
+
+Use Ubuntu 20.04(focal) to create the comtanier image.
+Ensure Docker version installed should be same as the one used in GCB. At the time of writing it was 20.10.4. For latest check: https://cloud.google.com/build/docs/interacting-with-dockerhub-images#working_with_docker_client_versions
 
 Follow: https://docs.docker.com/engine/install/ubuntu/
 
-sudo apt-get install docker-ce=5:20.10.4~3-0~ubuntu-focal
- docker-ce-cli=5:20.10.4~3-0~ubuntu-focal
- containerd.io docker-compose-plugin
+```sh
+sudo apt-get install docker-ce=5:20.10.4~3-0~ubuntu-focal docker-ce-cli=5:20.10.4~3-0~ubuntu-focal containerd.io docker-compose-plugin
+```
+
+Community provided Firebase builder
+By default, the firebase tool is not available on the npm image, so we used the custom builder. But sometimes its to use community builder.
+
+You will need to clone the repo from the cloud builder community.
+
+git clone https://github.com/GoogleCloudPlatform/cloud-builders-community
+cd cloud-builders-community/firebase
+gcloud builds submit --config cloudbuild.yaml .
+After the process is completed, you can delete the repo from your computer.
+
+
+Upload the Firbase builder 
+
+We will be using Kaniko workers for building. this will enable Kaniko cache in the docker builds.
+
+https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
+
+install and login to googgle cloud 
+https://cloud.google.com/sdk/docs/install#deb
+
+```sh
+gcloud auth login
+gcloud config set project loop-luck
+gcloud builds submit --config build.cloudbuild.yaml .
+```
+
+## TODO
+
+Dev Dockerfile with emulator
+Slack notification for successful build
 
 
