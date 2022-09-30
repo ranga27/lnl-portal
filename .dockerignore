@@ -1,4 +1,5 @@
 .firebase
+.git
 .next
 cypress
 **/node_modules
