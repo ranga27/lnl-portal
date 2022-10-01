@@ -96,14 +96,37 @@ We will be using Kaniko workers for building. this will enable Kaniko cache in t
 
 https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
 
-install and login to goggle cloud 
+Uploading the image can be done via local console by installing cloud CLI or via cloud shell
+
+Install Cloud CLI
 https://cloud.google.com/sdk/docs/install#deb
 
+and login to goggle cloud
 ```sh
 gcloud auth login
 gcloud config set project loop-luck
 gcloud builds submit --config build.cloudbuild.yaml .
 ```
+
+Via cloud shell
+
+access cloud shell from you gcp account
+https://shell.cloud.google.com/
+
+and set working project
+
+```sh
+gcloud config set project loop-luck
+```
+
+checkout the repo and run uplaod the build
+```sh
+gh auth login
+gh repo clone ranga27/lnl-portal
+cd lnl-portal
+gcloud builds submit --config build.cloudbuild.yaml .
+```
+
 To inspect/debug the docker image
 pull docker image 
 run it using /bin/bash
