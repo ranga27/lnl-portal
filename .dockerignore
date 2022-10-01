@@ -12,6 +12,7 @@ cypress
 .dockerignore
 .gcloudignore
 cypress.config.js
+Dockerfile
 postcss.config.js
 .npmrc
 *.md
