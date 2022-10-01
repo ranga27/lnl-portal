@@ -7,7 +7,6 @@
     {
       "source": ".",
       "codebase": "next",
-      "predeploy": ["npm run build"],
       "runtime": "nodejs16",
       "ignore": [
         "**/.firebase/**",

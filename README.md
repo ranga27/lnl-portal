@@ -69,7 +69,7 @@ This is for creating new builders or optimising existing one. Skip this step if 
 
 https://cloud.google.com/build/docs/configuring-builds/use-community-and-custom-builders?hl=en-GB#creating_a_custom_builder
 
-Use Ubuntu 20.04(focal) to create the comtanier image.
+Use Ubuntu 20.04(focal) to create the contanier image.
 Ensure Docker version installed should be same as the one used in GCB. At the time of writing it was 20.10.4. For latest check: https://cloud.google.com/build/docs/interacting-with-dockerhub-images#working_with_docker_client_versions
 
 Follow: https://docs.docker.com/engine/install/ubuntu/
@@ -96,7 +96,7 @@ We will be using Kaniko workers for building. this will enable Kaniko cache in t
 
 https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
 
-install and login to googgle cloud 
+install and login to goggle cloud 
 https://cloud.google.com/sdk/docs/install#deb
 
 ```sh
@@ -104,10 +104,13 @@ gcloud auth login
 gcloud config set project loop-luck
 gcloud builds submit --config build.cloudbuild.yaml .
 ```
-
+To inspect/debug the docker image
+pull docker image 
+run it using /bin/bash
 ## TODO
 
 Dev Dockerfile with emulator
+
 Slack notification for successful build
 
 
