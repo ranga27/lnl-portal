@@ -3,8 +3,6 @@
 .next
 cypress
 **/node_modules
-**/.eslint*
-**/.eslintrc.*
 **/.gitignore
 **/*.log
 **/test-data/**
