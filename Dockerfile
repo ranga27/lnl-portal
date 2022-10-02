@@ -18,7 +18,7 @@ WORKDIR /app
 COPY . ./
 
 # Ideally only prod specific node modules shoule be installed, but its misses some intermediate dependencies hence doing full install. Assumes yarn.lock is present
-RUN yarn --frozen-lockfile
+# RUN yarn --frozen-lockfile
 
 # Build the next.js app
 # RUN yarn build
