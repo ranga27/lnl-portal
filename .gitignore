@@ -4,8 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-firebase-debug.log
-firestore-debug.log
+
 # testing
 /coverage
 
@@ -23,7 +22,7 @@ firestore-debug.log
 *.pem
 
 # debug
-"**/*.log*",
+**/*.log
 
 # vercel
 .vercel
