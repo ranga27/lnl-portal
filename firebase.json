@@ -7,6 +7,7 @@
     {
       "source": ".",
       "codebase": "next",
+      "predeploy": ["npm run build"],
       "runtime": "nodejs16",
       "ignore": [
         "**/.firebase/**",
@@ -15,7 +16,7 @@
         "**/firebase/**",
         "**/functions/**",
         "**/node_modules/**",
-        "/public",
+        "**/public/**",
         "**/src/components/**",
         "**/src/pages/**",
         "**/src/styles/**",
@@ -36,13 +37,19 @@
         "**/README.*",
         "**/storage.*",
         "**/tailwind.*",
-        "**/yarn.*"
+        "**/yarn.*",
+        "*.yaml",
+        "Dockerfile"
       ]
     },
     {
       "source": "functions",
       "codebase": "backend",
-      "predeploy": ["npm run lint"],
+      "predeploy": [
+        "npm --prefix functions install",
+        "npm --prefix functions run lint"
+      ],
+      "runtime": "nodejs16",
       "ignore": [
         "**/node_modules/**",
         "**/.eslintignore",

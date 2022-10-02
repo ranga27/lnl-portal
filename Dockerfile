@@ -21,10 +21,10 @@ COPY . ./
 RUN yarn --frozen-lockfile
 
 # Build the next.js app
-RUN yarn build
+# RUN yarn build
 
 # Install dependencies for Firebase functions
-WORKDIR /app/functions
-RUN yarn --frozen-lockfile
+# WORKDIR /app/functions
+# RUN yarn --frozen-lockfile
 
 # TODO: For development emulators will be needed.
