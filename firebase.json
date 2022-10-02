@@ -15,6 +15,7 @@
         "**/firebase/**",
         "**/functions/**",
         "**/node_modules/**",
+        "/public",
         "**/src/components/**",
         "**/src/pages/**",
         "**/src/styles/**",
