@@ -1,5 +1,5 @@
 steps:
-  - name: 'europe-docker.pkg.dev/$PROJECT_ID/eu.gcr.io/bullseye-slim:latest'
+  - name: 'europe-docker.pkg.dev/$PROJECT_ID/eu.gcr.io/nextjs-docker:latest'
     args:
       - yarn
       - 'deploy'

@@ -1,9 +1,15 @@
-# This Dockerfile builds the LNL-Portal Next.js app 
-# Its based on https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+#This Dockerfile builds the LNL-Portal Next.js app based on Node.js best practices.
 
-# Install dependencies only when needed
-FROM node:16-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# Pull deterministic base image for stability and security
+# 16.17.0-bullseye is current stable Debain 11 with LTS
+# Slim for smaller footprint
+FROM node:16.17.0-bullseye-slim
+
+# Optimise for production
+# ENV NODE_ENV production
+
+# Install firebase tools
+RUN yarn global add firebase-tools
 
 # Create working app directory
 WORKDIR /app
@@ -11,36 +17,14 @@ WORKDIR /app
 # Copy all files excluding dockerignore ones to working directory
 COPY . ./
 
-# Install dependencies based on yarn, assumes yarn.lock is present
+# Ideally only prod specific node modules shoule be installed, but its misses some intermediate dependencies hence doing full install. Assumes yarn.lock is present
 RUN yarn --frozen-lockfile
+
+# Build the next.js app
+RUN yarn build
 
 # Install dependencies for Firebase functions
 WORKDIR /app/functions
-RUN yarn install
+RUN yarn --frozen-lockfile
 
-# Rebuild the source code only when needed
-FROM node:16-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/functions/node_modules ./functions/node_modules
-COPY . ./
-
-# Build the Next.js app
-RUN yarn build
 # TODO: For development emulators will be needed.
-
-# Production image, copy all the files and run next
-FROM node:16-alpine AS runner
-
-# Install firebase tools
-RUN yarn global add firebase-tools
-
-WORKDIR /app
-
-ENV NODE_ENV production
-COPY --from=builder /app/.next ./.next
-COPY functions/ ./functions/
-COPY public/ ./public/
-COPY firebase.json firebaseFunctions.js package.json ./
-
-

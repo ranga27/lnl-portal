@@ -1,5 +1,5 @@
 steps: 
   - name: 'gcr.io/kaniko-project/executor:latest'
     args:   
-    - --destination=europe-docker.pkg.dev/$PROJECT_ID/eu.gcr.io/bullseye-slim
+    - --destination=europe-docker.pkg.dev/$PROJECT_ID/eu.gcr.io/nextjs-docker
     - --cache=true
