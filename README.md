@@ -127,6 +127,8 @@ cd lnl-portal
 gcloud builds submit --config build.cloudbuild.yaml .
 ```
 
+Grant permissions in GCB to perform Cloud Function upload
+
 To inspect/debug the docker image
 pull docker image 
 run it using /bin/bash

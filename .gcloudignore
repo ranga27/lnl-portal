@@ -10,7 +10,6 @@ cypress
 .dockerignore
 .gcloudignore
 cypress.config.js
-postcss.config.js
 .npmrc
 *.md
 .cache
