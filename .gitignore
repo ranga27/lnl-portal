@@ -6,6 +6,8 @@
 .pnp.js
 firebase-debug.log
 firestore-debug.log
+*.log*
+
 # testing
 /coverage
 
@@ -16,13 +18,15 @@ firestore-debug.log
 
 # production
 /build
+.firebase
 
 # misc
 .DS_Store
 *.pem
 
 # debug
-"**/*.log*",
+**/*.log*
 
 # vercel
 .vercel
+**/package-lock.json
