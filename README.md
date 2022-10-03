@@ -1,11 +1,7 @@
 # Loop Not Luck Portal
 
 ## Overview
-MVP: For Customers
-
-RC1: For Admins
-
-RC2: For Candidates
+Customer Portal for customers to register, buy credits, post roles, review and invite candidates
 
 ## Clone
 The repo [lnl-portal](https://github.com/ranga27/lnl-portal) to a local project directory
@@ -61,4 +57,85 @@ npm run deploy
 yarn deploy
 ```
 This depolys the hosting, next build & cloud functions
+
+## Google Cloud Build 
+### Initial Setup 
+
+This is for creating new builders or optimising existing one. Skip this step if an image exists in the Artifactory Registry
+
+### Create a firebase builder
+
+**Custom Firebase builder**
+
+https://cloud.google.com/build/docs/configuring-builds/use-community-and-custom-builders?hl=en-GB#creating_a_custom_builder
+
+Use Ubuntu 20.04(focal) to create the contanier image.
+Ensure Docker version installed should be same as the one used in GCB. At the time of writing it was 20.10.4. For latest check: https://cloud.google.com/build/docs/interacting-with-dockerhub-images#working_with_docker_client_versions
+
+Follow: https://docs.docker.com/engine/install/ubuntu/
+
+```sh
+sudo apt-get install docker-ce=5:20.10.4~3-0~ubuntu-focal docker-ce-cli=5:20.10.4~3-0~ubuntu-focal containerd.io docker-compose-plugin
+```
+
+**Community provided Firebase builder**
+
+By default, the firebase tool is not available on the npm image, so we used the custom builder. But sometimes its to use community builder.
+
+You will need to clone the repo from the cloud builder community.
+
+git clone https://github.com/GoogleCloudPlatform/cloud-builders-community
+cd cloud-builders-community/firebase
+gcloud builds submit --config cloudbuild.yaml .
+After the process is completed, you can delete the repo from your computer.
+
+
+**Upload the Firbase builder**
+
+We will be using Kaniko workers for building. this will enable Kaniko cache in the docker builds.
+
+https://cloud.google.com/build/docs/optimize-builds/kaniko-cache
+
+Uploading the image can be done via local console by installing cloud CLI or via cloud shell
+
+Install Cloud CLI
+https://cloud.google.com/sdk/docs/install#deb
+
+and login to goggle cloud
+```sh
+gcloud auth login
+gcloud config set project loop-luck
+gcloud builds submit --config build.cloudbuild.yaml .
+```
+
+Via cloud shell
+
+access cloud shell from you gcp account
+https://shell.cloud.google.com/
+
+and set working project
+
+```sh
+gcloud config set project loop-luck
+```
+
+checkout the repo and run uplaod the build
+```sh
+gh auth login
+gh repo clone ranga27/lnl-portal
+cd lnl-portal
+gcloud builds submit --config build.cloudbuild.yaml .
+```
+
+Grant permissions in GCB to perform Cloud Function upload
+
+To inspect/debug the docker image
+pull docker image 
+run it using /bin/bash
+## TODO
+
+Dev Dockerfile with emulator
+
+Slack notification for successful build
+
 

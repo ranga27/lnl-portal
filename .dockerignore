@@ -1,0 +1,16 @@
+.firebase
+.git
+.next
+cypress
+**/node_modules
+**/.gitignore
+**/*.log
+**/test-data/**
+.DS_Store
+.dockerignore
+.gcloudignore
+cypress.config.js
+Dockerfile
+.npmrc
+*.md
+.cache
