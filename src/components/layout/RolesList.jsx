@@ -12,7 +12,7 @@ export default function RolesList({ userId }) {
       }
       return null;
     });
-  }, []);
+  }, [userId]);
 
   return (
     <div className='mt-8'>

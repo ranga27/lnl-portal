@@ -13,6 +13,7 @@ import Button from '../../components/UI/Form/Button';
 import { uploadFile } from '../../utils/uploadFile';
 import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 import useCollectionMutation from '../../components/hooks/useCollectionMutation';
+import { v4 as uuidv4 } from 'uuid';
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
@@ -64,7 +65,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
   const renderError = (message) => (
     <p className='text-sm pt-1 text-red-600'>{message}</p>
   );
-
+  const uid = uuidv4();
   const { mutateDocument } = useDocumentMutation(
     'companyV2',
     company?.id || 'noId'
@@ -86,7 +87,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
     } = values;
 
     if (logoUrl) {
-      const newLogoUrl = await uploadFile(logoUrl, companyName, 'companyLogos');
+      const newLogoUrl = await uploadFile(logoUrl, uid, 'companyLogos');
       logoUrl = newLogoUrl;
     }
 
@@ -115,6 +116,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
         industry,
         visa,
         userId,
+        logoUrl
       });
     }
   };
@@ -381,7 +383,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                 hover='bg-gray-100'
               />
               <Button
-                text={'onboarding.nextVariant1'}
+                text={'onboarding.nextVariant2'}
                 type='submit'
                 width='w-full'
                 color='text-white'

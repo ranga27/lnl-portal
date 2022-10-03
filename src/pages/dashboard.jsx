@@ -12,19 +12,8 @@ export default function Dashboard() {
   const router = useRouter();
   const {
     userData: { userId, userEmail },
-    currentUser,
   } = useContext(AuthContext);
   const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
-  }
 
   useEffect(() => {
     fetchUserProfileDataFromFirestore(userId).then((results) => {

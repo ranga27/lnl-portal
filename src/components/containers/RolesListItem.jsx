@@ -47,7 +47,7 @@ export default function RolesList({ roles }) {
     fetchUserProfileDataFromFirestore(userId).then((results) => {
       setUser(results);
     });
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (pinned === '3a43ocoGT2') {
