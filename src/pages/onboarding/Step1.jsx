@@ -158,7 +158,7 @@ export default function Step1({ nextStep, user }) {
             </div>
             <div className='mt-12'>
               <Button
-                text={'Next'}
+                text='onboarding.nextVariant1'
                 type='submit'
                 width='w-full'
                 color='text-white'

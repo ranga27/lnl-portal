@@ -5,9 +5,12 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-
-    domains: ['unsplash.com', 'lh3.googleusercontent.com'],
-
+    domains: [
+      'storage.googleapis.com',
+      'firebasestorage.googleapis.com',
+      'images.unsplash.com',
+      'lh3.googleusercontent.com',
+    ],
   },
 };
 module.exports = nextConfig;

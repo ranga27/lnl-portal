@@ -1,4 +1,4 @@
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import StepWizard from 'react-step-wizard';
 import Step1 from './Step1';
@@ -12,21 +12,9 @@ import useDocument from '../../components/hooks/useDocument';
 import useCollection from '../../components/hooks/useCollection';
 
 const Onboarding = () => {
-  const router = useRouter();
   const {
     userData: { userId },
-    currentUser,
   } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
-  }
 
   const onStepChange = () => {
     // console.log(stats);

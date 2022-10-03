@@ -299,11 +299,8 @@ export default function ApplicantsList() {
               {/* Profile header */}
               <div>
                 <div>
-                  <Image
-                    width={32}
-                    height={32}
-                    layout ='fill'
-                    // className='h-32 w-full object-cover lg:h-48'
+                  <img
+                    className='h-32 w-full object-cover lg:h-48'
                     src={profile.coverImageUrl}
                     alt={profile.coverImageUrl}
                   />
