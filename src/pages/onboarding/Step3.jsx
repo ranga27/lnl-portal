@@ -1,13 +1,27 @@
-import React from 'react';
+import { useContext } from 'react';
 import Button from '../../components/UI/Form/Button';
 import IntlMessages from '../../utils/IntlMessages';
 import { CheckIcon } from '@heroicons/react/solid';
 import { pricing } from '../../components/data/pricing';
+import { createCheckoutSession } from '../../utils/stripe/createCheckoutSession';
+import { AuthContext } from '../../components/context/AuthContext';
+import useFetchPricing from '../../components/hooks/useFetchPricing';
 
 export default function Step3(props) {
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
+
+  const { isLoading, data } = useFetchPricing();
+
   const handlePayment = (data) => {
-    console.log(data);
+    createCheckoutSession(userId, 'price_1LnhncL0eJsZCFIwGfeYMqjI'); // Static price for now
   };
+
+  if (isLoading) {
+    return <div className='loading' />;
+  }
+
   return (
     <div className='max-w-4xl mx-auto'>
       <h2 className='mb-6 text-3xl font-extrabold text-gray-900'>

@@ -70,6 +70,9 @@
       }
     ]
   },
+  "extensions": {
+    "firestore-stripe-payments": "stripe/firestore-stripe-payments@0.3.1"
+  },
   "storage": {
     "rules": "storage.rules"
   },

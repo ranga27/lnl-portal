@@ -60,7 +60,7 @@ const Onboarding = () => {
             >
               <Step1 hashKey={'FirstStep'} user={user} />
               <Step2 userId={userId} company={company[0]} />
-              <Step3 />
+              <Step3 userId={userId} />
               <Step4 hashKey={'TheEnd!'} user={user} company={company[0]} />
             </StepWizard>
           </div>
