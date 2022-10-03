@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { formatDateInArray } from '../../utils/commands';
 import {
@@ -17,19 +18,22 @@ import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
 import CompanyAside from '../../components/layout/companyAside';
 
-// Company Internal Information: Contains VAT, Roles posted, the on-boarding info. update logo. See how many credits they have.
-// invite team mates. internal business. and stuff related to loop not luck account,
-// basically what candidates want see.
-// - Role Permissions: Select a particular person to be a role adder / poster or hiring managers.
-// - Users: Table -> Add more users, selects how many they want, they do not need to pay immediately, it gets added to their next monthly bill.
-
-//Form Values: Onboarding form info, VAT free text box,  update logo,
-//In the dashboard, see NO of roles posteD: 0
-
 export default function CompanyProfile() {
+  const router = useRouter();
   const {
     userData: { userId },
+    currentUser,
   } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (currentUser == null) {
+      router.push('/login');
+    }
+  }, [currentUser]);
+
+  if (!currentUser) {
+    return null;
+  }
 
   const { isLoading, data: company } = useFirestoreQuery(
     ['companyV2'],

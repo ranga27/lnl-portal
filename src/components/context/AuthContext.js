@@ -10,9 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState({
     userProviderId: '',
     userId: '',
-    userName: '',
     userEmail: '',
-    userPhotoLink: '',
   });
 
   useEffect(() => {

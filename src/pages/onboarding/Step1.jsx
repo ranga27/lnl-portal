@@ -6,8 +6,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { locations } from '../../components/data/location';
 import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
 import Button from '../../components/UI/Form/Button';
+import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 
-const phoneRegExp = /^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$/;
+const phoneRegExp =
+  /^\+?((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1|0)(?:\W*\d){0,13}\d$/;
+const linkedInRegExp =
+  /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile|company)/gm;
 
 const validationSchema = Yup.object().shape({
   mobileNumber: Yup.string()
@@ -16,7 +20,9 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Phone Number is too short - should be 4 chars minimum'),
   jobRole: Yup.string().required('Job Role is required'),
   location: Yup.string().required('Location is required'),
-  linkedinUrl: Yup.string().required('LinkedIn url is required'),
+  linkedinUrl: Yup.string()
+    .matches(linkedInRegExp, 'Linkedin url is not valid')
+    .required('LinkedIn url is required'),
 });
 
 const customStyles = {
@@ -36,10 +42,23 @@ const customStyles = {
   },
 };
 
-export default function Step1(props) {
+export default function Step1({ nextStep, user }) {
   const renderError = (message) => (
     <p className='text-sm pt-1 text-red-600'>{message}</p>
   );
+
+  const { mutateDocument } = useDocumentMutation('companyUsers', user.id);
+
+  const handleSave = (values) => {
+    const { mobileNumber, jobRole, location, linkedinUrl } = values;
+
+    mutateDocument({
+      mobileNumber,
+      jobRole,
+      location,
+      linkedinUrl,
+    });
+  };
 
   return (
     <div className='max-w-4xl mx-auto'>
@@ -49,15 +68,15 @@ export default function Step1(props) {
 
       <Formik
         initialValues={{
-          mobileNumber: '',
-          jobRole: '',
-          location: '',
-          linkedinUrl: '',
+          mobileNumber: user.mobileNumber || '',
+          jobRole: user.jobRole || '',
+          location: user.location || '',
+          linkedinUrl: user.linkedinUrl || '',
         }}
         validationSchema={validationSchema}
         onSubmit={(values) => {
-          props.update(values);
-          props.nextStep();
+          handleSave(values);
+          nextStep();
           window.scrollTo(0, 0);
         }}
       >
@@ -88,15 +107,15 @@ export default function Step1(props) {
                   <IntlMessages id='onboarding.jobRole' />
                 </label>
                 <Field
-                  name='jobRole'
-                  placeholder='Human Resources'
-                  data-cy='onboarding-jobRole-input'
                   className={classnames(
                     'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#F7B919] focus:outline-none',
                     {
                       'border-red-500': errors.jobRole && touched.jobRole,
                     }
                   )}
+                  name='jobRole'
+                  placeholder='Human Resources'
+                  data-cy='onboarding-jobRole-input'
                 />
                 <ErrorMessage name='jobRole' render={renderError} />
               </div>
@@ -138,7 +157,13 @@ export default function Step1(props) {
               </div>
             </div>
             <div className='mt-12'>
-              <Button text={'Next'} type='submit' width='w-full' color="text-white" bg="bg-gray-900"/>
+              <Button
+                text={'Next'}
+                type='submit'
+                width='w-full'
+                color='text-white'
+                bg='bg-gray-900'
+              />
             </div>
           </Form>
         )}

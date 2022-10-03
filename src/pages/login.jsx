@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthSignInWithEmailAndPassword } from '@react-query-firebase/auth';
 import IntlMessages from '../utils/IntlMessages';
@@ -14,14 +15,11 @@ import GoogleSignIn from '../components/layout/googleSignIn';
 import TwitterSignIn from '../components/layout/twitterSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
-import { AuthContext } from '../components/context/AuthContext';
-export default function Login() {
-  const router = useRouter();
-  const { currentUser } = useContext(AuthContext);
-  if (currentUser) {
-    router.push('/dashboard');
-  }
+import { getUserError } from '../utils/getUserError';
 
+export default function Login({ errorText }) {
+  const router = useRouter();
+  const alert = withReactContent(Swal);
   const defaultValues = {
     email: '',
     password: '',
@@ -43,11 +41,13 @@ export default function Login() {
         router.push('/dashboard');
       }
     },
-    onError() {
-      Swal.fire({
+    onError(error) {
+      alert.fire({
+        title: 'Error',
+        text: getUserError(error.code),
         icon: 'error',
-        title: 'Oops...',
-        text: 'Please try again or create an account if you have not done that',
+        imageHeight: 80,
+        imageWidth: 80,
       });
     },
   });
@@ -144,6 +144,7 @@ export default function Login() {
                       </a>
                     </Link>
                   </p>
+                  <p className='py-6 font-semibold'>{errorText}</p>
                 </div>
               </form>
             </div>
