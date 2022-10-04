@@ -38,25 +38,27 @@ export default function ForgotPassword() {
 
   const onForgotPassword = (data) => {
     sendPasswordResetEmail(auth, data.email, {
-      url: 'http://localhost:3000/login',
-    }).then(() => {
-      alert.fire({
-        title: 'Awesome!',
-        text: 'You are nearly done resetting your password. Please click the link the email just sent to reset your password.',
-        icon: 'success',
-        confirmButtonColor: '#3085d6',
-        iconColor: '#3085d6',
-      });
-      console.log('Password reset email sent');
-    }).catch(error => {
-      alert.fire({
-        title: 'Error!',
-        text: getForgotPasswordError(error.code),
-        icon: 'error',
-        imageHeight: 80,
-        imageWidth: 80,
-      });
+      url: 'https://lnl-portal.web.app/login',
     })
+      .then(() => {
+        alert.fire({
+          title: 'Awesome!',
+          text: 'You are nearly done resetting your password. Please click the link the email just sent to reset your password.',
+          icon: 'success',
+          confirmButtonColor: '#3085d6',
+          iconColor: '#3085d6',
+        });
+        console.log('Password reset email sent');
+      })
+      .catch((error) => {
+        alert.fire({
+          title: 'Error!',
+          text: getForgotPasswordError(error.code),
+          icon: 'error',
+          imageHeight: 80,
+          imageWidth: 80,
+        });
+      });
   };
 
   return (
@@ -111,6 +113,14 @@ export default function ForgotPassword() {
                   >
                     <IntlMessages id='general.submit' />
                   </button>
+                  <p className='text-sm font-normal mt-2 pt-1 mb-0'>
+                    <IntlMessages id='user.redirectSignUp' />
+                    <Link href='/register' passHref>
+                      <a className='text-black underline hover:text-[#F7B919] focus:text-[#F7B919] transition duration-200 ease-in-out'>
+                        <IntlMessages id='user.registerSmall' />
+                      </a>
+                    </Link>
+                  </p>
                 </div>
               </form>
             </div>
