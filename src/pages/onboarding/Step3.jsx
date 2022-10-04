@@ -1,24 +1,35 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../../components/UI/Form/Button';
 import IntlMessages from '../../utils/IntlMessages';
 import { CheckIcon } from '@heroicons/react/solid';
 import { pricing } from '../../components/data/pricing';
 import { createCheckoutSession } from '../../utils/stripe/createCheckoutSession';
 import { AuthContext } from '../../components/context/AuthContext';
-import useFetchPricing from '../../components/hooks/useFetchPricing';
+// import useFetchPricing from '../../components/hooks/useFetchPricing';
 
 export default function Step3(props) {
   const {
     userData: { userId },
   } = useContext(AuthContext);
 
-  const { isLoading, data } = useFetchPricing();
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
 
-  const handlePayment = (data) => {
-    createCheckoutSession(userId, 'price_1LnhncL0eJsZCFIwGfeYMqjI'); // Static price for now
+  // const { data, isLoading, error } = useFetchPricing();
+
+  const handlePayment = async (priceId) => {
+    setIsCheckoutLoading(true);
+    await createCheckoutSession(userId, priceId);
   };
 
-  if (isLoading) {
+  // if (isLoading) {
+  //   return <div className='loading' />;
+  // }
+
+  // if (error) {
+  //   return <h1>{error}</h1>;
+  // }
+
+  if (isCheckoutLoading) {
     return <div className='loading' />;
   }
 
@@ -30,44 +41,35 @@ export default function Step3(props) {
       <div className='bg-white'>
         <div className='mx-auto max-w-7xl'>
           <div className='space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:mx-auto lg:max-w-4xl xl:mx-0 xl:max-w-none xl:grid-cols-4'>
-            {pricing.map((data) => (
+            {pricing.map((pricing) => (
               <div
-                key={data.name}
+                key={pricing.productId}
                 className='divide-y divide-gray-200 rounded-lg border border-gray-200 shadow-sm'
               >
                 <div className='p-6'>
                   <h2 className='text-lg font-medium leading-6 text-gray-900'>
-                    {data.name}
+                    {pricing.name}
                   </h2>
-
-                  <p className='mt-3'>
-                    <span className='text-2xl font-bold tracking-tight text-gray-900'>
-                      £{data.priceMonthly}
-                    </span>{' '}
-                    <span className='text-base font-medium text-gray-500'>
-                      /month
-                    </span>
-                  </p>
-                  {data.priceYearly ? (
-                    <p className='mt-1'>
-                      <span className='text-2xl font-bold tracking-tight text-gray-900'>
-                        £{data.priceYearly}
-                      </span>{' '}
-                      <span className='text-base font-medium text-gray-500'>
-                        /annum
-                      </span>
-                    </p>
-                  ) : (
-                    <div className='py-4 mt-1'> </div>
-                  )}
-
+                  {pricing.prices
+                    .sort((a, b) => a.interval.localeCompare(b.interval))
+                    .map((price) => (
+                      <p key={price.priceId} className='mt-3'>
+                        <span className='text-2xl font-bold tracking-tight text-gray-900'>
+                          £{price.unit_amount / 100}
+                        </span>{' '}
+                        <span className='text-base font-medium text-gray-500'>
+                          /{price.interval}
+                        </span>
+                      </p>
+                    ))}
                   <button
+                    disabled={isCheckoutLoading}
                     onClick={() => {
-                      handlePayment(data);
+                      handlePayment(pricing.prices[0].priceId);
                     }}
                     className='mt-8 block w-full rounded-md border border-gray-800 bg-gray-800 py-2 text-center text-sm font-semibold text-white hover:bg-gray-900'
                   >
-                    Buy {data.name}
+                    Buy {pricing.name}
                   </button>
                 </div>
                 <div className='px-6 pt-6 pb-8'>
@@ -75,7 +77,7 @@ export default function Step3(props) {
                     What's included
                   </h3>
                   <ul role='list' className='mt-6 space-y-4'>
-                    {data.includedFeatures.map((feature) => (
+                    {pricing.description.split(', ')?.map((feature) => (
                       <li key={feature} className='flex space-x-3'>
                         <CheckIcon
                           className='h-5 w-5 flex-shrink-0 text-green-500'
@@ -110,7 +112,7 @@ export default function Step3(props) {
           color='text-white'
           bg='bg-gray-900'
         />
-      </div>{' '}
+      </div>
     </div>
   );
 }
