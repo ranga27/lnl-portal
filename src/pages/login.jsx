@@ -13,7 +13,6 @@ import { CheckBox } from '../components/UI/Form/CheckBox';
 import { signInSchema } from '../components/schemas/loginSchema';
 import GoogleSignIn from '../components/layout/googleSignIn';
 import GithubSignIn from '../components/layout/GithubSignIn';
-import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
 
@@ -85,8 +84,6 @@ export default function Login({ errorText }) {
                   <GoogleSignIn />
 
                   <GithubSignIn />
-
-                  <FacebookSignIn />
                 </div>
                 <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                   <p className='text-center font-semibold mx-4 mb-0'>

@@ -19,7 +19,6 @@ import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
 import GoogleSignIn from '../components/layout/googleSignIn';
 import GithubSignIn from '../components/layout/GithubSignIn';
-import FacebookSignIn from '../components/layout/facebookSignIn';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
 import { TermsInfo } from '../components/layout/TermsInfo';
@@ -152,8 +151,6 @@ export default function Register() {
                   <GoogleSignIn />
 
                   <GithubSignIn />
-
-                  <FacebookSignIn />
                 </div>
                 <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                   <p className='text-center font-semibold mx-4 mb-0'>
