@@ -1,6 +1,6 @@
 import { auth } from '../../../firebase/clientApp';
 
-export const getUserRole = async () => {
+export const getUserSubscription = async () => {
   await auth.currentUser.getIdToken(true);
 
   const decodedToken = await auth.currentUser.getIdTokenResult();
