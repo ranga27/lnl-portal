@@ -18,7 +18,7 @@ import { auth, firestore } from '../../firebase/clientApp';
 import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
 import GoogleSignIn from '../components/layout/googleSignIn';
-import TwitterSignIn from '../components/layout/twitterSignIn';
+import GithubSignIn from '../components/layout/GithubSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
@@ -151,7 +151,7 @@ export default function Register() {
                 <div className='mx-auto text-center mb-8'>
                   <GoogleSignIn />
 
-                  <TwitterSignIn />
+                  <GithubSignIn />
 
                   <FacebookSignIn />
                 </div>

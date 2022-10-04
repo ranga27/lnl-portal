@@ -12,7 +12,7 @@ import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
 import { signInSchema } from '../components/schemas/loginSchema';
 import GoogleSignIn from '../components/layout/googleSignIn';
-import TwitterSignIn from '../components/layout/twitterSignIn';
+import GithubSignIn from '../components/layout/GithubSignIn';
 import FacebookSignIn from '../components/layout/facebookSignIn';
 import { auth } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
@@ -84,7 +84,7 @@ export default function Login({ errorText }) {
                 <div className='mx-auto text-center mb-8'>
                   <GoogleSignIn />
 
-                  <TwitterSignIn />
+                  <GithubSignIn />
 
                   <FacebookSignIn />
                 </div>
