@@ -41,6 +41,8 @@ module.exports = {
 
   /* 03.Roles */
   'roles.create': 'Add Role',
+  'roles.empty-title': 'No roles',
+  'roles.empty-subtitle': ' Get started by creating a new role.',
   'roles.new': 'New Role',
   'roles.title': 'Roles',
   'roles.subtitle': 'Pinned Roles',
@@ -87,7 +89,8 @@ module.exports = {
 
   /* 06.Applicants */
   'applicant.title': 'Applicants',
-
+  'applicant.empty-title': 'Applicants list',
+  'applicant.empty-subtitle': 'Select a candidate to view their details.',
   /* 07.Settings */
   'settings.title': 'Settings',
 
