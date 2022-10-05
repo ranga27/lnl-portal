@@ -7,6 +7,7 @@ import Onboarding from './onboarding';
 import Login from './login';
 import { useRouter } from 'next/router';
 import { fetchUserProfileDataFromFirestore } from '../../firebase/firestoreService';
+import DashboardContainer from '../components/containers/DashboardContainer';
 
 export default function Dashboard() {
   const router = useRouter();
@@ -55,11 +56,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-
-        <img
-          src={'/assets/coming.svg'}
-          className='w-4/5 h-4/5 mx-auto text-center'
-        />
+        <DashboardContainer />
       </main>
       <Footer />
     </SideBar>

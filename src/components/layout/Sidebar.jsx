@@ -48,11 +48,6 @@ const navigation = [
   },
   { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
 ];
-const teams = [
-  { name: 'Role 1', href: '#', bgColorClass: 'bg-indigo-500' },
-  { name: 'Role 2', href: '#', bgColorClass: 'bg-green-500' },
-  { name: 'Role 3', href: '#', bgColorClass: 'bg-red-500' },
-];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
