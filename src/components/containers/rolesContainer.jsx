@@ -15,7 +15,12 @@ export default function RolesContainer({ companyId }) {
   return (
     <Fragment>
       {roles.length === 0 ? (
-        <EmptyComponent />
+        <EmptyComponent
+          title='roles.empty-title'
+          subtitle='roles.empty-subtitle'
+          buttonText='roles.new'
+          buttonRequired={true}
+        />
       ) : (
         <RolesListItem roles={roles} />
       )}
