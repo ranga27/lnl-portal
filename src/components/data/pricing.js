@@ -11,8 +11,8 @@ export const pricing = [
     active: true,
     description: '1 role credit, Unlimited hires, Single Payment',
     images: [],
-    prices: [
-      {
+    prices: {
+      monthlyPrice: {
         priceId: 'price_1LnhncL0eJsZCFIwGfeYMqjI',
         recurring: {
           interval: 'month',
@@ -37,7 +37,7 @@ export const pricing = [
         active: true,
         interval: 'month',
       },
-    ],
+    },
   },
   {
     productId: 'prod_MWlLfJxSv2K3so',
@@ -51,8 +51,8 @@ export const pricing = [
     tax_code: 'txcd_10000000',
     name: 'Starter',
     images: [],
-    prices: [
-      {
+    prices: {
+      monthlyPrice: {
         priceId: 'price_1Lnhp0L0eJsZCFIwO6AS7nlu',
         tiers_mode: null,
         trial_period_days: null,
@@ -77,7 +77,7 @@ export const pricing = [
         interval: 'month',
         active: true,
       },
-      {
+      yearlyPrice: {
         priceId: 'price_1Lnhp0L0eJsZCFIwQ0NDrBKY',
         tiers: null,
         billing_scheme: 'per_unit',
@@ -102,7 +102,7 @@ export const pricing = [
         },
         tax_behavior: 'inclusive',
       },
-    ],
+    },
   },
   {
     productId: 'prod_MWlNbb612zSdqh',
@@ -116,8 +116,8 @@ export const pricing = [
     tax_code: 'txcd_10000000',
     name: 'Pro',
     active: true,
-    prices: [
-      {
+    prices: {
+      monthlyPrice: {
         priceId: 'price_1LnhqRL0eJsZCFIwifJBffWH',
         tiers_mode: null,
         metadata: {},
@@ -142,7 +142,7 @@ export const pricing = [
         currency: 'gbp',
         trial_period_days: null,
       },
-      {
+      yearlyPrice: {
         priceId: 'price_1LnhqRL0eJsZCFIwyGx01vkN',
         interval_count: 1,
         type: 'recurring',
@@ -167,7 +167,7 @@ export const pricing = [
         metadata: {},
         trial_period_days: null,
       },
-    ],
+    },
   },
   {
     productId: 'prod_MWlP2Azin1nZ8G',
@@ -181,8 +181,8 @@ export const pricing = [
       '20 role credits, Unlimited hires, Save 17.5%, 12 month subscription, Interest free payments, Talent team training, Dedicated account manager, Promotion across social media channels',
     role: 'enterprise',
     tax_code: 'txcd_10000000',
-    prices: [
-      {
+    prices: {
+      monthlyPrice: {
         priceId: 'price_1LnhsWL0eJsZCFIwmePs2JgJ',
         product: 'prod_MWlP2Azin1nZ8G',
         unit_amount: 68800,
@@ -207,7 +207,7 @@ export const pricing = [
         tiers: null,
         tax_behavior: 'inclusive',
       },
-      {
+      yearlyPrice: {
         priceId: 'price_1LnhsWL0eJsZCFIwTEUITVDk',
         billing_scheme: 'per_unit',
         interval_count: 1,
@@ -232,6 +232,6 @@ export const pricing = [
         currency: 'gbp',
         active: true,
       },
-    ],
+    },
   },
 ];
