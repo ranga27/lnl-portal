@@ -1,20 +1,21 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
-
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../firebase/clientApp';
+import { setUserInFirestore } from '../../../firebase/firestoreService';
 
 const GoogleSignIn = () => {
   const Router = useRouter();
 
   const loginHandler = useCallback(async () => {
-    const provider = new GoogleAuthProvider();
-    // additional scopes can be added as per requirement
-
     try {
-      await signInWithPopup(auth, provider);
-      Router.push('/');
+      const provider = new GoogleAuthProvider();
+
+      await signInWithPopup(auth, provider).then((result) => {
+        const user = result.user;
+        setUserInFirestore(user);
+        Router.push('/dashboard');
+      });
     } catch (error) {
       console.log('error');
       alert(error);

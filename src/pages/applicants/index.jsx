@@ -1,23 +1,14 @@
-import { useEffect, useContext } from 'react';
-import { useRouter } from 'next/router';
-import { AuthContext } from '../../components/context/AuthContext';
 import SideBar from '../../components/layout/Sidebar';
 import Footer from '../../components/layout/Footer';
 import IntlMessages from '../../utils/IntlMessages';
 import ApplicantsList from '../../components/containers/Applicants';
+import useQueryCollection from '../../components/hooks/useQueryCollection';
 
 export default function Applicants() {
-  const router = useRouter();
-  const { currentUser } = useContext(AuthContext);
+  const { isLoading, data: users } = useQueryCollection('users');
 
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
+  if (isLoading) {
+    return <div className='loading' />;
   }
 
   return (
@@ -30,7 +21,7 @@ export default function Applicants() {
             </h1>
           </div>
         </div>
-        <ApplicantsList />
+        <ApplicantsList applicants={users} />
       </main>
       <Footer />
     </SideBar>

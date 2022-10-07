@@ -26,3 +26,11 @@ export const getFirstChar = (str) => {
     .join('');
   return firstChars;
 };
+
+export const getName = (data) => {
+  if (data === undefined) {
+    return '';
+  } else {
+    return data;
+  }
+};

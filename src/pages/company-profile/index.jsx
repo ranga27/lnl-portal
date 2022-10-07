@@ -1,5 +1,4 @@
-import { useEffect, useContext } from 'react';
-import { useRouter } from 'next/router';
+import { useContext } from 'react';
 import Link from 'next/link';
 import { formatDateInArray } from '../../utils/commands';
 import {
@@ -19,21 +18,9 @@ import { AuthContext } from '../../components/context/AuthContext';
 import CompanyAside from '../../components/layout/companyAside';
 
 export default function CompanyProfile() {
-  const router = useRouter();
   const {
     userData: { userId },
-    currentUser,
   } = useContext(AuthContext);
-
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
-  }
 
   const { isLoading, data: company } = useFirestoreQuery(
     ['companyV2'],
