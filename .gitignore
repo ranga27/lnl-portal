@@ -33,3 +33,5 @@ firestore-debug.log
 # env
 firestore-stripe-payments.env
 **/package-lock.json
+
+.env

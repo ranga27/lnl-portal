@@ -21,26 +21,14 @@ export const localeOptions = [
   { id: 'enrtl', name: 'English - RTL', direction: 'rtl' },
 ];
 
-// export const firebaseConfig = {
-//   apiKey: 'AIzaSyASO7xWsWqUHXXxkcMlbmaLWBuI6hOK5gA',
-//   authDomain: 'loop-luck.firebaseapp.com',
-//   databaseURL: 'https://loop-luck.firebaseio.com',
-//   projectId: 'loop-luck',
-//   storageBucket: 'loop-luck.appspot.com',
-//   messagingSenderId: '254916519702',
-//   appId: '1:254916519702:web:bd8ba9a53a0f27486c9237',
-//   measurementId: 'G-VYCHZLSDJZ',
-// };
-
-// lnl dev
 export const firebaseConfig = {
-  apiKey: 'AIzaSyC9ifH-hmwCIxCd1SYNfsBnHCdzgoSO7AA',
-  authDomain: 'lnl-dev.firebaseapp.com',
-  projectId: 'lnl-dev',
-  storageBucket: 'lnl-dev.appspot.com',
-  messagingSenderId: '533712523465',
-  appId: '1:533712523465:web:8ca43166340d53f2b27d18',
-  measurementId: 'G-2L92WTL06P',
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
+  measurementId: process.env.MEASUREMENT_ID,
 };
 
 export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfig.storageBucket}/`;
