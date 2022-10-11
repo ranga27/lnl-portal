@@ -6,9 +6,11 @@ import {
   doc,
   getDoc,
   collection,
+  setDoc,
   where,
   query,
   getDocs,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { firestore, functions } from './clientApp';
@@ -90,5 +92,29 @@ export async function sendOnboardingEmail(data) {
     return sendOnboardingEmailFunction(data);
   } catch (e) {
     console.error(e);
+  }
+}
+
+export async function setUserInFirestore(user) {
+  const { uid, email, displayName } = user;
+
+  const existingUserRef = collection(firestore, 'companyUsers');
+  const usersDoc = await query(existingUserRef, where('email', '==', email));
+  const userQuerySnapshot = await getDocs(usersDoc);
+  const userDetails = userQuerySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  if (userDetails.length === 0) {
+    const userRef = doc(firestore, 'companyUsers', uid);
+    await setDoc(userRef, {
+      id: uid,
+      email: email,
+      firstName: displayName,
+      isOnboarded: false,
+      role: 'company',
+      createdAt: serverTimestamp(),
+    });
   }
 }

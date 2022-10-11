@@ -1,27 +1,31 @@
 #This Dockerfile builds the LNL-Portal Next.js app based on Node.js best practices.
 
 # Pull deterministic base image for stability and security
-# 16.17.0-bullseyes is current stable Debain 11 with LTS
+# 16.17.0-bullseye is current stable Debain 11 with LTS
 # Slim for smaller footprint
 FROM node:16.17.0-bullseye-slim
+
+# Optimise for production
+# ENV NODE_ENV production
+
+# Install firebase tools
+RUN yarn global add firebase-tools
 
 # Create working app directory
 WORKDIR /app
 
-# Ensure both package.json AND yarn.lock are copied
-COPY package.json yarn.lock ./
+# Copy all files excluding dockerignore ones to working directory
+COPY . ./
 
-# Only install prod specific node modules
-RUN yarn install --prod
+# Ideally only prod specific node modules shoule be installed, but its misses some intermediate dependencies hence doing full install. Assumes yarn.lock is present
+# RUN yarn --frozen-lockfile
 
-# install firebase tools
-RUN yarn global add firebase-tools
+# Build the next.js app
+# RUN yarn build
 
-# Bundle app source
-COPY . .
+# Install dependencies for Firebase functions
+# WORKDIR /app/functions
+# RUN yarn --frozen-lockfile
 
-# Build assets & deploy app
-# CMD ["yarn", "hosting:deploy"]
+# TODO: For development emulators will be needed.
 
-# In Gatsby development, gatsby-cli is required.
-# RUN yarn global add gatsby-cli && yarn cache clean

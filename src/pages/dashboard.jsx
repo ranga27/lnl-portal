@@ -7,24 +7,14 @@ import Onboarding from './onboarding';
 import Login from './login';
 import { useRouter } from 'next/router';
 import { fetchUserProfileDataFromFirestore } from '../../firebase/firestoreService';
+import DashboardContainer from '../components/containers/DashboardContainer';
 
 export default function Dashboard() {
   const router = useRouter();
   const {
     userData: { userId, userEmail },
-    currentUser,
   } = useContext(AuthContext);
   const [user, setUser] = useState([]);
-
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
-  }
 
   useEffect(() => {
     fetchUserProfileDataFromFirestore(userId).then((results) => {
@@ -66,11 +56,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-
-        <img
-          src={'/assets/coming.svg'}
-          className='w-4/5 h-4/5 mx-auto text-center'
-        />
+        <DashboardContainer />
       </main>
       <Footer />
     </SideBar>

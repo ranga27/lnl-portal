@@ -38,16 +38,6 @@ export default function ViewRole() {
     currentUser,
   } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (currentUser == null) {
-      router.push('/login');
-    }
-  }, [currentUser]);
-
-  if (!currentUser) {
-    return null;
-  }
-
   const [activeTab, setActiveTab] = useState('tab1');
   const [user, setUser] = useState([]);
   const { id } = router.query;

@@ -72,7 +72,7 @@ export default function Step3(props) {
                 </div>
                 <div className='px-6 pt-6 pb-8'>
                   <h3 className='text-sm font-medium text-gray-900'>
-                    What's included
+                    What&apos;s included
                   </h3>
                   <ul role='list' className='mt-6 space-y-4'>
                     {data.includedFeatures.map((feature) => (

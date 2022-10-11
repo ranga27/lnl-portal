@@ -9,7 +9,7 @@ const CompanyAside = ({ id, img, updatedAt }) => {
     getRoles(id).then((results) => {
       setRoles(results);
     });
-  }, []);
+  }, [id]);
 
   return (
     <aside className='hidden xl:block xl:pl-8'>
