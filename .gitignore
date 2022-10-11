@@ -30,3 +30,5 @@ firestore-debug.log
 # vercel
 .vercel
 **/package-lock.json
+
+.env
