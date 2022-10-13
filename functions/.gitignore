@@ -28,3 +28,6 @@ ui-debug.log
 
 # vercel
 .vercel
+
+.env
+

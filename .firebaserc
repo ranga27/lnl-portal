@@ -9,6 +9,14 @@
           "lnl-portal"
         ]
       }
+    },
+    "lnl-dev": {
+      "hosting": {
+        "lnl-dev": [
+          "lnl-dev"
+        ]
+      }
     }
-  }
+  },
+  "etags": {}
 }

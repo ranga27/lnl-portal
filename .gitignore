@@ -34,3 +34,9 @@ firestore-debug.log
 firestore-stripe-payments.env
 firestore-stripe-payments.secret.local
 
+
+**/package-lock.json
+
+.env.development
+
+.env.production
