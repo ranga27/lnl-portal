@@ -3,10 +3,11 @@
 #### Development mode
 
 1. Make sure you have installed stripe CLI on your machine
-2. Run for development mode
+2. `stripe login`
+3. Run for development mode
    `stripe listen --forward-to localhost:3000/api/webhook`
    Basically this is our api endpoint
-3. This will give webhook signing secret. Copy that to .env.development/STRIPE_WEBHOOK_SIGNING_SECRET
+4. This will give webhook signing secret. Copy that to .env.development/STRIPE_WEBHOOK_SIGNING_SECRET
 
 #### Production mode
 
