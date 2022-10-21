@@ -1,11 +1,27 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const admin = require('firebase-admin');
-const { buffer } = require('micro');
+const { sendStripeEmail } = require('./sendStripeEmail');
 
-// Initialize stripe
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
-const endpointSecret = process.env.LISTEN_STRIPE_EVENTS_WEBHOOK_SIGNING_SECRET;
+const getRoleCredits = (amount) => {
+  switch (true) {
+    case amount / 100 === 688:
+      return 20;
+    case amount / 100 === 354:
+      return 10;
+    case amount / 100 === 188:
+      return 5;
+    case amount / 100 === 500:
+      return 1;
+    case amount / 100 === 2250:
+      return 5;
+    case amount / 100 === 4250:
+      return 10;
+    case amount / 100 === 8250:
+      return 20;
+    default:
+      return 0;
+  }
+};
 
 const fulFillOrder = async (session) => {
   const store = admin.firestore();
@@ -22,12 +38,15 @@ const fulFillOrder = async (session) => {
           .get()
           .then((docs) => {
             docs.forEach((doc) => {
-              store.collection('companyV2').doc(doc.id).set(
-                {
-                  roleCredits: 5, // TODO: Make it dynamic
-                },
-                { merge: true }
-              );
+              store
+                .collection('companyV2')
+                .doc(doc.id)
+                .set(
+                  {
+                    roleCredits: getRoleCredits(session.amount_subtotal),
+                  },
+                  { merge: true }
+                );
             });
           });
       });
@@ -39,16 +58,21 @@ exports.updaterolecredits = onRequest(
     region: 'europe-west2',
   },
   async (req, res) => {
-    const requestBuffer = await buffer(req);
-    const payload = requestBuffer.toString();
-    const stripeSignature = req.headers['stripe-signature'];
+    const endpointSecret = process.env.LISTEN_STRIPE_EVENTS_WEBHOOK_SIGNING_SECRET
+
+    const payloadData = req.rawBody;
+    const payloadString = payloadData.toString();
+    const webhookStripeSignatureHeader = req.headers['stripe-signature'];
+    const stripe = require('stripe')(
+      process.env.STRIPE_SECRET_KEY
+    );
 
     let event;
 
     try {
       event = stripe.webhooks.constructEvent(
-        payload,
-        stripeSignature,
+        payloadString,
+        webhookStripeSignatureHeader,
         endpointSecret
       );
     } catch (error) {
@@ -60,9 +84,16 @@ exports.updaterolecredits = onRequest(
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
 
-      //   Fulfill the order
       return fulFillOrder(session)
-        .then(() => res.status(200))
+        .then(() => {
+          sendStripeEmail({
+            to: session.customer_details.email,
+            from: 'Loop Not Luck hello@loopnotluck.com',
+            subject: 'Loop Not Luck Credits bought successfully!',
+            credits: getRoleCredits(session.amount_subtotal),
+          });
+          return res.sendStatus(200);
+        })
         .catch((error) =>
           res.status(400).send(`Webhook error: ${error.message}`)
         );

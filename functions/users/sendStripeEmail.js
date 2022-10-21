@@ -11,11 +11,12 @@ const transporter = nodemailer.createTransport({
 });
 
 //TODO: move html to config db or a lightweight cms
-exports.sendEmail = ({ to, from, subject }) => {
+exports.sendStripeEmail = ({ to, from, subject, credits }) => {
   const mailOptions = {
     to,
     from,
     subject,
+    credits,
     html: `
     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout:fixed;background-color:#ffffff" id="bodyTable">
       <tbody>
@@ -40,7 +41,7 @@ exports.sendEmail = ({ to, from, subject }) => {
                         <tr>
                           <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
                             <h2 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
-                                Welcome to Loop Not Luck
+                                Role Credits purchased successfully!
                             </h2>
                           </td>
                         </tr>
@@ -51,7 +52,7 @@ exports.sendEmail = ({ to, from, subject }) => {
                                 <tr>
                                   <td style="padding-bottom: 20px;" align="center" valign="top" class="description">
                                     <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                                    Thank you for creating an account with us, We have a rapidly growing talent pool of diverse and ambitious candidates from across the United Kingdom and would love to connect you to them. 
+                                    Thank you for purchasing ${credits} credits on Loop Not Luck. We are proud of our satisfied clients and look forward to collaborating together.
                                   </td>
                                 </tr>
                               </tbody>
@@ -64,7 +65,7 @@ exports.sendEmail = ({ to, from, subject }) => {
                         <tr>
                         <td style="padding-bottom:0px;" align="center" valign="top" class="description">
                           <p class="text" style="color:#000000;width:90%;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                            If this account has been created on your behalf please click <a href='https://lnl-portal.web.app/forgot-password' target="_blank">here</a> to reset your password and access your account.
+                            If you have questions/feedback about our services, please send an email to hello@loopnotluck.com and we will adress every feedback.
                           </p>
                           <br />
                           <br />
