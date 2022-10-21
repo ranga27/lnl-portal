@@ -42,3 +42,5 @@ firestore-stripe-payments.secret.local
 .env.production
 
 lnlDevServiceAccount.json
+
+/test-data/

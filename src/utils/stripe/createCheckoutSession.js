@@ -13,8 +13,8 @@ export const createCheckoutSession = async (uid, price) => {
     const subcollectionRef = collection(docRef, 'checkout_sessions');
     const checkoutSessionRef = await addDoc(subcollectionRef, {
       price,
-      success_url: window.location.origin,
-      cancel_url: window.location.origin,
+      success_url: process.env.NEXT_PUBLIC_STRIPE_SUCCESS_URL,
+      cancel_url: process.env.NEXT_PUBLIC_STRIPE_FAILURE_URL,
     });
 
     // Wait for the checkout session to get attached by extension
