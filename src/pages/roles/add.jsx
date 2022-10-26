@@ -1,7 +1,6 @@
 import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import {
-  useFirestoreCollectionMutation,
   useFirestoreDocumentMutation,
   useFirestoreQuery,
 } from '@react-query-firebase/firestore';
@@ -24,14 +23,23 @@ import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
+import {
+  addRoleInCompanyFirestore,
+  updateRoleCreditsInCompanyFirestore,
+} from '../../../firebase/firestoreService';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AddRole() {
-  const mutation = useFirestoreCollectionMutation(
-    collection(firestore, 'companyRolesV2')
+  const roleId = uuidv4();
+
+  const mutation = useFirestoreDocumentMutation(
+    doc(firestore, 'companyRolesV2', roleId)
   );
+
   const router = useRouter();
   const { startDate, deadline, ...role } = router.query;
-
+  const defaultRoleStartDate = new Date(startDate);
+  const defaultRoleDeadline = !deadline ? null : new Date(deadline);
   const [activeTab, setActiveTab] = useState('tab1');
   const [fields, setFields] = useState({
     title: role.title || '',
@@ -45,11 +53,8 @@ export default function AddRole() {
     meetingLink: role.meetingLink || '',
     website: role.website || '',
     rolling: role.rolling || false,
-    deadline:
-      role.rolling === true || deadline === undefined
-        ? null
-        : new Date(deadline),
-    startDate: deadline !== undefined ? new Date(startDate) : null,
+    deadline: role.rolling === true ? null : defaultRoleDeadline,
+    startDate: startDate !== undefined ? defaultRoleStartDate : null,
     coverLetter: role.coverLetter || false,
     rolesOfInterests: role.rolesOfInterests || null,
     technicalSkills: role.technicalSkills || null,
@@ -83,6 +88,7 @@ export default function AddRole() {
         const companiesData = snapshot.docs.map((document) => ({
           id: document.id,
           companyName: document.data().companyName,
+          roleCredits: document.data().roleCredits,
         }));
         return companiesData;
       },
@@ -108,7 +114,7 @@ export default function AddRole() {
     setFields(newFields);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const newFields = { ...fields, ...data };
     const {
       title,
@@ -121,7 +127,6 @@ export default function AddRole() {
       description,
       howToApply,
       startDate,
-      coverLetter,
       rolesOfInterests,
       technicalSkills,
       moreRoleInfo,
@@ -167,6 +172,7 @@ export default function AddRole() {
       if (role && role.id) {
         rolesMutation.mutate(newData, {
           onSuccess() {
+            addRoleInCompanyFirestore(newData, role.id);
             Swal.fire({
               title: 'Success!',
               text: 'Role Updated.',
@@ -179,15 +185,20 @@ export default function AddRole() {
             }, 2000);
           },
           onError() {
-            Swal.fire('Oops!', 'Failed to Add Role.', 'error');
+            Swal.fire('Oops!', 'Failed to update Role.', 'error');
           },
           onMutate() {
-            console.info('Adding role...');
+            console.info('Updating role...');
           },
         });
       } else {
         mutation.mutate(newData, {
-          onSuccess() {
+          async onSuccess() {
+            await addRoleInCompanyFirestore(newData, roleId);
+            await updateRoleCreditsInCompanyFirestore(
+              company[0].roleCredits,
+              company[0].id
+            );
             Swal.fire({
               title: 'Success!',
               text: 'New Role Added.',
