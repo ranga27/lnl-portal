@@ -171,8 +171,8 @@ export default function AddRole() {
       };
       if (role && role.id) {
         rolesMutation.mutate(newData, {
-          onSuccess() {
-            addRoleInCompanyFirestore(newData, role.id);
+          async onSuccess() {
+            await addRoleInCompanyFirestore(newData, role.id);
             Swal.fire({
               title: 'Success!',
               text: 'Role Updated.',
