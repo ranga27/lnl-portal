@@ -40,3 +40,10 @@ firestore-stripe-payments.secret.local
 .env.development
 
 .env.production
+
+.env.local
+
+/test-data/
+
+/test-data
+

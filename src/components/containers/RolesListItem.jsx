@@ -16,6 +16,7 @@ import { getFirstChar } from '../../utils/commands';
 import { AuthContext } from '../../components/context/AuthContext';
 import DeleteRole from './DeleteRole';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
+import { format } from 'date-fns';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -232,7 +233,7 @@ export default function RolesList({ roles }) {
                   Start Date
                 </th>
                 <th className='hidden md:table-cell px-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500  tracking-wider'>
-                  Last updated
+                  Created On
                 </th>
                 <th className='pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500  tracking-wider' />
               </tr>
@@ -262,10 +263,10 @@ export default function RolesList({ roles }) {
                     {role.location}
                   </td>
                   <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
-                    {role.startDate}
+                    {format(new Date(role.startDate.toDate()), 'dd-MMM-yyyy')}
                   </td>
                   <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
-                    {role.updatedAt}
+                    {format(new Date(role.createdAt.toDate()), 'dd-MMM-yyyy')}
                   </td>
                   <td className='pr-6'>
                     <Menu
@@ -298,8 +299,16 @@ export default function RolesList({ roles }) {
                                       pathname: '/roles/add',
                                       query: {
                                         ...role,
-                                        startDate: role.startDate || null,
-                                        deadline: role.deadline || null,
+                                        startDate:
+                                          format(
+                                            new Date(role.startDate.toDate()),
+                                            'dd-MMM-yyyy'
+                                          ) || null,
+                                        deadline: role.deadline ?
+                                          format(
+                                            new Date(role.deadline.toDate()),
+                                            'dd-MMM-yyyy'
+                                          ) : null,
                                       },
                                     }}
                                   >
