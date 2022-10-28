@@ -40,6 +40,14 @@ cd..
 
 When running this repo initially on a machine, you will need to create a .env.development file and a .env.production file in the root folder and initialize with the environment variables which would be sent to you by a team member. 
 
+NEXT_PUBLIC_API_KEY=[KEY]
+NEXT_PUBLIC_AUTH_DOMAIN=[KEY]
+NEXT_PUBLIC_PROJECT_ID=[KEY]
+NEXT_PUBLIC_STORAGE_BUCKET=[KEY]
+NEXT_PUBLIC_MESSAGING_SENDER_ID=[KEY]
+NEXT_PUBLIC_APP_ID=[KEY]
+NEXT_PUBLIC_MEASUREMENT_ID=[KEY]
+
 Add following environment variables:
 
 GOOGLE_APPLICATION_CREDENTIALS=<credential.json>
