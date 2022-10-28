@@ -47,3 +47,4 @@ firestore-stripe-payments.secret.local
 
 /test-data
 
+.env
