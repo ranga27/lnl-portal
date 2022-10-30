@@ -1,4 +1,4 @@
 steps:
   - name: 'europe-docker.pkg.dev/$PROJECT_ID/eu.gcr.io/nextjs-kaniko:latest'
-    args: ['firebase', 'use', '$_PROJECT_NAME', '&&', 'yarn', 'deploy']
+    args: ['firebase', 'use', '$PROJECT_ID', '&&', 'yarn', 'deploy']
     dir: /app
