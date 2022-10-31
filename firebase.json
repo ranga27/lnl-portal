@@ -67,7 +67,6 @@
     }
   ],
   "hosting": {
-    "target": "lnl-portal",
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
@@ -78,8 +77,7 @@
       }
     ]
   },
-  "extensions": {
-  },
+  "extensions": {},
   "storage": {
     "rules": "storage.rules"
   },

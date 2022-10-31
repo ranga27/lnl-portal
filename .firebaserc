@@ -1,14 +1,7 @@
 {
   "projects": {
-    "default": "loop-luck"
-  },
-  "targets": {
-    "loop-luck": {
-      "hosting": {
-        "lnl-portal": [
-          "lnl-portal"
-        ]
-      }
-    }
+    "default": "lnl-dev",
+    "staging": "lnl-staging",
+    "production": "lnl-prod"
   }
 }
