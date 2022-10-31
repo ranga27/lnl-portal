@@ -177,7 +177,7 @@ const DashboardContainer = () => {
 
                 <tbody className='text-sm divide-y divide-gray-200'>
                   {roles.map((item) => (
-                    <tr>
+                    <tr key={item.title}>
                       <td className='p-2'>
                         <input
                           type='checkbox'
@@ -246,7 +246,7 @@ const DashboardContainer = () => {
 
                 <tbody className='text-sm divide-y divide-gray-200'>
                   {metrics.map((item) => (
-                    <tr>
+                    <tr key={item.title}>
                       <td className='p-2'>
                         <div className='font-medium text-gray-800'>
                           {item.title}
