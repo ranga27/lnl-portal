@@ -143,6 +143,9 @@ Grant permissions in GCB to perform Cloud Function upload
 To inspect/debug the docker image
 pull docker image 
 run it using /bin/bash
+
+create variable \_PROJECT_NAME in GCB triggers 
+
 ## TODO
 
 Dev Dockerfile with emulator

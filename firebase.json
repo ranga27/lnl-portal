@@ -29,7 +29,6 @@
     }
   ],
   "hosting": {
-    "target": "lnl-portal",
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
@@ -40,9 +39,7 @@
       }
     ]
   },
-  "extensions": {
-    "firestore-stripe-payments": "stripe/firestore-stripe-payments@0.3.1"
-  },
+  "extensions": {},
   "storage": {
     "rules": "storage.rules"
   },

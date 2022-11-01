@@ -91,3 +91,24 @@ export async function setUserInFirestore(user) {
     });
   }
 }
+
+export async function updateRoleCreditsInCompanyFirestore(
+  roleCredits,
+  companyId
+) {
+  const docRef = doc(firestore, 'companyV2', companyId);
+  await setDoc(
+    docRef,
+    {
+      roleCredits: roleCredits - 1,
+    },
+    { merge: true }
+  );
+}
+
+export async function addRoleInCompanyFirestore(data, id) {
+  const docRef = doc(firestore, 'companyV2', data.companyId, 'roles', id);
+  await setDoc(docRef, {
+    ...data,
+  });
+}
