@@ -1,6 +1,6 @@
-const { onRequest } = require('firebase-functions/v2/https');
 const admin = require('firebase-admin');
 const { sendStripeEmail } = require('./sendStripeEmail');
+const functions = require('firebase-functions/v1');
 
 const getRoleCredits = (amount) => {
   switch (true) {
@@ -53,19 +53,22 @@ const fulFillOrder = async (session) => {
     });
 };
 
-exports.updaterolecredits = onRequest(
-  {
-    region: 'europe-west2',
-  },
-  async (req, res) => {
-    const endpointSecret = process.env.LISTEN_STRIPE_EVENTS_WEBHOOK_SIGNING_SECRET
+exports.updaterolecredits = functions
+  .region('europe-west2')
+  .runWith({
+    secrets: [
+      'LISTEN_STRIPE_EVENTS_WEBHOOK_SIGNING_SECRET',
+      'STRIPE_SECRET_KEY',
+    ],
+  })
+  .https.onRequest(async (req, res) => {
+    const endpointSecret =
+      process.env.LISTEN_STRIPE_EVENTS_WEBHOOK_SIGNING_SECRET;
 
     const payloadData = req.rawBody;
     const payloadString = payloadData.toString();
     const webhookStripeSignatureHeader = req.headers['stripe-signature'];
-    const stripe = require('stripe')(
-      process.env.STRIPE_SECRET_KEY
-    );
+    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
     let event;
 
@@ -98,5 +101,4 @@ exports.updaterolecredits = onRequest(
           res.status(400).send(`Webhook error: ${error.message}`)
         );
     }
-  }
-);
+  });
