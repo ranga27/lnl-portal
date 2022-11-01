@@ -41,10 +41,10 @@ firestore-stripe-payments.secret.local
 
 .env.production
 
+lnlDevServiceAccount.json
+
 .env.local
 
 /test-data/
-
-/test-data
 
 .env

@@ -3,7 +3,6 @@ import IntlMessages from '../../utils/IntlMessages';
 import { useRouter } from 'next/router';
 import { AuthContext } from '../../components/context/AuthContext';
 import Button from '../../components/UI/Form/Button';
-import { sendOnboardingEmail } from '../../../firebase/firestoreService';
 import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 
 export default function Step4({ company }) {
@@ -27,7 +26,6 @@ export default function Step4({ company }) {
       isOnboarded: true,
     });
 
-    await sendOnboardingEmail({ email: userEmail });
     router.push('/dashboard');
   };
 
