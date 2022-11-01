@@ -5,44 +5,6 @@
   },
   "functions": [
     {
-      "source": ".",
-      "codebase": "next",
-      "predeploy": ["yarn install", "yarn build"],
-      "runtime": "nodejs16",
-      "ignore": [
-        "**/.firebase/**",
-        "**/.next/cache/**",
-        "**/cypress/**",
-        "**/firebase/**",
-        "**/functions/**",
-        "**/node_modules/**",
-        "**/public/**",
-        "**/src/components/**",
-        "**/src/pages/**",
-        "**/src/styles/**",
-        "**/src/utils/**",
-        "**/test-data/**",
-        "**/.env.*",
-        "**/.eslintrc",
-        "**/.eslintrc.*",
-        ".firebaserc",
-        ".git",
-        ".gitignore",
-        "**/cypress.*",
-        "**/*.log",
-        "**/firebase.json",
-        "**/firestore.*",
-        "**/package-lock.*",
-        "**/postcss.*",
-        "**/README.*",
-        "**/storage.*",
-        "**/tailwind.*",
-        "**/yarn.*",
-        "*.yaml",
-        "Dockerfile"
-      ]
-    },
-    {
       "source": "functions",
       "codebase": "backend",
       "predeploy": [
@@ -67,7 +29,6 @@
     }
   ],
   "hosting": {
-    "target": "lnl-portal",
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
@@ -78,8 +39,7 @@
       }
     ]
   },
-  "extensions": {
-  },
+  "extensions": {},
   "storage": {
     "rules": "storage.rules"
   },
