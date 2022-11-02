@@ -9,6 +9,7 @@ The repo [lnl-portal](https://github.com/ranga27/lnl-portal) to a local project 
 To clone within VSCode, follow these [steps](https://docs.microsoft.com/en-us/azure/developer/javascript/how-to/with-visual-studio-code/clone-github-repository?tabs=create-repo-command-palette%2Cinitialize-repo-activity-bar%2Ccreate-branch-command-palette%2Ccommit-changes-command-palette%2Cpush-command-palette)
 ## Install
 In the cloned local project directory, install dependecies required for the project
+
 ```bash
 yarn install
 ```
@@ -27,7 +28,7 @@ Test that the CLI is properly installed and accessing your account by listing yo
 ```bash
 firebase projects:list
 ```
-Next, change into the functions directory and install the dependecies required for cloud functions
+Next, change into the functions directory and install the dependencies required for cloud functions
 ```bash
 cd functions
 yarn install
@@ -36,6 +37,16 @@ Change back into the main directory
 ```bash
 cd..
 ```
+
+When running this repo initially on a machine, you will need to create a .env.development file and a .env.production file in the root folder and initialize with the environment variables which would be sent to you by a team member. 
+
+NEXT_PUBLIC_API_KEY=[KEY]
+NEXT_PUBLIC_AUTH_DOMAIN=[KEY]
+NEXT_PUBLIC_PROJECT_ID=[KEY]
+NEXT_PUBLIC_STORAGE_BUCKET=[KEY]
+NEXT_PUBLIC_MESSAGING_SENDER_ID=[KEY]
+NEXT_PUBLIC_APP_ID=[KEY]
+NEXT_PUBLIC_MEASUREMENT_ID=[KEY]
 
 Add following environment variables:
 
@@ -132,6 +143,9 @@ Grant permissions in GCB to perform Cloud Function upload
 To inspect/debug the docker image
 pull docker image 
 run it using /bin/bash
+
+create variable \_PROJECT_NAME in GCB triggers 
+
 ## TODO
 
 Dev Dockerfile with emulator
@@ -139,3 +153,18 @@ Dev Dockerfile with emulator
 Slack notification for successful build
 
 
+STRIPE INTEGRATION
+### Run stripe-webhook on local
+
+#### Development mode
+
+1. Make sure you have installed stripe CLI on your machine
+2. `stripe login`
+3. Run for development mode
+   `stripe listen --forward-to localhost:3000/api/webhook`
+   Basically this is our api endpoint
+4. This will give webhook signing secret. Copy that to .env.development/STRIPE_WEBHOOK_SIGNING_SECRET
+
+#### Production mode
+
+Put production endpoint url to stripe-webhook endpoint in Developers > Webhooks section of stripe dashboard, get signing secret & put that to .env.production/STRIPE_WEBHOOK_SIGNING_SECRET

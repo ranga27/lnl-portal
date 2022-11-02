@@ -29,6 +29,22 @@ firestore-debug.log
 
 # vercel
 .vercel
+
+# env
+firestore-stripe-payments.env
+firestore-stripe-payments.secret.local
+
+
 **/package-lock.json
+
+.env.development
+
+.env.production
+
+lnlDevServiceAccount.json
+
+.env.local
+
+/test-data/
 
 .env
