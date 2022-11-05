@@ -4,6 +4,6 @@ const sendonboardingemail = require('./onboardingEmail');
 const updateRoleCredits = require('./updateRoleCredits');
 
 exports.sendVerificationEmail = sendVerificationEmail.sendVerificationEmail;
-exports.confirmemail = confirmEmail.confirmemail;
+exports.confirmEmail = confirmEmail.confirmEmail;
 exports.sendonboardingemail = sendonboardingemail.sendonboardingemail;
-exports.updaterolecredits = updateRoleCredits.updaterolecredits;
+exports.updateRoleCredits = updateRoleCredits.updateRoleCredits;

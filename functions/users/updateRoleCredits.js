@@ -53,7 +53,7 @@ const fulFillOrder = async (session) => {
     });
 };
 
-exports.updaterolecredits = functions
+exports.updateRoleCredits = functions
   .region('europe-west2')
   .runWith({
     secrets: [
