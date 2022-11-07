@@ -8,8 +8,7 @@ import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
 import Button from '../../components/UI/Form/Button';
 import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 
-const phoneRegExp =
-  /^\+?((?:9[679]|8[035789]|6[789]|5[90]|42|3[578]|2[1-689])|9[0-58]|8[1246]|6[0-6]|5[1-8]|4[013-9]|3[0-469]|2[70]|7|1|0)(?:\W*\d){0,13}\d$/;
+const phoneRegExp = /^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$/;
 const linkedInRegExp =
   /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile|company)/gm;
 
