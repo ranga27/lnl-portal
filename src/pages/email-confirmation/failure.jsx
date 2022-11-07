@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
 
 const SuccessMessage = () => (
   <div>
@@ -8,12 +8,10 @@ const SuccessMessage = () => (
       <div className='py-48 xl:py-64 h-full text-gray-800'>
         <div className='flex xl:justify-center lg:justify-center justify-center items-center flex-wrap'>
           <div className='w-48 h-48 relative text-center mx-auto'>
-            <Image
-              src='/assets/white.png'
+            <img
+              src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b'
               alt='Loop Not Luck'
-              layout='fill'
               className='w-full'
-              objectFit='cover'
             />
           </div>
           <div>

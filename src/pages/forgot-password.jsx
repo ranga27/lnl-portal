@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
@@ -68,12 +68,10 @@ export default function ForgotPassword() {
           <div className='flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
+                <img
+                  src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b'
                   alt='Loop Not Luck'
-                  layout='fill'
                   className='w-full'
-                  objectFit='cover'
                 />
               </div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, useState, useContext, useEffect } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
@@ -122,11 +123,9 @@ export default function SideBar({ children }) {
                 </div>
               </Transition.Child>
               <div className='flex-shrink-0 flex text-center mx-auto items-center px-4'>
-                <Image
+                <img
                   className='h-16 w-16'
-                  src='/assets/black.png'
-                  width={50}
-                  height={50}
+                  src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b'
                   alt='LNL'
                 />
               </div>
@@ -191,11 +190,9 @@ export default function SideBar({ children }) {
       <div className='hidden lg:flex lg:flex-shrink-0'>
         <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-gray-800'>
           <div className='flex-shrink-0 flex text-center mx-auto items-center px-4 pt-4'>
-            <Image
+            <img
               className='h-16 w-16'
-              src='/assets/black.png'
-              width={50}
-              height={50}
+              src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b'
               alt='LNL'
             />
           </div>
