@@ -22,13 +22,13 @@ export const localeOptions = [
 ];
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyC9ifH-hmwCIxCd1SYNfsBnHCdzgoSO7AA',
-  authDomain: 'lnl-dev.firebaseapp.com',
-  projectId: 'lnl-dev',
-  storageBucket: 'lnl-dev.appspot.com',
-  messagingSenderId: '533712523465',
-  appId: '1:533712523465:web:8ca43166340d53f2b27d18',
-  measurementId: 'G-2L92WTL06P',
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfig.storageBucket}/`;

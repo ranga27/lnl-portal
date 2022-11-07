@@ -4,8 +4,8 @@
   "scripts": {
     "dev": "concurrently next 'npm:emulators'",
     "cypress": "cypress open",
-    "build": "next build src/",
-    "start": "next start src/",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
     "serve": "npm run build && npm run emulators",
     "emulators": "firebase emulators:start --import ./test-data --export-on-exit=./test-data",
