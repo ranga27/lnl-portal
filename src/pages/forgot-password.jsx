@@ -12,6 +12,7 @@ import IntlMessages from '../utils/IntlMessages';
 import { TextInput } from '../components/UI/Form/Input';
 import { auth } from '../../firebase/clientApp';
 import { getForgotPasswordError } from '../utils/getForgotPasswordError';
+import { lnlLogo } from '../components/data/constants';
 
 const validateEmail = yup.object().shape({
   email: yup
@@ -68,11 +69,7 @@ export default function ForgotPassword() {
           <div className='flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <img
-                  src='https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b'
-                  alt='Loop Not Luck'
-                  className='w-full'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
