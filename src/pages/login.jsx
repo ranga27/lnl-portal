@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
@@ -12,9 +12,9 @@ import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
 import { signInSchema } from '../components/schemas/loginSchema';
 import GoogleSignIn from '../components/layout/googleSignIn';
-import GithubSignIn from '../components/layout/GithubSignIn';
 import { auth } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
+import { lnlLogo } from '../components/data/constants';
 
 export default function Login() {
   const router = useRouter();
@@ -67,13 +67,7 @@ export default function Login() {
           <div className='flex xl:justify-between lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className=''>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
-                  alt='Loop Not Luck'
-                  layout='fill'
-                  className='w-full'
-                  objectFit='cover'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
@@ -86,8 +80,6 @@ export default function Login() {
                 </div>
                 <div className='mx-auto text-center mb-8'>
                   <GoogleSignIn />
-
-                  <GithubSignIn />
                 </div>
                 <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                   <p className='text-center font-semibold mx-4 mb-0'>

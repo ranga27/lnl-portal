@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, useState, useContext, useEffect } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
@@ -18,8 +19,9 @@ import Avatar from 'react-avatar';
 import { AuthContext } from '../context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 import RolesList from './RolesList';
-import Image from 'next/image';
 import Onboarding from '../../pages/onboarding';
+import { lnlLogo } from '../data/constants';
+
 const navigation = [
   {
     name: 'Dashboard',
@@ -122,13 +124,7 @@ export default function SideBar({ children }) {
                 </div>
               </Transition.Child>
               <div className='flex-shrink-0 flex text-center mx-auto items-center px-4'>
-                <Image
-                  className='h-16 w-16'
-                  src='/assets/black.png'
-                  width={50}
-                  height={50}
-                  alt='LNL'
-                />
+                <img className='h-16 w-16' src={lnlLogo} alt='LNL' />
               </div>
               <div className='mt-5 flex-1 h-0 overflow-y-auto'>
                 <nav className='px-2'>
@@ -191,13 +187,7 @@ export default function SideBar({ children }) {
       <div className='hidden lg:flex lg:flex-shrink-0'>
         <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-gray-800'>
           <div className='flex-shrink-0 flex text-center mx-auto items-center px-4 pt-4'>
-            <Image
-              className='h-16 w-16'
-              src='/assets/black.png'
-              width={50}
-              height={50}
-              alt='LNL'
-            />
+            <img className='h-16 w-16' src={lnlLogo} alt='LNL' />
           </div>
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}

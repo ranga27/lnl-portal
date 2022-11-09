@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -10,6 +11,7 @@ import * as yup from 'yup';
 import IntlMessages from '../utils/IntlMessages';
 import { TextInput } from '../components/UI/Form/Input';
 import { auth } from '../../firebase/clientApp';
+import { lnlLogo } from '../components/data/constants';
 
 const validatePassword = yup.object().shape({
   password: yup
@@ -58,13 +60,7 @@ export default function ResetPassword() {
           <div className='flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
-                  alt='Loop Not Luck'
-                  layout='fill'
-                  className='w-full'
-                  objectFit='cover'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
