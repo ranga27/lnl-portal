@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
@@ -14,6 +14,7 @@ import { signInSchema } from '../components/schemas/loginSchema';
 import GoogleSignIn from '../components/layout/googleSignIn';
 import { auth } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
+import { lnlLogo } from '../components/data/constants';
 
 export default function Login({ errorText }) {
   const router = useRouter();
@@ -62,13 +63,7 @@ export default function Login({ errorText }) {
           <div className='flex xl:justify-between lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className=''>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
-                  alt='Loop Not Luck'
-                  layout='fill'
-                  className='w-full'
-                  objectFit='cover'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>

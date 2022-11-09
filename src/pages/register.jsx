@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
-import Image from 'next/image';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { collection, serverTimestamp } from 'firebase/firestore';
@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
 import { TermsInfo } from '../components/layout/TermsInfo';
 import { getUserError } from '../utils/getUserError';
+import { lnlLogo } from '../components/data/constants';
 
 export default function Register() {
   const defaultValues = {
@@ -129,13 +130,7 @@ export default function Register() {
           <div className='flex xl:justify-between lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className=''>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
-                  alt='Loop Not Luck'
-                  layout='fill'
-                  className='w-full'
-                  objectFit='cover'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>
