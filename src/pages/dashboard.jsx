@@ -4,15 +4,12 @@ import SideBar from '../components/layout/Sidebar';
 import Footer from '../components/layout/Footer';
 import IntlMessages from '../utils/IntlMessages';
 import Onboarding from './onboarding';
-import Login from './login';
-import { useRouter } from 'next/router';
 import { fetchUserProfileDataFromFirestore } from '../../firebase/firestoreService';
 import DashboardContainer from '../components/containers/DashboardContainer';
 
 export default function Dashboard() {
-  const router = useRouter();
   const {
-    userData: { userId, userEmail },
+    userData: { userId },
   } = useContext(AuthContext);
   const [user, setUser] = useState([]);
 
@@ -24,12 +21,6 @@ export default function Dashboard() {
 
   if (user && user.isOnboarded === false) {
     return <Onboarding />;
-  }
-
-  if (!user) {
-    return (
-      <Login errorText={'Please verify your email before trying to login'} />
-    );
   }
 
   return (

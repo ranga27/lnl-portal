@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
@@ -16,9 +16,10 @@ import GithubSignIn from '../components/layout/GithubSignIn';
 import { auth } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
 
-export default function Login({ errorText }) {
+export default function Login() {
   const router = useRouter();
   const alert = withReactContent(Swal);
+  const [errorText, setErrorText] = useState('');
   const defaultValues = {
     email: '',
     password: '',
@@ -36,7 +37,10 @@ export default function Login({ errorText }) {
   const mutation = useAuthSignInWithEmailAndPassword(auth, {
     onSuccess(userCred) {
       console.debug('User is signed in!');
-      if (userCred.user) {
+      if (userCred && !userCred?.user?.emailVerified) {
+        setErrorText('Please verify your email before trying to login');
+      } else {
+        setErrorText('');
         router.push('/dashboard');
       }
     },
