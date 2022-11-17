@@ -5,6 +5,7 @@ const tabs = [
   { id: '01', tab: 'tab1', name: 'Role details', current: true },
   { id: '02', tab: 'tab2', name: 'Hiring manager', current: false },
   { id: '03', tab: 'tab3', name: 'Additional Information', current: false },
+  { id: '04', tab: 'tab4', name: 'Custom Questions', current: false },
 ];
 
 export default function Tabs({ activeTab, handleChangeTab }) {

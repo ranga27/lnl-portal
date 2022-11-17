@@ -21,6 +21,7 @@ import AuthRoute from '../../components/context/authRoute';
 import AddRoleForm from '../../components/form/AddRoleForm';
 import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
+import CustomQuestions from '../../components/form/CustomQuestions';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
 import {
@@ -104,8 +105,10 @@ export default function AddRole() {
       setActiveTab('tab1');
     } else if (data === 'tab2') {
       setActiveTab('tab2');
-    } else {
+    } else if (data === 'tab3') {
       setActiveTab('tab3');
+    } else {
+      setActiveTab('tab4');
     }
   };
 
@@ -260,6 +263,11 @@ export default function AddRole() {
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation
+                          handleSaveFields={(data) => onSubmit(data)}
+                          fields={fields}
+                        />
+                      ) : activeTab === 'tab4' ? (
+                        <CustomQuestions
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
                         />
