@@ -1,5 +1,7 @@
+import {ReactFormBuilder} from 'react-form-builder2';
+
 const CustomQuestions = () => {
-  return <div>CustomQuestions</div>;
+  return <ReactFormBuilder />;
 };
 
 export default CustomQuestions;

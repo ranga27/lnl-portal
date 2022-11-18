@@ -268,8 +268,8 @@ export default function AddRole() {
                         />
                       ) : activeTab === 'tab4' ? (
                         <CustomQuestions
-                          handleSaveFields={(data) => onSubmit(data)}
-                          fields={fields}
+                        // handleSaveFields={(data) => onSubmit(data)}
+                        // fields={fields}
                         />
                       ) : null}
                     </div>
