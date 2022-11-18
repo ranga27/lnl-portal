@@ -48,6 +48,9 @@ module.exports = {
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',
   'roles.post': 'Post a role',
+  'roles.previewForm': 'Preview Form',
+  'roles.close': 'Close',
+  'roles.submit': 'Submit',
 
   /* 04.Onboarding */
   'onboarding.lastName': 'Last Name',

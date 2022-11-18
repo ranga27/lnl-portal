@@ -21,7 +21,7 @@ import AuthRoute from '../../components/context/authRoute';
 import AddRoleForm from '../../components/form/AddRoleForm';
 import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
-import CustomQuestions from '../../components/form/CustomQuestions';
+import CustomQuestions from '../../components/form/customQuestions/CustomQuestions';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
 import {
@@ -268,8 +268,10 @@ export default function AddRole() {
                         />
                       ) : activeTab === 'tab4' ? (
                         <CustomQuestions
-                        // handleSaveFields={(data) => onSubmit(data)}
-                        // fields={fields}
+                          roleId={roleId}
+                          companyId={company[0].id}
+                          // handleSaveFields={(data) => onSubmit(data)}
+                          // fields={fields}
                         />
                       ) : null}
                     </div>
