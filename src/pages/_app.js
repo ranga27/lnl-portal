@@ -31,6 +31,7 @@ function MyApp({ Component, pageProps }) {
                 rel='stylesheet'
                 href='https://use.fontawesome.com/releases/v5.13.0/css/all.css'
               />
+              {/* // TODO: Below stylesheet is used for react-form-builder2 which is conflicting with current designs. Need to fix this! */}
               <link
                 rel='stylesheet'
                 href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'

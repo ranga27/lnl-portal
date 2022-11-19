@@ -268,7 +268,7 @@ export default function AddRole() {
                         />
                       ) : activeTab === 'tab4' ? (
                         <CustomQuestions
-                          roleId={roleId}
+                          _roleId={roleId}
                           companyId={company[0].id}
                           // handleSaveFields={(data) => onSubmit(data)}
                           // fields={fields}

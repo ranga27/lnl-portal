@@ -6,21 +6,33 @@ import {
 } from 'react-form-builder2';
 // Hooks
 import useDocumentMutation from '../../hooks/useDocumentMutation';
+import useCollection from '../../hooks/useCollection';
 // Components
 import IntlMessages from '../../../utils/IntlMessages';
 // Helpers
 import { toolbarItems } from './helpers';
-import useDocument from '../../hooks/useDocument';
 
-const CustomQuestions = ({ roleId, companyId }) => {
-  const { mutateDocument } = useDocumentMutation('questionnaire', roleId);
+const CustomQuestions = ({ _roleId, companyId }) => {
+  const [roleId, setRoleId] = useState(_roleId);
 
-  const { data: questionnaire, isLoading } = useDocument(
+  const { data: questionnaire, isLoading } = useCollection('questionnaire', [
+    'companyId',
+    '==',
+    companyId,
+  ]);
+
+  useEffect(() => {
+    questionnaire && setRoleId(questionnaire[0]?.roleId);
+  }, [questionnaire]);
+
+  const { mutateDocument } = useDocumentMutation(
     'questionnaire',
-    roleId
+    roleId || 'noId'
   );
 
-  const [data, setData] = useState(questionnaire?.questions || []); // TODO: Load default values from 'questionnaire' collection
+  const [data, setData] = useState(
+    questionnaire ? questionnaire[0]?.questions : []
+  );
   const [previewVisible, setPreviewVisible] = useState(false);
 
   useEffect(() => {
@@ -34,6 +46,10 @@ const CustomQuestions = ({ roleId, companyId }) => {
       questions,
     });
   };
+
+  if (isLoading) {
+    return <div className='loading' />;
+  }
 
   return (
     <div className='bg-white py-6 px-4 sm:p-6'>
