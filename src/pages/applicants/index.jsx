@@ -1,15 +1,23 @@
+import { useContext, useState, useEffect } from 'react';
 import SideBar from '../../components/layout/Sidebar';
 import Footer from '../../components/layout/Footer';
 import IntlMessages from '../../utils/IntlMessages';
 import ApplicantsList from '../../components/containers/Applicants';
-import useQueryCollection from '../../components/hooks/useQueryCollection';
+import { AuthContext } from '../../components/context/AuthContext';
+import { getCompany } from '../../../firebase/firestoreService';
 
 export default function Applicants() {
-  const { isLoading, data: users } = useQueryCollection('users');
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
 
-  if (isLoading) {
-    return <div className='loading' />;
-  }
+  const [company, setCompany] = useState([]);
+
+  useEffect(() => {
+    getCompany(userId).then((results) => {
+      setCompany(results);
+    });
+  }, [userId]);
 
   return (
     <SideBar>
@@ -21,7 +29,9 @@ export default function Applicants() {
             </h1>
           </div>
         </div>
-        <ApplicantsList applicants={users} />
+        {company.length !== 0 && (
+          <ApplicantsList companyId={company && company[0]?.id} />
+        )}
       </main>
       <Footer />
     </SideBar>
