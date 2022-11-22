@@ -112,3 +112,45 @@ export async function addRoleInCompanyFirestore(data, id) {
     ...data,
   });
 }
+
+export async function getAcceptedUserInRoleFirestore(roleId, userId) {
+  const docRef = collection(
+    firestore,
+    'companyRolesV2',
+    roleId,
+    'acceptedApplicants'
+  );
+
+  const querySnapshot = await getDocs(docRef);
+  const acceptedUsers = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  const checkIfApplicantIsAccepted = acceptedUsers.filter(
+    (user) => user.userId === userId
+  );
+
+  return checkIfApplicantIsAccepted;
+}
+
+export async function getRejectedUserInRoleFirestore(roleId, userId) {
+  const docRef = collection(
+    firestore,
+    'companyRolesV2',
+    roleId,
+    'rejectedApplicants'
+  );
+
+  const querySnapshot = await getDocs(docRef);
+  const rejectedUsers = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  const checkIfApplicantIsRejected = rejectedUsers.filter(
+    (user) => user.userId === userId
+  );
+
+  return checkIfApplicantIsRejected;
+}
