@@ -10,6 +10,7 @@ import { firestore } from '../../../firebase/clientApp';
 import {
   getAcceptedUserInRoleFirestore,
   getRejectedUserInRoleFirestore,
+  updateInviteCreditsInCompanyFirestore,
 } from '../../../firebase/firestoreService';
 
 const tabs = [
@@ -73,6 +74,10 @@ const Applicant = ({ Applicant, roleData }) => {
         ).then((results) => {
           setRejectedUsers(results);
         });
+        await updateInviteCreditsInCompanyFirestore(
+          roleData.companyId,
+          roleData.companyInviteCredits
+        );
         Swal.fire({
           title: 'Success!',
           text: 'Candidate Accepted.',

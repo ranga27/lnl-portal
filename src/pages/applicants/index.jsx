@@ -30,7 +30,10 @@ export default function Applicants() {
           </div>
         </div>
         {company.length !== 0 && (
-          <ApplicantsList companyId={company && company[0]?.id} />
+          <ApplicantsList
+            companyId={company && company[0]?.id}
+            companyInviteCredits={company && company[0]?.inviteCredits}
+          />
         )}
       </main>
       <Footer />

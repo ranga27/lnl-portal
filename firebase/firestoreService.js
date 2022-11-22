@@ -154,3 +154,17 @@ export async function getRejectedUserInRoleFirestore(roleId, userId) {
 
   return checkIfApplicantIsRejected;
 }
+
+export async function updateInviteCreditsInCompanyFirestore(
+  companyId,
+  companyInviteCredits
+) {
+  const docRef = doc(firestore, 'companyV2', companyId);
+  await setDoc(
+    docRef,
+    {
+      inviteCredits: companyInviteCredits - 1,
+    },
+    { merge: true }
+  );
+}
