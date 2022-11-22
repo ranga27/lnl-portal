@@ -26,6 +26,7 @@ const removeUndefinedFields = (data) => {
 
 const CustomQuestions = ({ _roleId, companyId }) => {
   const [roleId, setRoleId] = useState(_roleId);
+  const url = `http://127.0.0.1:5001/lnl-dev/europe-west2/users-fetchQuestions?companyId=${companyId}`;
 
   const { data: questionnaire, isLoading } = useCollection('questionnaire', [
     'companyId',
@@ -118,7 +119,7 @@ const CustomQuestions = ({ _roleId, companyId }) => {
         </div>
       )}
 
-      <ReactFormBuilder toolbarItems={toolbarItems} />
+      <ReactFormBuilder url={url} toolbarItems={toolbarItems} />
     </div>
   );
 };
