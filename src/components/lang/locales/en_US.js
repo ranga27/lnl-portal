@@ -93,8 +93,10 @@ module.exports = {
 
   /* 06.Applicants */
   'applicant.title': 'Applicants',
+  'role.empty-title': 'Roles list',
+  'role.empty-subtitle': 'Select a role to view the applicants.',
   'applicant.empty-title': 'Applicants list',
-  'applicant.empty-subtitle': 'Select a candidate to view their details.',
+  'applicant.empty-subtitle': 'No applicants yet for this role.',
   /* 07.Settings */
   'settings.title': 'Settings',
 

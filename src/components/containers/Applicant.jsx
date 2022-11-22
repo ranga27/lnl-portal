@@ -1,7 +1,16 @@
-import React from 'react';
+/* eslint-disable @next/next/no-img-element */
+import React, { useState } from 'react';
 import Avatar from 'react-avatar';
+import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
 import { getName } from '../../utils/commands';
-import { MailIcon, PhoneIcon } from '@heroicons/react/solid';
+import { CheckIcon, XIcon } from '@heroicons/react/outline';
+import Swal from 'sweetalert2';
+import { collection, serverTimestamp } from 'firebase/firestore';
+import { firestore } from '../../../firebase/clientApp';
+import {
+  getAcceptedUserInRoleFirestore,
+  getRejectedUserInRoleFirestore,
+} from '../../../firebase/firestoreService';
 
 const tabs = [
   { name: 'About', href: '#', current: true },
@@ -13,7 +22,110 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-const Applicant = ({ Applicant }) => {
+const Applicant = ({ Applicant, roleData }) => {
+  const [acceptedUsers, setAcceptedUsers] = useState([]);
+  const [rejectedUsers, setRejectedUsers] = useState([]);
+
+  const acceptCandidateRef = collection(
+    firestore,
+    'companyRolesV2',
+    roleData.id,
+    'acceptedApplicants'
+  );
+
+  const rejectCandidateRef = collection(
+    firestore,
+    'companyRolesV2',
+    roleData.id,
+    'rejectedApplicants'
+  );
+  const acceptCandidateMutation = useFirestoreCollectionMutation(
+    acceptCandidateRef,
+    {
+      merge: true,
+    }
+  );
+
+  const rejectCandidateMutation = useFirestoreCollectionMutation(
+    rejectCandidateRef,
+    {
+      merge: true,
+    }
+  );
+
+  const handleAcceptCandidate = (data) => {
+    const newData = {
+      userId: data.userId,
+      updatedAt: serverTimestamp(),
+    };
+
+    acceptCandidateMutation.mutate(newData, {
+      async onSuccess() {
+        await getAcceptedUserInRoleFirestore(
+          roleData.id,
+          Applicant.userId
+        ).then((results) => {
+          setAcceptedUsers(results);
+        });
+        await getRejectedUserInRoleFirestore(
+          roleData.id,
+          Applicant.userId
+        ).then((results) => {
+          setRejectedUsers(results);
+        });
+        Swal.fire({
+          title: 'Success!',
+          text: 'Candidate Accepted.',
+          icon: 'success',
+          iconColor: '#3085d6',
+          showConfirmButton: false,
+        });
+      },
+      onError() {
+        Swal.fire('Oops!', 'Error accepting candidate.', 'error');
+      },
+      onMutate() {
+        console.info('accepting candidate...');
+      },
+    });
+  };
+
+  const handleRejectCandidate = (data) => {
+    const newData = {
+      userId: data.userId,
+      updatedAt: serverTimestamp(),
+    };
+
+    rejectCandidateMutation.mutate(newData, {
+      async onSuccess() {
+        await getAcceptedUserInRoleFirestore(
+          roleData.id,
+          Applicant.userId
+        ).then((results) => {
+          setAcceptedUsers(results);
+        });
+        await getRejectedUserInRoleFirestore(
+          roleData.id,
+          Applicant.userId
+        ).then((results) => {
+          setRejectedUsers(results);
+        });
+        Swal.fire({
+          title: 'Success!',
+          text: 'Candidate Rejected.',
+          icon: 'success',
+          iconColor: '#3085d6',
+          showConfirmButton: false,
+        });
+      },
+      onError() {
+        Swal.fire('Oops!', 'Error rejecting candidate.', 'error');
+      },
+      onMutate() {
+        console.info('rejecting candidate...');
+      },
+    });
+  };
   return (
     <article>
       <div>
@@ -45,26 +157,58 @@ const Applicant = ({ Applicant }) => {
                 </h1>
               </div>
               <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                <button
-                  type='button'
-                  className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-                >
-                  <MailIcon
-                    className='-ml-1 mr-2 h-5 w-5 text-gray-400'
-                    aria-hidden='true'
-                  />
-                  <span>Message</span>
-                </button>
-                <button
-                  type='button'
-                  className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-                >
-                  <PhoneIcon
-                    className='-ml-1 mr-2 h-5 w-5 text-gray-400'
-                    aria-hidden='true'
-                  />
-                  <span>Call</span>
-                </button>
+                {acceptedUsers.length === 0 ? (
+                  <button
+                    type='button'
+                    onClick={() => handleAcceptCandidate(Applicant)}
+                    disabled={rejectedUsers.length === 1}
+                    className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                  >
+                    <CheckIcon
+                      className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                    <span>Accept</span>
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    disabled
+                    className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                  >
+                    <CheckIcon
+                      className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                    <span>Accepted</span>
+                  </button>
+                )}
+                {rejectedUsers.length === 0 ? (
+                  <button
+                    type='button'
+                    disabled={acceptedUsers.length === 1}
+                    onClick={() => handleRejectCandidate(Applicant)}
+                    className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                  >
+                    <XIcon
+                      className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                    <span>Reject</span>
+                  </button>
+                ) : (
+                  <button
+                    type='button'
+                    disabled
+                    className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                  >
+                    <XIcon
+                      className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                      aria-hidden='true'
+                    />
+                    <span>Rejected</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -254,11 +398,7 @@ const Applicant = ({ Applicant }) => {
               Roles Of Interest
             </dt>
             <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.rolesOfInterest
-                ? Applicant.rolesOfInterest.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))
-                : '-'}
+              {Applicant.rolesOfInterest || '-'}
             </dd>
           </div>
         </dl>
