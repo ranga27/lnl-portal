@@ -12,6 +12,18 @@ import IntlMessages from '../../../utils/IntlMessages';
 // Helpers
 import { toolbarItems } from './helpers';
 
+const removeUndefinedFields = (data) => {
+  data.forEach((elm) => {
+    for (let key in elm) {
+      if (!elm[key]) {
+        delete elm[key];
+      }
+    }
+  });
+
+  return data;
+};
+
 const CustomQuestions = ({ _roleId, companyId }) => {
   const [roleId, setRoleId] = useState(_roleId);
 
@@ -22,13 +34,8 @@ const CustomQuestions = ({ _roleId, companyId }) => {
   ]);
 
   useEffect(() => {
-    questionnaire && setRoleId(questionnaire[0]?.roleId);
+    questionnaire?.length && setRoleId(questionnaire[0]?.roleId);
   }, [questionnaire]);
-
-  const { mutateDocument } = useDocumentMutation(
-    'questionnaire',
-    roleId || 'noId'
-  );
 
   const [data, setData] = useState(
     questionnaire ? questionnaire[0]?.questions : []
@@ -37,13 +44,22 @@ const CustomQuestions = ({ _roleId, companyId }) => {
 
   useEffect(() => {
     ElementStore.subscribe((state) => setData(state.data));
-  }, []);
+  });
 
-  const handleSubmit = (questions) => {
+  const { mutateDocument } = useDocumentMutation(
+    'questionnaire',
+    roleId || 'noId'
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const filteredData = removeUndefinedFields(data);
+
     mutateDocument({
       roleId,
       companyId,
-      questions,
+      questions: filteredData,
     });
   };
 
@@ -62,6 +78,12 @@ const CustomQuestions = ({ _roleId, companyId }) => {
         >
           <IntlMessages id='roles.previewForm' />
         </button>
+        <button
+          className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+          onClick={handleSubmit}
+        >
+          <IntlMessages id='roles.saveForm' />
+        </button>
       </div>
 
       {previewVisible && (
@@ -70,10 +92,12 @@ const CustomQuestions = ({ _roleId, companyId }) => {
             <div className='modal-content'>
               <div className='modal-body'>
                 <ReactFormGenerator
-                  onSubmit={handleSubmit}
                   data={data}
                   submitButton={
-                    <button className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
+                    <button
+                      onClick={handleSubmit}
+                      className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                    >
                       <IntlMessages id='roles.submit' />
                     </button>
                   }

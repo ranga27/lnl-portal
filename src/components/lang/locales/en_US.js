@@ -49,6 +49,7 @@ module.exports = {
   'roles.next': 'Next',
   'roles.post': 'Post a role',
   'roles.previewForm': 'Preview Form',
+  'roles.saveForm': 'Save Form',
   'roles.close': 'Close',
   'roles.submit': 'Submit',
 
