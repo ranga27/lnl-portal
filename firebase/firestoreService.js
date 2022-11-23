@@ -154,3 +154,30 @@ export async function getRejectedUserInRoleFirestore(roleId, userId) {
 
   return checkIfApplicantIsRejected;
 }
+
+export async function updateCustomQuestionsInQuestionnaireFirestore(
+  customQuestions,
+  roleId
+) {
+  const docRef = doc(firestore, 'questionnaire', roleId);
+  await setDoc(
+    docRef,
+    {
+      customQuestions,
+    },
+    { merge: true }
+  );
+}
+
+export async function addCustomQuestionsInQuestionnaireFirestore(
+  customQuestions,
+  companyId,
+  roleId
+) {
+  const docRef = doc(firestore, 'questionnaire', roleId);
+  await setDoc(docRef, {
+    customQuestions,
+    companyId,
+    roleId,
+  });
+}

@@ -25,7 +25,9 @@ import CustomQuestions from '../../components/form/customQuestions/CustomQuestio
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
 import {
+  addCustomQuestionsInQuestionnaireFirestore,
   addRoleInCompanyFirestore,
+  updateCustomQuestionsInQuestionnaireFirestore,
   updateRoleCreditsInCompanyFirestore,
 } from '../../../firebase/firestoreService';
 import { v4 as uuidv4 } from 'uuid';
@@ -137,6 +139,8 @@ export default function AddRole() {
       experience,
     } = newFields;
 
+    const customQuestions = data;
+
     if (
       !title ||
       !location ||
@@ -168,14 +172,23 @@ export default function AddRole() {
       const newData = {
         ...fields,
         ...date,
-        ...data,
+        // ...data,
         companyId: company[0].id,
         pinned: false,
       };
+
       if (role && role.id) {
         rolesMutation.mutate(newData, {
           async onSuccess() {
             await addRoleInCompanyFirestore(newData, role.id);
+
+            // TODO: Fix below
+            // await addCustomQuestionsInQuestionnaireFirestore(
+            //   customQuestions,
+            //   company[0].id,
+            //   role.id
+            // );
+
             Swal.fire({
               title: 'Success!',
               text: 'Role Updated.',
@@ -198,10 +211,18 @@ export default function AddRole() {
         mutation.mutate(newData, {
           async onSuccess() {
             await addRoleInCompanyFirestore(newData, roleId);
+
             await updateRoleCreditsInCompanyFirestore(
               company[0].roleCredits,
               company[0].id
             );
+
+            // TODO: Fix below
+            // await updateCustomQuestionsInQuestionnaireFirestore(
+            //   customQuestions,
+            //   roleId
+            // );
+
             Swal.fire({
               title: 'Success!',
               text: 'New Role Added.',
@@ -263,15 +284,13 @@ export default function AddRole() {
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation
-                          handleSaveFields={(data) => onSubmit(data)}
+                          handleChangeTab={handleChangeTab}
+                          handleSaveFields={updateForm}
                           fields={fields}
                         />
                       ) : activeTab === 'tab4' ? (
                         <CustomQuestions
-                          _roleId={roleId}
-                          companyId={company[0].id}
-                          // handleSaveFields={(data) => onSubmit(data)}
-                          // fields={fields}
+                          handleSaveFields={(data) => onSubmit(data)}
                         />
                       ) : null}
                     </div>

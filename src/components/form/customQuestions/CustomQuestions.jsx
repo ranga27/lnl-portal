@@ -4,9 +4,6 @@ import {
   ReactFormBuilder,
   ReactFormGenerator,
 } from 'react-form-builder2';
-// Hooks
-import useDocumentMutation from '../../hooks/useDocumentMutation';
-import useCollection from '../../hooks/useCollection';
 // Components
 import IntlMessages from '../../../utils/IntlMessages';
 // Helpers
@@ -24,49 +21,19 @@ const removeUndefinedFields = (data) => {
   return data;
 };
 
-const CustomQuestions = ({ _roleId, companyId }) => {
-  const [roleId, setRoleId] = useState(_roleId);
-  const url = `http://127.0.0.1:5001/lnl-dev/europe-west2/users-fetchQuestions?companyId=${companyId}`;
-
-  const { data: questionnaire, isLoading } = useCollection('questionnaire', [
-    'companyId',
-    '==',
-    companyId,
-  ]);
-
-  useEffect(() => {
-    questionnaire?.length && setRoleId(questionnaire[0]?.roleId);
-  }, [questionnaire]);
-
-  const [data, setData] = useState(
-    questionnaire ? questionnaire[0]?.questions : []
-  );
+const CustomQuestions = ({ handleSaveFields }) => {
+  const [data, setData] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
 
   useEffect(() => {
     ElementStore.subscribe((state) => setData(state.data));
   });
 
-  const { mutateDocument } = useDocumentMutation(
-    'questionnaire',
-    roleId || 'noId'
-  );
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const onSubmit = () => {
     const filteredData = removeUndefinedFields(data);
 
-    mutateDocument({
-      roleId,
-      companyId,
-      questions: filteredData,
-    });
+    handleSaveFields(filteredData);
   };
-
-  if (isLoading) {
-    return <div className='loading' />;
-  }
 
   return (
     <div className='form-builder-custom-css bg-white py-6 px-4 sm:p-6'>
@@ -81,9 +48,9 @@ const CustomQuestions = ({ _roleId, companyId }) => {
         </button>
         <button
           className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-          onClick={handleSubmit}
+          onClick={onSubmit}
         >
-          <IntlMessages id='roles.saveForm' />
+          <IntlMessages id='general.submit' />
         </button>
       </div>
 
@@ -96,7 +63,7 @@ const CustomQuestions = ({ _roleId, companyId }) => {
                   data={data}
                   submitButton={
                     <button
-                      onClick={handleSubmit}
+                      onClick={onSubmit}
                       className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                     >
                       <IntlMessages id='roles.submit' />
@@ -119,7 +86,7 @@ const CustomQuestions = ({ _roleId, companyId }) => {
         </div>
       )}
 
-      <ReactFormBuilder url={url} toolbarItems={toolbarItems} />
+      <ReactFormBuilder toolbarItems={toolbarItems} />
     </div>
   );
 };
