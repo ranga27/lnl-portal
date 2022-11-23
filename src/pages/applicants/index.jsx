@@ -5,6 +5,7 @@ import IntlMessages from '../../utils/IntlMessages';
 import ApplicantsList from '../../components/containers/Applicants';
 import { AuthContext } from '../../components/context/AuthContext';
 import { getCompany } from '../../../firebase/firestoreService';
+import RenewCredits from '../../components/containers/RenewCredits';
 
 export default function Applicants() {
   const {
@@ -19,6 +20,9 @@ export default function Applicants() {
     });
   }, [userId]);
 
+  if (company.length === 0) {
+    return <div className='loading' />;
+  }
   return (
     <SideBar>
       <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
@@ -29,11 +33,16 @@ export default function Applicants() {
             </h1>
           </div>
         </div>
-        {company.length !== 0 && (
+        {company !== [] &&
+        company.length !== 0 &&
+        company[0] &&
+        company[0]?.inviteCredits !== 0 ? (
           <ApplicantsList
             companyId={company && company[0]?.id}
             companyInviteCredits={company && company[0]?.inviteCredits}
           />
+        ) : (
+          <RenewCredits />
         )}
       </main>
       <Footer />
