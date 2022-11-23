@@ -121,7 +121,7 @@ a {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.form-lable {
+.form-builder-custom-css .form-lable {
   display: block !important;
 }
 
