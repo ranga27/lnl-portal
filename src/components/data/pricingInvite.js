@@ -4,7 +4,7 @@ export const pricing = [
     productId: 'prod_MWlLfJxSv2K3so',
     role: 'starter',
     description:
-      '5 invite credits, Unlimited hires, Save 10%, 12 month subscription, Interest free payments',
+      '1 invite credits, Unlimited hires, Save 10%, 12 month subscription, Interest free payments',
     metadata: {
       firebaseRole: 'starter',
     },
@@ -14,7 +14,7 @@ export const pricing = [
     images: [],
     prices: {
       monthlyPrice: {
-        priceId: 'price_1Lnhp0L0eJsZCFIwO6AS7nlu',
+        priceId: 'price_1M7G7DL0eJsZCFIwALxFbQLF',
         tiers_mode: null,
         trial_period_days: null,
         billing_scheme: 'per_unit',
@@ -54,7 +54,7 @@ export const pricing = [
     active: true,
     prices: {
       monthlyPrice: {
-        priceId: 'price_1LnhqRL0eJsZCFIwifJBffWH',
+        priceId: 'price_1M7HgUL0eJsZCFIw0XLKRRwZ',
         tiers_mode: null,
         metadata: {},
         tiers: null,
@@ -94,7 +94,7 @@ export const pricing = [
     tax_code: 'txcd_10000000',
     prices: {
       monthlyPrice: {
-        priceId: 'price_1LnhsWL0eJsZCFIwmePs2JgJ',
+        priceId: 'price_1M7GAfL0eJsZCFIwj5wfZXdY',
         product: 'prod_MWlP2Azin1nZ8G',
         unit_amount: 50000,
         transform_quantity: null,
