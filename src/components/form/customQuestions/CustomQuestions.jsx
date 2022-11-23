@@ -69,7 +69,7 @@ const CustomQuestions = ({ _roleId, companyId }) => {
   }
 
   return (
-    <div className='bg-white py-6 px-4 sm:p-6'>
+    <div className='form-builder-custom-css bg-white py-6 px-4 sm:p-6'>
       <div className='flex justify-between items-center w-[70%] m-3'>
         <h4>Make your questionnaire form</h4>
         {/* //TODO: Tooltip can be used here which shows explanation how to use */}
