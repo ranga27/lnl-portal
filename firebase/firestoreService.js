@@ -176,8 +176,10 @@ export async function addCustomQuestionsInQuestionnaireFirestore(
 ) {
   const docRef = doc(firestore, 'questionnaire', roleId);
   await setDoc(docRef, {
-    customQuestions,
-    companyId,
-    roleId,
+    questions: customQuestions,
+    companyId: companyId,
+    roleId: roleId,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 }

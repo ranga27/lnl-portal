@@ -139,7 +139,7 @@ export default function AddRole() {
       experience,
     } = newFields;
 
-    const customQuestions = data;
+    const customQuestions = data.customQuestions;
 
     if (
       !title ||
@@ -183,11 +183,11 @@ export default function AddRole() {
             await addRoleInCompanyFirestore(newData, role.id);
 
             // TODO: Fix below
-            // await addCustomQuestionsInQuestionnaireFirestore(
-            //   customQuestions,
-            //   company[0].id,
-            //   role.id
-            // );
+            await updateCustomQuestionsInQuestionnaireFirestore(
+              customQuestions,
+              company[0].id,
+              roleId
+            );
 
             Swal.fire({
               title: 'Success!',
@@ -217,11 +217,11 @@ export default function AddRole() {
               company[0].id
             );
 
-            // TODO: Fix below
-            // await updateCustomQuestionsInQuestionnaireFirestore(
-            //   customQuestions,
-            //   roleId
-            // );
+            await addCustomQuestionsInQuestionnaireFirestore(
+              customQuestions,
+              company[0].id,
+              roleId
+            );
 
             Swal.fire({
               title: 'Success!',
@@ -291,6 +291,7 @@ export default function AddRole() {
                       ) : activeTab === 'tab4' ? (
                         <CustomQuestions
                           handleSaveFields={(data) => onSubmit(data)}
+                          fields={fields}
                         />
                       ) : null}
                     </div>

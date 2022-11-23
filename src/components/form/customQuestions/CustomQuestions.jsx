@@ -21,7 +21,7 @@ const removeUndefinedFields = (data) => {
   return data;
 };
 
-const CustomQuestions = ({ handleSaveFields }) => {
+const CustomQuestions = ({ handleSaveFields, fields }) => {
   const [data, setData] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
 
@@ -31,8 +31,8 @@ const CustomQuestions = ({ handleSaveFields }) => {
 
   const onSubmit = () => {
     const filteredData = removeUndefinedFields(data);
-
-    handleSaveFields(filteredData);
+    const newFields = { customQuestions: filteredData, ...fields };
+    handleSaveFields(newFields);
   };
 
   return (
