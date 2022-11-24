@@ -11,29 +11,147 @@ import AllApplicants from './AllApplicants';
 
 const sampleApplicants = [
   {
-    firstName: 'Abraham',
-    lastName: 'Kolawole',
-    email: 'abraham@loopnotluck.com',
-    mobileNumber: '0901322',
-    gender: 'Male',
-  },
-  {
+    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    behaviorAttributes: [
+      'Communication',
+      'Leadership',
+      'Creative and Critical Thinking',
+    ],
+    cvUploadDate: 'Fri Jul 22 2022 13:11:36 GMT+0100',
+    cvUrl:
+      'https://storage.googleapis.com/loop-luck.appspot.com/cv/a518158a-f0be-4af0-9c54-531c5cae3cbe/Chanelle.pdf',
+    degreeSubject: 'Fashion promo',
+    disability: 'No',
+    disabilityAnswer: '',
+    diversity: [
+      'One of my parents has attended university',
+      'I was on free school meals at school',
+      'Publicly funded education',
+    ],
+    email: 'johndoe@hotmail.co.uk',
+    ethnicity: 'Black / African / Caribbean / Black British',
+    ethnicityOther: '',
     firstName: 'John',
-    lastName: 'Doe',
-    email: 'doe@loopnotluck.com',
-    mobileNumber: '0901322',
     gender: 'Male',
+    genderOther: '',
+    graduationYear: 'Tue Jan 01 2019 01:00:00 GMT+0100',
+    userId: 'bc9276f9-2135-4fe1-88ea-1cf3077f33aa',
+    interests: [
+      'Marketing',
+      'Project and Programme Management',
+      'Media, journalism, PR and publishing',
+    ],
+    jobValues: [
+      'Flexible and Remote Working Opportunities',
+      'Social Impact Driven Business',
+      'Inclusive Work Culture',
+    ],
+    lastName: 'Doe',
+    mobileNumber: '07514076817',
+    noticePeriod: '4 weeks notice',
+    rolesInterestedIn: ['Graduate Scheme', 'Full Time', 'Apprenticeship'],
+    rolesOfInterest: 'Operations',
+    specificStartDate: null,
+    start: 'Notice Period',
+    technicalSkills: ['Microsoft Office', 'Social Media'],
+    visaRequired: 'No',
   },
   {
-    firstName: 'Marta',
-    lastName: 'Daniels',
-    email: 'marta@loopnotluck.com',
-    mobileNumber: '0901322',
+    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    email: 'Ryan@loopnotluck.com',
+    behaviorAttributes: [
+      'Communication',
+      'Leadership',
+      'Creative and Critical Thinking',
+    ],
+    cvUploadDate: 'Fri Jul 22 2022 13:11:36 GMT+0100',
+    cvUrl:
+      'https://storage.googleapis.com/loop-luck.appspot.com/cv/a518158a-f0be-4af0-9c54-531c5cae3cbe/Chanelle.pdf',
+    degreeSubject: 'Fashion promo',
+    disability: 'No',
+    disabilityAnswer: '',
+    diversity: [
+      'One of my parents has attended university',
+      'I was on free school meals at school',
+      'Publicly funded education',
+    ],
+    ethnicity: 'Black / African / Caribbean / Black British',
+    ethnicityOther: '',
+    firstName: 'Ryan',
+    gender: 'Male',
+    genderOther: '',
+    graduationYear: 'Tue Jan 01 2019 01:00:00 GMT+0100',
+    userId: 'bc9276f9-2135-4fe1-88ea-1cf3077f33aa',
+    interests: [
+      'Marketing',
+      'Project and Programme Management',
+      'Media, journalism, PR and publishing',
+    ],
+    jobValues: [
+      'Flexible and Remote Working Opportunities',
+      'Social Impact Driven Business',
+      'Inclusive Work Culture',
+    ],
+    lastName: 'Loyd',
+    mobileNumber: '07514076817',
+    noticePeriod: '4 weeks notice',
+    rolesInterestedIn: ['Graduate Scheme', 'Full Time', 'Apprenticeship'],
+    rolesOfInterest: 'Operations',
+    specificStartDate: null,
+    start: 'Notice Period',
+    technicalSkills: ['Microsoft Office', 'Social Media'],
+    visaRequired: 'No',
+  },
+  {
+    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    email: 'matthew@loopnotluck.com',
+    behaviorAttributes: [
+      'Communication',
+      'Leadership',
+      'Creative and Critical Thinking',
+    ],
+    cvUploadDate: 'Fri Jul 22 2022 13:11:36 GMT+0100',
+    cvUrl:
+      'https://storage.googleapis.com/loop-luck.appspot.com/cv/a518158a-f0be-4af0-9c54-531c5cae3cbe/Chanelle.pdf',
+    degreeSubject: 'Fashion promo',
+    disability: 'No',
+    disabilityAnswer: '',
+    diversity: [
+      'One of my parents has attended university',
+      'I was on free school meals at school',
+      'Publicly funded education',
+    ],
+    email: 'chanellefrancism@hotmail.co.uk',
+    ethnicity: 'Black / African / Caribbean / Black British',
+    ethnicityOther: '',
+    firstName: 'Chanelle',
     gender: 'Female',
+    genderOther: '',
+    graduationYear: 'Tue Jan 01 2019 01:00:00 GMT+0100',
+    userId: 'bc9276f9-2135-4fe1-88ea-1cf3077f33aa',
+    interests: [
+      'Marketing',
+      'Project and Programme Management',
+      'Media, journalism, PR and publishing',
+    ],
+    jobValues: [
+      'Flexible and Remote Working Opportunities',
+      'Social Impact Driven Business',
+      'Inclusive Work Culture',
+    ],
+    lastName: 'Francis',
+    mobileNumber: '07514076817',
+    noticePeriod: '4 weeks notice',
+    rolesInterestedIn: ['Graduate Scheme', 'Full Time', 'Apprenticeship'],
+    rolesOfInterest: 'Operations',
+    specificStartDate: null,
+    start: 'Notice Period',
+    technicalSkills: ['Microsoft Office', 'Social Media'],
+    visaRequired: 'No',
   },
 ];
 
-export default function ApplicantsList({ companyId }) {
+export default function ApplicantsList({ companyId, companyInviteCredits }) {
   const [SearchTerms, setSearchTerms] = useState('');
   const [ApplicantData, setApplicant] = useState([]);
   const [SearchResult, setSearchResult] = useState([]);
@@ -60,7 +178,12 @@ export default function ApplicantsList({ companyId }) {
   }, [roles, SearchTerms]);
 
   const handleOpenApplicant = (data) => {
-    const mergedArray = { ...data, sampleApplicants: sampleApplicants };
+    const mergedArray = {
+      ...data,
+      sampleApplicants: sampleApplicants,
+      companyId: companyId,
+      companyInviteCredits: companyInviteCredits
+    };
     setApplicant(mergedArray);
   };
 
