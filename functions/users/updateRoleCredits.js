@@ -2,28 +2,23 @@ const admin = require('firebase-admin');
 const { sendStripeEmail } = require('./sendStripeEmail');
 const functions = require('firebase-functions/v1');
 
-const getRoleCredits = (amount) => {
+const getInviteCredits = (amount) => {
   switch (true) {
-    case amount / 100 === 688:
-      return 20;
-    case amount / 100 === 354:
-      return 10;
-    case amount / 100 === 188:
+    case amount / 100 === 79:
+      return 1;
+    case amount / 100 === 250:
       return 5;
     case amount / 100 === 500:
-      return 1;
-    case amount / 100 === 2250:
-      return 5;
-    case amount / 100 === 4250:
       return 10;
-    case amount / 100 === 8250:
-      return 20;
     default:
       return 0;
   }
 };
 
 const fulFillOrder = async (session) => {
+  console.log('Hit 4');
+  console.log(session);
+
   const store = admin.firestore();
 
   return store
@@ -43,7 +38,7 @@ const fulFillOrder = async (session) => {
                 .doc(doc.id)
                 .set(
                   {
-                    roleCredits: getRoleCredits(session.amount_subtotal),
+                    inviteCredits: getInviteCredits(session.amount_subtotal),
                   },
                   { merge: true }
                 );
@@ -72,7 +67,11 @@ exports.updateRoleCredits = functions
 
     let event;
 
+    console.log('Hit');
+
     try {
+      console.log('Hit 2');
+
       event = stripe.webhooks.constructEvent(
         payloadString,
         webhookStripeSignatureHeader,
@@ -86,6 +85,7 @@ exports.updateRoleCredits = functions
     // Handle checkout.session.completed event
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
+      console.log('Hit 3');
 
       return fulFillOrder(session)
         .then(() => {
@@ -93,7 +93,7 @@ exports.updateRoleCredits = functions
             to: session.customer_details.email,
             from: 'Loop Not Luck hello@loopnotluck.com',
             subject: 'Loop Not Luck Credits bought successfully!',
-            credits: getRoleCredits(session.amount_subtotal),
+            credits: getInviteCredits(session.amount_subtotal),
           });
           return res.sendStatus(200);
         })
