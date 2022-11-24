@@ -23,6 +23,12 @@ export default function Applicants() {
   if (company.length === 0) {
     return <div className='loading' />;
   }
+  const hasCompanyInviteCredits =
+    company !== [] &&
+    company.length !== 0 &&
+    company[0] &&
+    company[0]?.inviteCredits !== 0;
+
   return (
     <SideBar>
       <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none'>
@@ -33,10 +39,7 @@ export default function Applicants() {
             </h1>
           </div>
         </div>
-        {company !== [] &&
-        company.length !== 0 &&
-        company[0] &&
-        company[0]?.inviteCredits !== 0 ? (
+        {hasCompanyInviteCredits ? (
           <ApplicantsList
             companyId={company && company[0]?.id}
             companyInviteCredits={company && company[0]?.inviteCredits}

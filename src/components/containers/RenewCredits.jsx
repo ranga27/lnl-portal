@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import IntlMessages from '../../utils/IntlMessages';
 import { CheckIcon } from '@heroicons/react/solid';
+//TODO Get products from firestore
 import { pricing } from '../../components/data/pricingInvite';
 import { createCheckoutSession } from '../../utils/stripe/createCheckoutSession';
 import { AuthContext } from '../../components/context/AuthContext';
