@@ -12,6 +12,7 @@ import {
   getRejectedUserInRoleFirestore,
   updateInviteCreditsInCompanyFirestore,
 } from '../../../firebase/firestoreService';
+import axios from 'axios';
 
 const tabs = [
   { name: 'About', href: '#', current: true },
@@ -60,6 +61,13 @@ const Applicant = ({ Applicant, roleData }) => {
       updatedAt: serverTimestamp(),
     };
 
+    const emailData = {
+      firstName: Applicant.firstName,
+      status: 'Accepted',
+      companyName: roleData.companyName,
+      email: Applicant.email,
+    };
+
     acceptCandidateMutation.mutate(newData, {
       async onSuccess() {
         await getAcceptedUserInRoleFirestore(
@@ -78,6 +86,15 @@ const Applicant = ({ Applicant, roleData }) => {
           roleData.companyId,
           roleData.companyInviteCredits
         );
+        await axios
+          .post(
+            process.env.NODE_ENV === 'development'
+              ? process.env.NEXT_PUBLIC_DEV_SEND_APPLICANT_EMAIL
+              : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
+            emailData
+          )
+          .then(() => console.log('email sent'));
+
         Swal.fire({
           title: 'Success!',
           text: 'Candidate Accepted.',
@@ -101,6 +118,13 @@ const Applicant = ({ Applicant, roleData }) => {
       updatedAt: serverTimestamp(),
     };
 
+    const emailData = {
+      firstName: Applicant.firstName,
+      status: 'Rejected',
+      companyName: roleData.companyName,
+      email: Applicant.email,
+    };
+
     rejectCandidateMutation.mutate(newData, {
       async onSuccess() {
         await getAcceptedUserInRoleFirestore(
@@ -115,6 +139,16 @@ const Applicant = ({ Applicant, roleData }) => {
         ).then((results) => {
           setRejectedUsers(results);
         });
+
+        await axios
+          .post(
+            process.env.NODE_ENV === 'development'
+              ? process.env.NEXT_PUBLIC_DEV_SEND_APPLICANT_EMAIL
+              : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
+            emailData
+          )
+          .then(() => console.log('email sent'));
+
         Swal.fire({
           title: 'Success!',
           text: 'Candidate Rejected.',

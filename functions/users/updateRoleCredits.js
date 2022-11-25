@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const { sendStripeEmail } = require('./sendStripeEmail');
 const functions = require('firebase-functions/v1');
+const nodemailer = require('nodemailer');
 
 const getInviteCredits = (amount) => {
   switch (true) {
@@ -16,9 +17,6 @@ const getInviteCredits = (amount) => {
 };
 
 const fulFillOrder = async (session) => {
-  console.log('Hit 4');
-  console.log(session);
-
   const store = admin.firestore();
 
   return store
@@ -65,13 +63,18 @@ exports.updateRoleCredits = functions
     const webhookStripeSignatureHeader = req.headers['stripe-signature'];
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+    const transporter = nodemailer.createTransport({
+      host: process.env.NODEMAILER_HOST_URL,
+      port: process.env.NODEMAILER_PORT,
+      secure: true,
+      auth: {
+        user: process.env.NODEMAILER_AUTH_USER,
+        pass: process.env.NODEMAILER_AUTH_PASSWORD,
+      },
+    });
+
     let event;
-
-    console.log('Hit');
-
     try {
-      console.log('Hit 2');
-
       event = stripe.webhooks.constructEvent(
         payloadString,
         webhookStripeSignatureHeader,
@@ -85,7 +88,6 @@ exports.updateRoleCredits = functions
     // Handle checkout.session.completed event
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object;
-      console.log('Hit 3');
 
       return fulFillOrder(session)
         .then(() => {
@@ -94,6 +96,7 @@ exports.updateRoleCredits = functions
             from: 'Loop Not Luck hello@loopnotluck.com',
             subject: 'Loop Not Luck Credits bought successfully!',
             credits: getInviteCredits(session.amount_subtotal),
+            transporter,
           });
           return res.sendStatus(200);
         })

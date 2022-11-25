@@ -28,7 +28,7 @@ const sampleApplicants = [
       'I was on free school meals at school',
       'Publicly funded education',
     ],
-    email: 'johndoe@hotmail.co.uk',
+    email: 'abraham+1@loopnotluck.com',
     ethnicity: 'Black / African / Caribbean / Black British',
     ethnicityOther: '',
     firstName: 'John',
@@ -58,7 +58,7 @@ const sampleApplicants = [
   },
   {
     createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
-    email: 'Ryan@loopnotluck.com',
+    email: 'abraham+1@loopnotluck.com',
     behaviorAttributes: [
       'Communication',
       'Leadership',
@@ -104,7 +104,7 @@ const sampleApplicants = [
   },
   {
     createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
-    email: 'matthew@loopnotluck.com',
+    email: 'abraham+1@loopnotluck.com',
     behaviorAttributes: [
       'Communication',
       'Leadership',
@@ -151,7 +151,11 @@ const sampleApplicants = [
   },
 ];
 
-export default function ApplicantsList({ companyId, companyInviteCredits }) {
+export default function ApplicantsList({
+  companyId,
+  companyInviteCredits,
+  companyName,
+}) {
   const [SearchTerms, setSearchTerms] = useState('');
   const [ApplicantData, setApplicant] = useState([]);
   const [SearchResult, setSearchResult] = useState([]);
@@ -182,7 +186,8 @@ export default function ApplicantsList({ companyId, companyInviteCredits }) {
       ...data,
       sampleApplicants: sampleApplicants,
       companyId: companyId,
-      companyInviteCredits: companyInviteCredits
+      companyInviteCredits: companyInviteCredits,
+      companyName: companyName,
     };
     setApplicant(mergedArray);
   };
