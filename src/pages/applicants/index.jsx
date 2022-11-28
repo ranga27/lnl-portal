@@ -43,6 +43,7 @@ export default function Applicants() {
           <ApplicantsList
             companyId={company && company[0]?.id}
             companyInviteCredits={company && company[0]?.inviteCredits}
+            companyName={company && company[0]?.companyName}
           />
         ) : (
           <RenewCredits />
