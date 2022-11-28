@@ -1,9 +1,19 @@
-exports.sendStripeEmail = ({ to, from, subject, credits, transporter }) => {
+exports.applicantResultEmail = ({
+  to,
+  from,
+  subject,
+  status,
+  firstName,
+  companyName,
+  transporter,
+}) => {
   const mailOptions = {
     to,
     from,
     subject,
-    credits,
+    status,
+    firstName,
+    companyName,
     html: `
     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout:fixed;background-color:#ffffff" id="bodyTable">
       <tbody>
@@ -28,10 +38,21 @@ exports.sendStripeEmail = ({ to, from, subject, credits, transporter }) => {
                         <tr>
                           <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
                             <h2 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
-                                Role Credits purchased successfully!
+                                Your profile has been ${
+                                  status === 'Accepted'
+                                    ? 'accepted'
+                                    : 'rejected'
+                                } by ${companyName}
                             </h2>
                           </td>
                         </tr>
+                        <tr>
+                        <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
+
+                          <h5 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Hi ${firstName}</h2>
+
+                        </td>
+                      </tr>
                         <tr>
                           <td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
@@ -39,7 +60,7 @@ exports.sendStripeEmail = ({ to, from, subject, credits, transporter }) => {
                                 <tr>
                                   <td style="padding-bottom: 20px;" align="center" valign="top" class="description">
                                     <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                                    Thank you for purchasing ${credits} credits on Loop Not Luck. We are proud of our satisfied clients and look forward to collaborating together.
+                                   Please go to your profile to see the next steps and expect an email from ${companyName} soon
                                   </td>
                                 </tr>
                               </tbody>
