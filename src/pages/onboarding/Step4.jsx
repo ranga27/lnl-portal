@@ -24,7 +24,6 @@ export default function Step4({ company }) {
 
     mutateCompany({
       isOnboarded: true,
-      inviteCredits: 3,
     });
 
     router.push('/dashboard');

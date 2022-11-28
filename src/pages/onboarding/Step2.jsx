@@ -108,6 +108,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
       mutateCollection({
         ats,
         companyLocation,
+        inviteCredits: 3,
         companyName,
         companyValues,
         description,
@@ -116,7 +117,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
         industry,
         visa,
         userId,
-        logoUrl
+        logoUrl,
       });
     }
   };
