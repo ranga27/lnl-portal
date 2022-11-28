@@ -2,7 +2,7 @@ export const externalCompanyProfile = {
   websiteUrl: 'lnl.com',
   careersPageUrl: '',
   tagline: 'The global leader in social media management',
-  numberOfEmployees: '1-10',
+  numberOfEmployees: '1-20',
   linkedInUrl: '',
   twitterUrl: '',
   interestingStats: [

@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
-import { RadioGroup, Switch } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useFirestoreDocumentMutation } from '@react-query-firebase/firestore';
@@ -12,30 +10,40 @@ import { firestore } from '../../../firebase/clientApp';
 import { TextInput } from '../../components/UI/Form/Input';
 import { MultiSelect } from '../../components/UI/Form/MultiSelect';
 import SideBar from '../../components/layout/Sidebar';
-import { locations } from '../../components/data/location';
-import { SelectField } from '../../components/UI/Form/SelectField';
 import { TextArea } from '../../components/UI/Form/TextArea';
-import { visaRequiredOptions } from '../../components/data/visaRequiredOptions';
 import { positionTypes } from '../../components/data/positionTypes';
-import { diversityTypes } from '../../components/data/diversity';
 import { jobValuesOptions } from '../../components/data/jobValuesOptions';
+import { numberOfEmployeesOptions } from '../../components/data/numberOfEmployeesOptions';
+import { ratingsOptions } from '../../components/data/ratingsOptions';
 import { uploadFile } from '../../utils/uploadFile';
+import { RadioGroup } from '../../components/UI/Form/RadioGroup';
+import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
 
+// TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
   companyName: Yup.string().required('Company name is required'),
-  companyLocation: Yup.string().required('Company location is required'),
-  industry: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
-  diversity: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
+  tagline: Yup.string().required('Tagline is required'),
+  companyMission: '',
+  numberOfEmployees: Yup.string().required('Select one option'),
+  ratings: '',
   companyValues: Yup.array()
     .required('Select at least one option')
     .min(1, 'Select at least one option'),
-  visa: Yup.string().required('Visa Status is required'),
-  description: Yup.string().required('Company description is required'),
-  hearAbout: Yup.string().required('This is required'),
+  companyBenefits: Yup.array()
+    .required('Select at least one option')
+    .min(1, 'Select at least one option,'),
+  diversity: Yup.array()
+    .required('Select at least one option')
+    .min(1, 'Select at least one option'),
+  industry: Yup.array()
+    .required('Select at least one option')
+    .min(1, 'Select at least one option'),
+  commitmentToDiversity: '',
+  linkedinUrl: '',
+  twitterUrl: '',
+  websiteUrl: '',
+  careerPageUrl: '',
+
   logoFile: Yup.mixed().when('logoUrl', {
     is: (value) => value,
     then: Yup.mixed().notRequired(),
@@ -57,19 +65,21 @@ export default function UpdateExternalCompany() {
   const { ...company } = router.query;
 
   const defaultValues = {
-    ats: company.ats || '',
-    tagline: company.tagline || '',
     companyName: company.companyName || '',
+    tagline: company.tagline || '',
+    companyMission: company.companyMission || '',
+    numberOfEmployees: company.numberOfEmployees || '',
+    ratings: company.ratings || ratingsOptions,
     companyValues: company.companyValues || null,
     companyBenefits: company.companyBenefits || null,
-    companyMission: company.companyMission || '',
     diversity: company.diversity || null,
-    hearAbout: company.hearAbout || '',
     industry: company.industry || null,
+    commitmentToDiversity: company.commitmentToDiversity || '',
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
+    websiteUrl: company.websiteUrl || '',
+    careerPageUrl: company.careerPageUrl || '',
     logoUrl: company.logoUrl || '',
-    visa: company.visa || '',
   };
 
   const {
@@ -83,6 +93,51 @@ export default function UpdateExternalCompany() {
     defaultValues,
     resolver: yupResolver(validationSchema),
   });
+
+  const companyRef = doc(firestore, 'companyV2', company.id);
+  const companyMutation = useFirestoreDocumentMutation(companyRef, {
+    merge: true,
+  });
+
+  const handleUpdateExternalCompany = async (data) => {
+    const { logoUrl, ...rest } = data;
+
+    if (logoUrl.lastModified) {
+      const newLogoUrl = await uploadFile(
+        logoUrl,
+        data.companyName,
+        'companyLogos'
+      );
+      logoUrl = newLogoUrl;
+    }
+
+    const newData = {
+      logoUrl,
+      ...data,
+      updatedAt: serverTimestamp(),
+    };
+
+    companyMutation.mutate(newData, {
+      onSuccess() {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Company Profile Updated.',
+          icon: 'success',
+          iconColor: '#3085d6',
+          showConfirmButton: false,
+        });
+        window.setTimeout(() => {
+          router.push('/company-profile');
+        }, 2000);
+      },
+      onError() {
+        Swal.fire('Oops!', 'Failed to Update Company Profile.', 'error');
+      },
+      onMutate() {
+        console.info('updating...');
+      },
+    });
+  };
 
   return (
     <SideBar>
@@ -98,9 +153,7 @@ export default function UpdateExternalCompany() {
         {/* Company Form */}
         <div className='space-y-6 sm:px-6 lg:px-0 lg:col-span-9'>
           <section aria-labelledby='payment-details-heading'>
-            <form
-            // onSubmit={handleSubmit(handleUpdateCompany)}
-            >
+            <form onSubmit={handleSubmit(handleUpdateExternalCompany)}>
               <div className='shadow sm:rounded-md sm:overflow-hidden'>
                 <div className='bg-white py-6 px-4 sm:p-6'>
                   <div>
@@ -148,26 +201,66 @@ export default function UpdateExternalCompany() {
                         // data-cy='company-description-input'
                       />
                     </div>
+                    <div className='mt-4 col-span-4 sm:col-span-2 flex gap-10'>
+                      <div className='col-span-2 sm:col-span-2'>
+                        <RadioGroup
+                          name='numberOfEmployees'
+                          label='Number of Employees'
+                          errors={errors.numberOfEmployees}
+                          control={control}
+                          options={numberOfEmployeesOptions}
+                          // data-cy='company-description-input'
+                        />
+                      </div>
+                      <div className='col-span-2 sm:col-span-2'>
+                        <CheckBoxGroup
+                          name='ratings'
+                          label='Ratings'
+                          control={control}
+                          options={ratingsOptions}
+                          setValue={setValue}
+                          errors={errors}
+                          // data-cy='role-rolling-checkbox'
+                        />
+                      </div>
+                    </div>
 
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <div className='col-span-4 sm:col-span-2'>
-                        <TextInput
-                          name='linkedinUrl'
-                          label='Linkedin Url'
-                          errors={errors.linkedinUrl}
-                          control={control}
-                          // data-cy='company-linkedinUrl-input'
-                        />
-                      </div>
-                      <div className='col-span-4 sm:col-span-2'>
-                        <TextInput
-                          name='twitterUrl'
-                          label='Twitter Url'
-                          errors={errors.twitterUrl}
-                          control={control}
-                          // data-cy='company-ats-input'
-                        />
-                      </div>
+                      <TextInput
+                        name='linkedinUrl'
+                        label='Linkedin Url'
+                        errors={errors.linkedinUrl}
+                        control={control}
+                        // data-cy='company-linkedinUrl-input'
+                      />
+                    </div>
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextInput
+                        name='twitterUrl'
+                        label='Twitter Url'
+                        errors={errors.twitterUrl}
+                        control={control}
+                        // data-cy='company-ats-input'
+                      />
+                    </div>
+
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextInput
+                        name='websiteUrl'
+                        label='Website Url'
+                        errors={errors.websiteUrl}
+                        control={control}
+                        // data-cy='company-ats-input'
+                      />
+                    </div>
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextInput
+                        name='careerPageUrl'
+                        label='Career Page Url'
+                        errors={errors.careerPageUrl}
+                        control={control}
+                        // data-cy='company-ats-input'
+                      />
                     </div>
 
                     <div className='mt-4 col-span-4 sm:col-span-2'>
@@ -215,6 +308,18 @@ export default function UpdateExternalCompany() {
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
                         // data-cy='company-industry-select'
+                      />
+                    </div>
+
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextArea
+                        name='commitmentToDiversity'
+                        type='textarea'
+                        label='Commitment to Diversity'
+                        errors={errors.commitmentToDiversity}
+                        control={control}
+                        rows={3}
+                        // data-cy='company-description-input'
                       />
                     </div>
 
