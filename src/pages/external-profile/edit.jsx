@@ -27,11 +27,7 @@ const validationSchema = Yup.object().shape({
   numberOfEmployees: Yup.string().required('Select one of the options'),
   ratings: Yup.array(),
   companyValues: Yup.array(),
-  // .required('Select at least one option')
-  // .min(1, 'Select at least one option'),
   companyBenefits: Yup.array(),
-  // .required('Select at least one option')
-  // .min(1, 'Select at least one option,'),
   commitmentToDiversity: Yup.string(),
   diversityAnnouncement: Yup.string(),
   interestingStats: Yup.array()
@@ -43,9 +39,6 @@ const validationSchema = Yup.object().shape({
   websiteUrl: Yup.string(),
   careerPageUrl: Yup.string(),
 });
-
-// TODO:
-// 3 Interesting Stats about the company *(at least 1) - Free text box
 
 export default function UpdateExternalCompany() {
   const router = useRouter();
@@ -88,6 +81,9 @@ export default function UpdateExternalCompany() {
   });
 
   const handleUpdateExternalCompany = async (data) => {
+    // Create array of news/articles links
+    data.articles = data.articles.split('\n');
+
     // Modify ratings array
     data.ratings = data.ratings.map((rating) => {
       return {
@@ -306,6 +302,7 @@ export default function UpdateExternalCompany() {
                         errors={errors.diversityAnnouncement}
                         control={control}
                         rows={2}
+                        placeholder='Put article link here.'
                         // data-cy='company-description-input'
                       />
                     </div>
@@ -321,6 +318,19 @@ export default function UpdateExternalCompany() {
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
                         // data-cy='company-values-select'
+                      />
+                    </div>
+
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextArea
+                        name='articles'
+                        type='textarea'
+                        label='Articles/News Announcements'
+                        errors={errors.articles}
+                        control={control}
+                        rows={5}
+                        placeholder='Put article links here.'
+                        // data-cy='company-description-input'
                       />
                     </div>
                   </div>

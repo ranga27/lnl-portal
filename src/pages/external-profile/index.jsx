@@ -35,7 +35,6 @@ export default function ExternalProfile() {
     commitmentToDiversity,
     diversityAnnouncement,
     interestingStats,
-    articles,
     linkedinUrl,
     twitterUrl,
     websiteUrl,
@@ -234,19 +233,31 @@ export default function ExternalProfile() {
                 </div>
               )}
 
+              {commitmentToDiversity && (
+                <div className='py-4'>
+                  <dt className='text-sm font-medium text-gray-500 mb-2'>
+                    COMMITMENT TO DIVERSITY
+                  </dt>
+                  <div className=''>
+                    <dd className='text-sm font-medium'>
+                      {commitmentToDiversity}
+                    </dd>
+                  </div>
+                </div>
+              )}
+
               {diversityAnnouncement && (
                 <div className='py-4'>
                   <dt className='text-sm font-medium text-gray-500 mb-2'>
                     DIVERSITY NEWS/ANNOUNCEMENT
                   </dt>
                   <div className='flex flex-col'>
-                    {diversityAnnouncement.summary}...
                     <a
-                      href={diversityAnnouncement.articleUrl}
-                      className='text-sm font-medium bg-slate-100 rounded-md p-1'
+                      href={diversityAnnouncement}
+                      className='text-sm font-medium text-blue-400 rounded-md'
                       target='_blank'
                     >
-                      Read More
+                      {diversityAnnouncement}
                     </a>
                   </div>
                 </div>
