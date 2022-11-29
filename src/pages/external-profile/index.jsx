@@ -35,7 +35,6 @@ export default function ExternalProfile() {
     commitmentToDiversity,
     diversityAnnouncement,
     interestingStats,
-    articles,
     linkedinUrl,
     twitterUrl,
     websiteUrl,
@@ -66,7 +65,7 @@ export default function ExternalProfile() {
                   <img
                     className='w-20 h-20 rounded-full mx-auto mr-2'
                     src={logoUrl}
-                    alt='Company logo'
+                    alt={`${companyName} logo`}
                   />
                   <div>
                     <h1 className='text-2xl font-bold text-gray-900'>
@@ -219,20 +218,33 @@ export default function ExternalProfile() {
                 </div>
               </div>
 
-              {/* {interestingStats && (
+              {interestingStats && (
                 <div className='py-4'>
                   <dt className='text-sm font-medium text-gray-500 mb-2'>
                     INTERESTING STATS
                   </dt>
-                  <div className='flex items-center gap-1'>
+                  <div className=''>
                     {interestingStats?.map((item, index) => (
-                      <span key={item} className='text-sm font-medium'>
-                        {item} {index !== interestingStats.length - 1 && '|'}
-                      </span>
+                      <p key={item} className='text-sm font-medium'>
+                        - {item}
+                      </p>
                     ))}
                   </div>
                 </div>
-              )} */}
+              )}
+
+              {commitmentToDiversity && (
+                <div className='py-4'>
+                  <dt className='text-sm font-medium text-gray-500 mb-2'>
+                    COMMITMENT TO DIVERSITY
+                  </dt>
+                  <div className=''>
+                    <dd className='text-sm font-medium'>
+                      {commitmentToDiversity}
+                    </dd>
+                  </div>
+                </div>
+              )}
 
               {diversityAnnouncement && (
                 <div className='py-4'>
@@ -240,13 +252,12 @@ export default function ExternalProfile() {
                     DIVERSITY NEWS/ANNOUNCEMENT
                   </dt>
                   <div className='flex flex-col'>
-                    {diversityAnnouncement.summary}...
                     <a
-                      href={diversityAnnouncement.articleUrl}
-                      className='text-sm font-medium bg-slate-100 rounded-md p-1'
+                      href={diversityAnnouncement}
+                      className='text-sm font-medium text-blue-400 rounded-md'
                       target='_blank'
                     >
-                      Read More
+                      {diversityAnnouncement}
                     </a>
                   </div>
                 </div>

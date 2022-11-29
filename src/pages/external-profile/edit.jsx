@@ -17,6 +17,7 @@ import { numberOfEmployeesOptions } from '../../components/data/numberOfEmployee
 import { ratingsOptions } from '../../components/data/ratingsOptions';
 import { RadioGroup } from '../../components/UI/Form/RadioGroup';
 import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
+import { CreatableMultiSelect } from '../../components/UI/Form/CreatableMultiSelect';
 
 // TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
@@ -26,25 +27,18 @@ const validationSchema = Yup.object().shape({
   numberOfEmployees: Yup.string().required('Select one of the options'),
   ratings: Yup.array(),
   companyValues: Yup.array(),
-  // .required('Select at least one option')
-  // .min(1, 'Select at least one option'),
   companyBenefits: Yup.array(),
-  // .required('Select at least one option')
-  // .min(1, 'Select at least one option,'),
   commitmentToDiversity: Yup.string(),
   diversityAnnouncement: Yup.string(),
-  interestingStats: Yup.string(),
+  interestingStats: Yup.array()
+    .required('Write at least one interesting stat')
+    .min(1, 'Write at least one interesting stat'),
   articles: Yup.string(),
   linkedinUrl: Yup.string(),
   twitterUrl: Yup.string(),
   websiteUrl: Yup.string(),
   careerPageUrl: Yup.string(),
 });
-
-// TODO:
-// 3 Interesting Stats about the company *(at least 1) - Free text box
-// Company Benefits - Textbox
-// Company Values - Textbox
 
 export default function UpdateExternalCompany() {
   const router = useRouter();
@@ -60,7 +54,7 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: company.interestingStats || '',
+    interestingStats: company.interestingStats || [],
     articles: company.articles || '',
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
@@ -87,6 +81,9 @@ export default function UpdateExternalCompany() {
   });
 
   const handleUpdateExternalCompany = async (data) => {
+    // Create array of news/articles links
+    data.articles = data.articles.split('\n');
+
     // Modify ratings array
     data.ratings = data.ratings.map((rating) => {
       return {
@@ -197,6 +194,7 @@ export default function UpdateExternalCompany() {
                           errors={errors.numberOfEmployees}
                           control={control}
                           options={numberOfEmployeesOptions}
+                          defaultChecked={defaultValues.numberOfEmployees}
                           // data-cy='company-description-input'
                         />
                       </div>
@@ -305,18 +303,34 @@ export default function UpdateExternalCompany() {
                         errors={errors.diversityAnnouncement}
                         control={control}
                         rows={2}
+                        placeholder='Put article link here.'
                         // data-cy='company-description-input'
                       />
                     </div>
 
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <TextArea
+                      <CreatableMultiSelect
+                        label='Interesting Stats'
                         name='interestingStats'
-                        type='textarea'
-                        label='Interesting Stats about the company'
-                        errors={errors.interestingStats}
                         control={control}
-                        rows={3}
+                        errors={errors.interestingStats}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        closeMenuOnSelect={false}
+                        menuPortalTarget={document.querySelector('body')}
+                        // data-cy='company-values-select'
+                      />
+                    </div>
+
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextArea
+                        name='articles'
+                        type='textarea'
+                        label='Articles/News Announcements'
+                        errors={errors.articles}
+                        control={control}
+                        rows={5}
+                        placeholder='Put article links here.'
                         // data-cy='company-description-input'
                       />
                     </div>
