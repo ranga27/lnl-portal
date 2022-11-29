@@ -17,6 +17,7 @@ import { numberOfEmployeesOptions } from '../../components/data/numberOfEmployee
 import { ratingsOptions } from '../../components/data/ratingsOptions';
 import { RadioGroup } from '../../components/UI/Form/RadioGroup';
 import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
+import { CreatableMultiSelect } from '../../components/UI/Form/CreatableMultiSelect';
 
 // TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
@@ -33,7 +34,9 @@ const validationSchema = Yup.object().shape({
   // .min(1, 'Select at least one option,'),
   commitmentToDiversity: Yup.string(),
   diversityAnnouncement: Yup.string(),
-  interestingStats: Yup.string(),
+  interestingStats: Yup.array()
+    .required('Write at least one interesting stat')
+    .min(1, 'Write at least one interesting stat'),
   articles: Yup.string(),
   linkedinUrl: Yup.string(),
   twitterUrl: Yup.string(),
@@ -43,8 +46,6 @@ const validationSchema = Yup.object().shape({
 
 // TODO:
 // 3 Interesting Stats about the company *(at least 1) - Free text box
-// Company Benefits - Textbox
-// Company Values - Textbox
 
 export default function UpdateExternalCompany() {
   const router = useRouter();
@@ -60,7 +61,7 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || [],
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: company.interestingStats || '',
+    interestingStats: company.interestingStats || [],
     articles: company.articles || '',
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
@@ -310,14 +311,16 @@ export default function UpdateExternalCompany() {
                     </div>
 
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <TextArea
+                      <CreatableMultiSelect
+                        label='Interesting Stats'
                         name='interestingStats'
-                        type='textarea'
-                        label='Interesting Stats about the company'
-                        errors={errors.interestingStats}
                         control={control}
-                        rows={3}
-                        // data-cy='company-description-input'
+                        errors={errors.interestingStats}
+                        setValue={setValue}
+                        clearErrors={clearErrors}
+                        closeMenuOnSelect={false}
+                        menuPortalTarget={document.querySelector('body')}
+                        // data-cy='company-values-select'
                       />
                     </div>
                   </div>

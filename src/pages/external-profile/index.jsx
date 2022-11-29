@@ -66,7 +66,7 @@ export default function ExternalProfile() {
                   <img
                     className='w-20 h-20 rounded-full mx-auto mr-2'
                     src={logoUrl}
-                    alt='Company logo'
+                    alt={`${companyName} logo`}
                   />
                   <div>
                     <h1 className='text-2xl font-bold text-gray-900'>
@@ -219,20 +219,20 @@ export default function ExternalProfile() {
                 </div>
               </div>
 
-              {/* {interestingStats && (
+              {interestingStats && (
                 <div className='py-4'>
                   <dt className='text-sm font-medium text-gray-500 mb-2'>
                     INTERESTING STATS
                   </dt>
-                  <div className='flex items-center gap-1'>
+                  <div className=''>
                     {interestingStats?.map((item, index) => (
-                      <span key={item} className='text-sm font-medium'>
-                        {item} {index !== interestingStats.length - 1 && '|'}
-                      </span>
+                      <p key={item} className='text-sm font-medium'>
+                        - {item}
+                      </p>
                     ))}
                   </div>
                 </div>
-              )} */}
+              )}
 
               {diversityAnnouncement && (
                 <div className='py-4'>
