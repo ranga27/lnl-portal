@@ -197,3 +197,32 @@ export async function addCustomQuestionsInQuestionnaireFirestore(
     updatedAt: serverTimestamp(),
   });
 }
+
+export async function getStripeProducts() {
+  const productDocRef = collection(firestore, 'products');
+  const productDoc = await query(productDocRef, where('active', '==', true));
+  const querySnapshot = await getDocs(productDoc);
+  const products = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  if (products.length === 0) return [];
+  let array = [];
+  for (let product of products) {
+    const docRef = collection(firestore, 'products', product.id, 'prices');
+    const pricesRef = await query(docRef, where('active', '==', true));
+
+    const querySnapshot = await getDocs(pricesRef);
+    const prices = querySnapshot.docs.map((docu) => ({
+      ...docu.data(),
+      id: docu.id,
+    }));
+    const mergedArray = {
+      ...product,
+      prices: prices[0],
+    };
+    array.push(mergedArray);
+  }
+
+  return array;
+}

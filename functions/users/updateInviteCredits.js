@@ -36,7 +36,9 @@ const fulFillOrder = async (session) => {
                 .doc(doc.id)
                 .set(
                   {
-                    inviteCredits: getInviteCredits(session.amount_subtotal),
+                    inviteCredits:
+                      doc.data().inviteCredits +
+                      getInviteCredits(session.amount_subtotal),
                   },
                   { merge: true }
                 );
@@ -46,7 +48,7 @@ const fulFillOrder = async (session) => {
     });
 };
 
-exports.updateRoleCredits = functions
+exports.updateInviteCredits = functions
   .region('europe-west2')
   .runWith({
     secrets: [
