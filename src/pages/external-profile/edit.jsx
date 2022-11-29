@@ -194,6 +194,7 @@ export default function UpdateExternalCompany() {
                           errors={errors.numberOfEmployees}
                           control={control}
                           options={numberOfEmployeesOptions}
+                          defaultChecked={defaultValues.numberOfEmployees}
                           // data-cy='company-description-input'
                         />
                       </div>
