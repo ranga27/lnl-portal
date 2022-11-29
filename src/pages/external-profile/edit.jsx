@@ -11,54 +11,40 @@ import { TextInput } from '../../components/UI/Form/Input';
 import { MultiSelect } from '../../components/UI/Form/MultiSelect';
 import SideBar from '../../components/layout/Sidebar';
 import { TextArea } from '../../components/UI/Form/TextArea';
-import { positionTypes } from '../../components/data/positionTypes';
 import { jobValuesOptions } from '../../components/data/jobValuesOptions';
+import { jobBenefitsOptions } from '../../components/data/jobBenefitsOptions';
 import { numberOfEmployeesOptions } from '../../components/data/numberOfEmployeesOptions';
 import { ratingsOptions } from '../../components/data/ratingsOptions';
-import { uploadFile } from '../../utils/uploadFile';
 import { RadioGroup } from '../../components/UI/Form/RadioGroup';
 import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
 
 // TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
   companyName: Yup.string().required('Company name is required'),
-  tagline: Yup.string().required('Tagline is required'),
-  companyMission: '',
-  numberOfEmployees: Yup.string().required('Select one option'),
-  ratings: '',
-  companyValues: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
-  companyBenefits: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option,'),
-  diversity: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
-  industry: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
-  commitmentToDiversity: '',
-  linkedinUrl: '',
-  twitterUrl: '',
-  websiteUrl: '',
-  careerPageUrl: '',
-
-  logoFile: Yup.mixed().when('logoUrl', {
-    is: (value) => value,
-    then: Yup.mixed().notRequired(),
-    otherwise: Yup.mixed()
-      .required('You need to provide a file')
-      .test(
-        'fileSize',
-        'File Size is too large',
-        (value) => value && value?.size <= 5000000
-      )
-      .test('fileFormat', 'Unsupported File Format', (value) =>
-        SUPPORTED_FORMATS.includes(value && value?.type)
-      ),
-  }),
+  tagline: Yup.string(),
+  companyMission: Yup.string(),
+  numberOfEmployees: Yup.string().required('Select one of the options'),
+  ratings: Yup.array(),
+  companyValues: Yup.array(),
+  // .required('Select at least one option')
+  // .min(1, 'Select at least one option'),
+  companyBenefits: Yup.array(),
+  // .required('Select at least one option')
+  // .min(1, 'Select at least one option,'),
+  commitmentToDiversity: Yup.string(),
+  diversityAnnouncement: Yup.string(),
+  interestingStats: Yup.string(),
+  articles: Yup.string(),
+  linkedinUrl: Yup.string(),
+  twitterUrl: Yup.string(),
+  websiteUrl: Yup.string(),
+  careerPageUrl: Yup.string(),
 });
+
+// TODO:
+// 3 Interesting Stats about the company *(at least 1) - Free text box
+// Company Benefits - Textbox
+// Company Values - Textbox
 
 export default function UpdateExternalCompany() {
   const router = useRouter();
@@ -70,11 +56,12 @@ export default function UpdateExternalCompany() {
     companyMission: company.companyMission || '',
     numberOfEmployees: company.numberOfEmployees || '',
     ratings: company.ratings || ratingsOptions,
-    companyValues: company.companyValues || null,
-    companyBenefits: company.companyBenefits || null,
-    diversity: company.diversity || null,
-    industry: company.industry || null,
+    companyValues: company.companyValues || [],
+    companyBenefits: company.companyBenefits || [],
     commitmentToDiversity: company.commitmentToDiversity || '',
+    diversityAnnouncement: company.diversityAnnouncement || '',
+    interestingStats: company.interestingStats || '',
+    articles: company.articles || '',
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
     websiteUrl: company.websiteUrl || '',
@@ -100,19 +87,16 @@ export default function UpdateExternalCompany() {
   });
 
   const handleUpdateExternalCompany = async (data) => {
-    const { logoUrl, ...rest } = data;
-
-    if (logoUrl.lastModified) {
-      const newLogoUrl = await uploadFile(
-        logoUrl,
-        data.companyName,
-        'companyLogos'
-      );
-      logoUrl = newLogoUrl;
-    }
+    // Modify ratings array
+    data.ratings = data.ratings.map((rating) => {
+      return {
+        name: rating,
+        rating: 5, // Static for now
+        showRatings: true,
+      };
+    });
 
     const newData = {
-      logoUrl,
       ...data,
       updatedAt: serverTimestamp(),
     };
@@ -121,17 +105,21 @@ export default function UpdateExternalCompany() {
       onSuccess() {
         Swal.fire({
           title: 'Success!',
-          text: 'Company Profile Updated.',
+          text: 'External Company Profile Updated.',
           icon: 'success',
           iconColor: '#3085d6',
           showConfirmButton: false,
         });
         window.setTimeout(() => {
-          router.push('/company-profile');
+          router.push('/external-profile');
         }, 2000);
       },
       onError() {
-        Swal.fire('Oops!', 'Failed to Update Company Profile.', 'error');
+        Swal.fire(
+          'Oops!',
+          'Failed to Update External Company Profile.',
+          'error'
+        );
       },
       onMutate() {
         console.info('updating...');
@@ -263,6 +251,7 @@ export default function UpdateExternalCompany() {
                       />
                     </div>
 
+                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Company Values'
@@ -279,12 +268,13 @@ export default function UpdateExternalCompany() {
                       />
                     </div>
 
+                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Company Benefits'
                         name='companyBenefits'
                         control={control}
-                        options={jobValuesOptions}
+                        options={jobBenefitsOptions}
                         errors={errors.companyBenefits}
                         setValue={setValue}
                         defaultValue={[company.companyBenefits]}
@@ -296,38 +286,38 @@ export default function UpdateExternalCompany() {
                     </div>
 
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <MultiSelect
-                        label='Industry'
-                        name='industry'
-                        control={control}
-                        options={positionTypes}
-                        errors={errors.industry}
-                        setValue={setValue}
-                        defaultValue={[company.industry]}
-                        clearErrors={clearErrors}
-                        closeMenuOnSelect={false}
-                        menuPortalTarget={document.querySelector('body')}
-                        // data-cy='company-industry-select'
-                      />
-                    </div>
-
-                    <div className='mt-4 col-span-4 sm:col-span-2'>
                       <TextArea
                         name='commitmentToDiversity'
                         type='textarea'
                         label='Commitment to Diversity'
                         errors={errors.commitmentToDiversity}
                         control={control}
-                        rows={3}
+                        rows={4}
                         // data-cy='company-description-input'
                       />
                     </div>
 
-                    <div className='col-span-4 sm:col-span-2 mx-auto'>
-                      <img
-                        src={company.logoUrl}
-                        className='h-48 w-48 pt-12'
-                        alt={company.companyName}
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextArea
+                        name='diversityAnnouncement'
+                        type='textarea'
+                        label='Diversity News/Announcement'
+                        errors={errors.diversityAnnouncement}
+                        control={control}
+                        rows={2}
+                        // data-cy='company-description-input'
+                      />
+                    </div>
+
+                    <div className='mt-4 col-span-4 sm:col-span-2'>
+                      <TextArea
+                        name='interestingStats'
+                        type='textarea'
+                        label='Interesting Stats about the company'
+                        errors={errors.interestingStats}
+                        control={control}
+                        rows={3}
+                        // data-cy='company-description-input'
                       />
                     </div>
                   </div>

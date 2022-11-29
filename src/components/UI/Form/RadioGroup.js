@@ -11,12 +11,7 @@ export const RadioGroup = ({ label, name, control, errors, options }) => {
           <fieldset onChange={field.onChange} value={field.value}>
             {options.map((option) => (
               <div key={option.value}>
-                <input
-                  name={name}
-                  value={option.value}
-                  innerRef={field.ref}
-                  type='radio'
-                />
+                <input name={name} value={option.value} type='radio' />
                 <label className='ml-2'>{option.label}</label>
               </div>
             ))}

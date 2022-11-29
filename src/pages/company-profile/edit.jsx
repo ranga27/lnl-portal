@@ -273,6 +273,7 @@ export default function UpdateCompany() {
                       />
                     </div>
 
+                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Company Values'
@@ -289,6 +290,7 @@ export default function UpdateCompany() {
                       />
                     </div>
 
+                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Industry'
@@ -305,6 +307,7 @@ export default function UpdateCompany() {
                       />
                     </div>
 
+                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-4'>
                       <MultiSelect
                         label='Which of these underrepresented groups are your company interested in reaching?(Select all that apply)'

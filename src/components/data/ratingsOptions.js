@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
 export const ratingsOptions = [
   {
-    name: 'trustpilot',
+    name: 'Trustpilot',
     label: 'Show Trustpilot ratings',
   },
   {
-    name: 'glassdoor',
+    name: 'Glassdoor',
     label: 'Show Glassdoor ratings',
   },
 ];
