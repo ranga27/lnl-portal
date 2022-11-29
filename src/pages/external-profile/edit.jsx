@@ -56,8 +56,8 @@ export default function UpdateExternalCompany() {
     companyMission: company.companyMission || '',
     numberOfEmployees: company.numberOfEmployees || '',
     ratings: company.ratings || ratingsOptions,
-    companyValues: company.companyValues || [],
-    companyBenefits: company.companyBenefits || [],
+    companyValues: company.companyValues || null,
+    companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
     interestingStats: company.interestingStats || '',
@@ -73,7 +73,7 @@ export default function UpdateExternalCompany() {
     control,
     setValue,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     clearErrors,
   } = useForm({
     mode: 'onBlur',
@@ -260,7 +260,7 @@ export default function UpdateExternalCompany() {
                         options={jobValuesOptions}
                         errors={errors.companyValues}
                         setValue={setValue}
-                        defaultValue={[company.companyValues]}
+                        defaultValue={defaultValues.companyValues}
                         clearErrors={clearErrors}
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
@@ -277,7 +277,7 @@ export default function UpdateExternalCompany() {
                         options={jobBenefitsOptions}
                         errors={errors.companyBenefits}
                         setValue={setValue}
-                        defaultValue={[company.companyBenefits]}
+                        defaultValue={defaultValues.companyBenefits}
                         clearErrors={clearErrors}
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
