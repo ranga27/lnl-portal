@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { Controller } from 'react-hook-form';
 import { Group } from './Group';
 
@@ -12,8 +13,20 @@ export const MultiSelect = ({
   errors,
   clearErrors,
   defaultValue,
+  isCreatable,
   ...rest
 }) => {
+  if (isCreatable) {
+    // Build required data structure for options
+    options = !Array.isArray(options) ? [options] : options;
+    options = options.map((o) => {
+      return {
+        label: o,
+        value: o,
+      };
+    });
+  }
+
   const setDefaultValues = options.filter((o) => {
     if (defaultValue === undefined) {
       return null;
@@ -51,15 +64,25 @@ export const MultiSelect = ({
       <Controller
         name={name}
         control={control}
-        render={() => (
-          <Select
-            isMulti
-            options={options}
-            onChange={handleChange}
-            value={selection.selectedOptions}
-            {...rest}
-          />
-        )}
+        render={() =>
+          isCreatable ? (
+            <CreatableSelect
+              isMulti
+              options={options}
+              onChange={handleChange}
+              value={selection.selectedOptions}
+              {...rest}
+            />
+          ) : (
+            <Select
+              isMulti
+              options={options}
+              onChange={handleChange}
+              value={selection.selectedOptions}
+              {...rest}
+            />
+          )
+        }
       />
     </Group>
   );

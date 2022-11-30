@@ -17,7 +17,6 @@ import { numberOfEmployeesOptions } from '../../components/data/numberOfEmployee
 import { ratingsOptions } from '../../components/data/ratingsOptions';
 import { RadioGroup } from '../../components/UI/Form/RadioGroup';
 import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
-import { CreatableMultiSelect } from '../../components/UI/Form/CreatableMultiSelect';
 
 // TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
@@ -54,7 +53,7 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: company.interestingStats || [],
+    interestingStats: company.interestingStats || null,
     articles: company.articles || '',
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
@@ -308,9 +307,8 @@ export default function UpdateExternalCompany() {
                         // data-cy='company-description-input'
                       />
                     </div>
-
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <CreatableMultiSelect
+                      <MultiSelect
                         label='Interesting Stats'
                         name='interestingStats'
                         control={control}
@@ -319,6 +317,9 @@ export default function UpdateExternalCompany() {
                         clearErrors={clearErrors}
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
+                        options={defaultValues.interestingStats}
+                        defaultValue={defaultValues.interestingStats}
+                        isCreatable
                         // data-cy='company-values-select'
                       />
                     </div>

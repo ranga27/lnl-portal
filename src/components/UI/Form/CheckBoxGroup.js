@@ -17,8 +17,6 @@ export const CheckBoxGroup = ({
 
   const [selectedItems, setSelectedItems] = useState(defaultChecked || []);
 
-  console.log(selectedItems);
-
   useEffect(() => {
     setValue(name, selectedItems);
   }, [selectedItems]);
