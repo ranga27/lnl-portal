@@ -25,13 +25,13 @@ const validationSchema = Yup.object().shape({
   companyMission: Yup.string(),
   numberOfEmployees: Yup.string().required('Select one of the options'),
   ratings: Yup.array(),
-  companyValues: Yup.array(),
-  companyBenefits: Yup.array(),
+  companyValues: Yup.array()
+    .required('Select at least one option')
+    .min(1, 'Select at least one option'),
+  companyBenefits: Yup.array().nullable(),
   commitmentToDiversity: Yup.string(),
   diversityAnnouncement: Yup.string(),
-  interestingStats: Yup.array()
-    .required('Write at least one interesting stat')
-    .min(1, 'Write at least one interesting stat'),
+  interestingStats: Yup.string(),
   articles: Yup.string(),
   linkedinUrl: Yup.string(),
   twitterUrl: Yup.string(),
@@ -53,8 +53,8 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: company.interestingStats || null,
-    articles: company.articles || '',
+    interestingStats: company.interestingStats?.join('\n') || null,
+    articles: company.articles?.join('\n') || null,
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
     websiteUrl: company.websiteUrl || '',
@@ -80,8 +80,9 @@ export default function UpdateExternalCompany() {
   });
 
   const handleUpdateExternalCompany = async (data) => {
-    // Create array of news/articles links
+    // Create array of news/article links & interesting stats
     data.articles = data.articles.split('\n');
+    data.interestingStats = data.interestingStats.split('\n');
 
     // Modify ratings array
     data.ratings = data.ratings.map((rating) => {
@@ -249,7 +250,6 @@ export default function UpdateExternalCompany() {
                       />
                     </div>
 
-                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Company Values'
@@ -266,7 +266,6 @@ export default function UpdateExternalCompany() {
                       />
                     </div>
 
-                    {/* //TODO: Need to fix this */}
                     <div className='mt-4 col-span-4 sm:col-span-2'>
                       <MultiSelect
                         label='Company Benefits'
@@ -308,19 +307,14 @@ export default function UpdateExternalCompany() {
                       />
                     </div>
                     <div className='mt-4 col-span-4 sm:col-span-2'>
-                      <MultiSelect
-                        label='Interesting Stats'
+                      <TextArea
                         name='interestingStats'
-                        control={control}
+                        type='textarea'
+                        label='Interesting Stats'
                         errors={errors.interestingStats}
-                        setValue={setValue}
-                        clearErrors={clearErrors}
-                        closeMenuOnSelect={false}
-                        menuPortalTarget={document.querySelector('body')}
-                        options={defaultValues.interestingStats}
-                        defaultValue={defaultValues.interestingStats}
-                        isCreatable
-                        // data-cy='company-values-select'
+                        control={control}
+                        rows={5}
+                        // data-cy='company-description-input'
                       />
                     </div>
 
