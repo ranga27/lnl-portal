@@ -9,7 +9,7 @@ export default function Footer() {
           aria-label='Footer'
         >
           <div>
-            <p c className='text-sm text-gray-900 hover:text-gray-900'>
+            <p className='text-sm text-gray-900 hover:text-gray-900'>
               &copy; Loop Not Luck 2022
             </p>
           </div>

@@ -27,10 +27,6 @@ function MyApp({ Component, pageProps }) {
           >
             <Head>
               <link rel='icon' href='/assets/black.png' />
-              <link
-                rel='stylesheet'
-                href='https://use.fontawesome.com/releases/v5.13.0/css/all.css'
-              />
             </Head>
             <Component {...pageProps} />
           </IntlProvider>
