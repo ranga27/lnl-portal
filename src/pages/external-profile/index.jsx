@@ -198,13 +198,11 @@ export default function ExternalProfile() {
                   <dt className='text-sm font-medium text-gray-500 mb-2'>
                     COMPANY BENEFITS
                   </dt>
-                  <div className='flex items-center gap-1'>
-                    {companyBenefits?.map((item, index) => (
-                      <span key={item} className='text-sm font-medium'>
-                        {item} {index !== companyBenefits.length - 1 && '|'}
-                      </span>
-                    ))}
-                  </div>
+                  {companyBenefits?.map((item, index) => (
+                    <p key={index} className='text-sm font-medium'>
+                      - {item}
+                    </p>
+                  ))}
                 </div>
               )}
 
@@ -212,13 +210,11 @@ export default function ExternalProfile() {
                 <dt className='text-sm font-medium text-gray-500 mb-2'>
                   COMPANY VALUES
                 </dt>
-                <div className='flex items-center gap-1'>
-                  {companyValues?.map((item, index) => (
-                    <span key={item} className='text-sm font-medium'>
-                      {item} {index !== companyValues.length - 1 && '|'}
-                    </span>
-                  ))}
-                </div>
+                {companyValues?.map((item, index) => (
+                  <p key={index} className='text-sm font-medium'>
+                    - {item}
+                  </p>
+                ))}
               </div>
 
               {interestingStats && (
@@ -226,13 +222,11 @@ export default function ExternalProfile() {
                   <dt className='text-sm font-medium text-gray-500 mb-2'>
                     INTERESTING STATS
                   </dt>
-                  <div className=''>
-                    {interestingStats?.map((item, index) => (
-                      <p key={item} className='text-sm font-medium'>
-                        - {item}
-                      </p>
-                    ))}
-                  </div>
+                  {interestingStats?.map((item, index) => (
+                    <p key={index} className='text-sm font-medium'>
+                      - {item}
+                    </p>
+                  ))}
                 </div>
               )}
 
