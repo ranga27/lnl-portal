@@ -15,9 +15,17 @@ export const MultiSelect = ({
   ...rest
 }) => {
   const setDefaultValues = options.filter((o) => {
-    return defaultValue?.some((d) => {
-      return o.value === d;
-    });
+    if (defaultValue === undefined) {
+      return null;
+    } else {
+      if (Array.isArray(defaultValue)) {
+        return defaultValue?.some((d) => {
+          return o.value === d;
+        });
+      } else {
+        return o.value === defaultValue;
+      }
+    }
   });
   const [selection, setSelection] = useState({
     selectedOptions: [],
