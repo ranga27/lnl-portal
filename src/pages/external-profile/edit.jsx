@@ -49,7 +49,7 @@ export default function UpdateExternalCompany() {
     tagline: company.tagline || '',
     companyMission: company.companyMission || '',
     numberOfEmployees: company.numberOfEmployees || '',
-    ratings: company.ratings || ratingsOptions,
+    ratings: company.ratings || [],
     companyValues: company.companyValues || [],
     companyBenefits: company.companyBenefits || [],
     commitmentToDiversity: company.commitmentToDiversity || '',
@@ -206,6 +206,7 @@ export default function UpdateExternalCompany() {
                           options={ratingsOptions}
                           setValue={setValue}
                           errors={errors}
+                          defaultChecked={defaultValues.ratings}
                           // data-cy='role-rolling-checkbox'
                         />
                       </div>

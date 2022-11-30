@@ -9,8 +9,15 @@ export const CheckBoxGroup = ({
   options,
   setValue,
   errors,
+  defaultChecked,
 }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+  defaultChecked = !Array.isArray(defaultChecked)
+    ? [defaultChecked]
+    : defaultChecked;
+
+  const [selectedItems, setSelectedItems] = useState(defaultChecked || []);
+
+  console.log(selectedItems);
 
   useEffect(() => {
     setValue(name, selectedItems);
@@ -19,7 +26,7 @@ export const CheckBoxGroup = ({
   const handleSelect = (value) => {
     const isPresent = selectedItems.indexOf(value);
     if (isPresent !== -1) {
-      const remaining = selectedItems.filter((item) => item !== value);
+      const remaining = selectedItems?.filter((item) => item !== value);
       setSelectedItems(remaining);
     } else {
       setSelectedItems((prevItems) => [...prevItems, value]);
@@ -36,7 +43,7 @@ export const CheckBoxGroup = ({
           render={() => (
             <div key={option.name}>
               <input
-                checked={selectedItems.includes(option.name)}
+                defaultChecked={defaultChecked.includes(option.name)}
                 onChange={() => handleSelect(option.name)}
                 type='checkbox'
               />

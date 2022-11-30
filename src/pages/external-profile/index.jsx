@@ -143,6 +143,9 @@ export default function ExternalProfile() {
                       pathname: '/external-profile/edit',
                       query: {
                         ...company[0],
+                        ratings: ratings
+                          ? [...ratings?.map((o) => o.name)]
+                          : [],
                       },
                     }}
                   >
