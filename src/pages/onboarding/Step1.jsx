@@ -3,11 +3,12 @@ import classnames from 'classnames';
 import * as Yup from 'yup';
 import IntlMessages from '../../utils/IntlMessages';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { locations } from '../../components/data/location';
+import { locations } from '../../components/data/locationBackup';
 import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
 import Button from '../../components/UI/Form/Button';
 import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 
+// TODO: There is no verification of the phone number that people put in. I put in loads of random numbers.
 const phoneRegExp = /^[0-9,+,(), ,]{1,}(,[0-9]+){0,}$/;
 const linkedInRegExp =
   /^(http(s)?:\/\/)?([\w]+\.)?linkedin\.com\/(pub|in|profile|company)/gm;
@@ -95,7 +96,7 @@ export default function Step1({ nextStep, user }) {
                     }
                   )}
                   name='mobileNumber'
-                  placeholder='+000 392 101'
+                  placeholder='+44 12 345 678 91'
                   data-cy='onboarding-mobileNumber-input'
                 />
                 <ErrorMessage name='mobileNumber' render={renderError} />
@@ -113,7 +114,7 @@ export default function Step1({ nextStep, user }) {
                     }
                   )}
                   name='jobRole'
-                  placeholder='Human Resources'
+                  placeholder='Hiring Manager'
                   data-cy='onboarding-jobRole-input'
                 />
                 <ErrorMessage name='jobRole' render={renderError} />
