@@ -48,7 +48,6 @@ export default function AddRole() {
     title: role.title || '',
     location: role.location || '',
     department: role.department || '',
-    qualification: role.qualification || '',
     positionType: role.positionType || '',
     salary: role.salary || '',
     description: role.description || '',
@@ -58,7 +57,6 @@ export default function AddRole() {
     rolling: role.rolling || false,
     deadline: role.rolling === true ? null : defaultRoleDeadline,
     startDate: startDate !== undefined ? defaultRoleStartDate : null,
-    coverLetter: role.coverLetter || false,
     rolesOfInterests: role.rolesOfInterests || null,
     technicalSkills: role.technicalSkills || null,
     managerId: role.managerId || '',
@@ -126,7 +124,6 @@ export default function AddRole() {
       location,
       managerId,
       department,
-      qualification,
       positionType,
       salary,
       description,
@@ -145,7 +142,6 @@ export default function AddRole() {
       !title ||
       !location ||
       !department ||
-      !qualification ||
       !positionType ||
       !salary ||
       !description ||

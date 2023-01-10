@@ -173,19 +173,18 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                 <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.companyLocation' />
                 </label>
-                <FormikReactSelect
-                  className={classnames('', {
-                    'border-red-500':
-                      errors.companyLocation && touched.companyLocation,
-                  })}
+                <Field
                   name='companyLocation'
-                  value={values.companyLocation}
-                  onChange={(value) =>
-                    setFieldValue('companyLocation', value.value)
-                  }
-                  styles={customStyles}
-                  options={locations}
-                  isMulti={false}
+                  placeholder='Company Location'
+                  variant='outlined'
+                  data-cy='onboarding-companyLocation-input'
+                  className={classnames(
+                    'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#F7B919] focus:outline-none',
+                    {
+                      'border-red-500':
+                        errors.companyLocation && touched.companyLocation,
+                    }
+                  )}
                 />
                 <ErrorMessage name='companyLocation' render={renderError} />
               </div>

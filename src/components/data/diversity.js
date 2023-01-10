@@ -1,13 +1,13 @@
 // eslint-disable-next-line import/prefer-default-export
 export const diversityTypes = [
-  { label: 'Ethnic minorities', value: 'Ethnic minorities' },
+  { label: 'Ethnic Minorities', value: 'Ethnic Minorities' },
   { label: 'Women', value: 'Women' },
   { label: 'Men', value: 'Men' },
-  { label: 'LGBTQ+ community', value: 'LGBTQ+ community' },
-  { label: 'Disability', value: 'Disability' },
+  { label: 'LGBTQIA+ Community', value: 'LGBTQIA+ Community' },
+  { label: 'Differently-Abled', value: 'Differently-Abled' },
   {
-    label: 'Lower socioeconomic background',
-    value: 'Lower socioeconomic background',
+    label: 'Lower socio-economic background',
+    value: 'Lower socio-economic background',
   },
   { label: 'Neurodiverse', value: 'Neurodiverse' },
 ];
