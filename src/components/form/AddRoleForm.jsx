@@ -81,12 +81,12 @@ function AddRoleForm({
             </div>
             <div className='col-span-4 sm:col-span-2'>
               <SelectField
-                label='Location'
+                label='Location Type'
                 name='locationType'
                 control={control}
                 options={locations}
                 errors={errors.locationType}
-                data-cy='role-location-select'
+                data-cy='role-locationType-select'
               />
             </div>
             <div className='col-span-4 sm:col-span-2'>
@@ -96,7 +96,7 @@ function AddRoleForm({
                   label='Location'
                   control={control}
                   errors={errors.location}
-                  data-cy='role-website-input'
+                  data-cy='role-location-input'
                 />
               )}
             </div>
