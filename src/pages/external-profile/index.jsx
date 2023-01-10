@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useContext } from 'react';
 import Link from 'next/link';
 import { PencilIcon, StarIcon } from '@heroicons/react/solid';
@@ -82,6 +83,7 @@ export default function ExternalProfile() {
                           className='text-sm font-medium text-gray-500 flex items-center cursor-pointer'
                           href={websiteUrl}
                           target='_blank'
+                          rel="noreferrer"
                         >
                           <div className='text-xs text-gray-900 flex items-center bg-[#F7B919] px-2 py-0.5 rounded-md'>
                             Visit website{' '}
@@ -94,6 +96,7 @@ export default function ExternalProfile() {
                           className='text-sm font-medium text-gray-500 flex items-center cursor-pointer'
                           href={careerPageUrl}
                           target='_blank'
+                          rel="noreferrer"
                         >
                           <div className='text-xs text-gray-900 flex items-center bg-[#F7B919] px-2 py-0.5 rounded-md'>
                             Career page{' '}
@@ -253,6 +256,7 @@ export default function ExternalProfile() {
                       href={diversityAnnouncement}
                       className='text-sm font-medium text-blue-400 rounded-md'
                       target='_blank'
+                      rel="noreferrer"
                     >
                       {diversityAnnouncement}
                     </a>
