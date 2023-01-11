@@ -21,6 +21,7 @@ import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreSe
 import RolesList from './RolesList';
 import Onboarding from '../../pages/onboarding';
 import { lnlLogo } from '../data/constants';
+import ProductTour from '../ProductTour';
 
 const navigation = [
   {
@@ -28,27 +29,43 @@ const navigation = [
     href: '/dashboard',
     icon: DesktopComputerIcon,
     current: false,
+    id: 'dashboard',
   },
-  { name: 'Roles', href: '/roles', icon: BriefcaseIcon, current: false },
+  {
+    name: 'Roles',
+    href: '/roles',
+    icon: BriefcaseIcon,
+    current: false,
+    id: 'roles',
+  },
   {
     name: 'Manage Applicants',
     href: '/applicants',
     icon: UserGroupIcon,
     current: false,
+    id: 'manage-applicants',
   },
   {
     name: 'Internal Company Profile',
     href: '/company-profile',
     icon: ShieldCheckIcon,
     current: false,
+    id: 'internal-company-profile',
   },
   {
     name: 'External Company Profile',
     href: '/external-profile',
     icon: OfficeBuildingIcon,
     current: false,
+    id: 'external-company-profile',
   },
-  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
+  {
+    name: 'Settings',
+    href: '/settings',
+    icon: CogIcon,
+    current: false,
+    id: 'setting',
+  },
 ];
 
 function classNames(...classes) {
@@ -76,6 +93,7 @@ export default function SideBar({ children }) {
   const fullName = user.firstName + ' ' + user.lastName;
   return (
     <div className='relative h-screen flex overflow-hidden bg-white'>
+      <ProductTour />
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as='div'

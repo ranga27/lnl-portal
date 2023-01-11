@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { dashboardJoyRide } from '../data/JoyrideConstants';
 import {
   BriefcaseIcon,
   UserGroupIcon,
@@ -7,6 +8,8 @@ import {
   ChartSquareBarIcon,
 } from '@heroicons/react/outline';
 import Avatar from 'react-avatar';
+import ProductTour from '../ProductTour';
+// import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 
 const roles = [
   {
@@ -82,11 +85,16 @@ const recentHires = [
     href: '#',
   },
 ];
+
 const DashboardContainer = () => {
   return (
     <div className='container mt-6 mx-auto px-4 md:px-12'>
+      <ProductTour JoyRideCustomConstant={dashboardJoyRide} />
       <div className='flex flex-wrap -mx-1 lg:-mx-4'>
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='number-of-roles-box'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-gray-800'>
@@ -106,7 +114,10 @@ const DashboardContainer = () => {
             </div>
           </div>
         </div>{' '}
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='num-of-total-applicant'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-gray-800'>
@@ -126,7 +137,10 @@ const DashboardContainer = () => {
             </div>
           </div>
         </div>{' '}
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='number-of-account-user'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-Hgray-800'>
@@ -150,7 +164,10 @@ const DashboardContainer = () => {
 
       <section className=''>
         <div className='flex flex-wrap h-full'>
-          <div className='w-full mr-1 lg:my-4 lg:w-2xl md:max-w-2xl bg-white shadow-lg rounded-lg border border-gray-200'>
+          <div
+            className='w-full mr-1 lg:my-4 lg:w-2xl md:max-w-2xl bg-white shadow-lg rounded-lg border border-gray-200'
+            id='role-detail-view'
+          >
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>Roles</div>
             </header>
@@ -169,7 +186,7 @@ const DashboardContainer = () => {
                     <th className='p-2'>
                       <div className='font-semibold text-left'>Created At</div>
                     </th>
-                    <th className='p-2'>
+                    <th className='p-2' id='delete-role-button'>
                       <div className='font-semibold text-center'>Delete</div>
                     </th>
                   </tr>
@@ -225,7 +242,10 @@ const DashboardContainer = () => {
             </div>
           </div>
 
-          <div className=' w-full ml-12 lg:my-4 lg:w-1/3 md:w-1/2 bg-white shadow-lg rounded-lg border border-gray-200'>
+          <div
+            className=' w-full ml-12 lg:my-4 lg:w-1/3 md:w-1/2 bg-white shadow-lg rounded-lg border border-gray-200'
+            id='metrix-details'
+          >
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>Metrics</div>
             </header>
@@ -271,7 +291,10 @@ const DashboardContainer = () => {
       </section>
 
       <section aria-labelledby='recent-applicants-title' className='mb-12'>
-        <div className='my-4 rounded-lg bg-white overflow-hidden shadow-lg border border-gray-200'>
+        <div
+          className='my-4 rounded-lg bg-white overflow-hidden shadow-lg border border-gray-200'
+          id='recent-appicant'
+        >
           <div className=''>
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>
