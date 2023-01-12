@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -22,7 +21,6 @@ const validateEmail = yup.object().shape({
 });
 
 export default function ForgotPassword() {
-  const router = useRouter();
   const alert = withReactContent(Swal);
   const defaultValues = {
     email: '',
@@ -39,7 +37,7 @@ export default function ForgotPassword() {
 
   const onForgotPassword = (data) => {
     sendPasswordResetEmail(auth, data.email, {
-      url: 'https://lnl-portal.web.app/login',
+      url: 'https://lnl-dev.web.app/login',
     })
       .then(() => {
         alert.fire({

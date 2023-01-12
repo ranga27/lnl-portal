@@ -12,13 +12,22 @@ import {
   getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
-import { httpsCallable } from 'firebase/functions';
-import { firestore, functions } from './clientApp';
+import { firestore, firestoreLoop } from './clientApp';
 
 export async function fetchUserProfileDataFromFirestore(uid) {
   const userDocRef = doc(firestore, 'companyUsers', uid);
   const userDoc = await getDoc(userDocRef);
   const data = userDoc.data();
+  return data;
+}
+
+export async function fetchLoopUsers() {
+  const userDocRef = collection(firestoreLoop, 'users');
+  const querySnapshot = await getDocs(userDocRef);
+  const data = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
   return data;
 }
 
