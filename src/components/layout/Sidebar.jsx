@@ -217,12 +217,20 @@ export default function SideBar({ children }) {
                 <Menu.Button className='group w-full rounded-md px-3.5 py-2 text-sm text-left font-medium focus:outline-none focus:ring-2 focus:ring-[#F7B919]'>
                   <span className='flex w-full justify-between items-center'>
                     <span className='flex min-w-0 items-center justify-between space-x-3'>
-                      <Avatar
-                        name={fullName}
-                        size='45px'
-                        className='rounded-full flex-shrink-0'
-                        color='#26ADB4'
-                      />
+                      {user.photoUrl ? (
+                        <img
+                          src={user.photoUrl}
+                          className='h-12 w-12 rounded-full'
+                          alt={user.firstName + user.lastName}
+                        />
+                      ) : (
+                        <Avatar
+                          name={fullName}
+                          size='45px'
+                          className='rounded-full flex-shrink-0'
+                          color='#26ADB4'
+                        />
+                      )}
 
                       <span className='flex-1 flex flex-col min-w-0'>
                         <span className='text-white  text-sm font-bold truncate'>
@@ -446,12 +454,20 @@ export default function SideBar({ children }) {
                 <div>
                   <Menu.Button className='max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                     <span className='sr-only'>Open user menu</span>
-                    <Avatar
-                      name={fullName}
-                      size='45px'
-                      className='rounded-full flex-shrink-0'
-                      color='#26ADB4'
-                    />
+                    {user.photoUrl ? (
+                      <img
+                        src={user.photoUrl}
+                        className='h-12 w-12 rounded-full'
+                        alt={user.firstName + user.lastName}
+                      />
+                    ) : (
+                      <Avatar
+                        name={fullName}
+                        size='45px'
+                        className='rounded-full flex-shrink-0'
+                        color='#26ADB4'
+                      />
+                    )}
                   </Menu.Button>
                 </div>
                 <Transition

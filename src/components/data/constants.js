@@ -31,6 +31,17 @@ export const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
+export const firebaseConfigForLoop = {
+  apiKey: 'AIzaSyASO7xWsWqUHXXxkcMlbmaLWBuI6hOK5gA',
+  authDomain: 'loop-luck.firebaseapp.com',
+  databaseURL: 'https://loop-luck.firebaseio.com',
+  projectId: 'loop-luck',
+  storageBucket: 'loop-luck.appspot.com',
+  messagingSenderId: '254916519702',
+  appId: '1:254916519702:web:bd8ba9a53a0f27486c9237',
+  measurementId: 'G-VYCHZLSDJZ',
+};
+
 export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfig.storageBucket}/`;
 
 export const adminRoot = '/';

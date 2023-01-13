@@ -1,15 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from 'react';
-import { CalendarIcon, ChatAltIcon } from '@heroicons/react/solid';
+import { CalendarIcon, OfficeBuildingIcon, LockOpenIcon } from '@heroicons/react/solid';
 import { getRoles } from '../../../firebase/firestoreService';
 
-const CompanyAside = ({ id, img, updatedAt }) => {
+const CompanyAside = ({ id, img, updatedAt, getRoleLength, credits }) => {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     getRoles(id).then((results) => {
       setRoles(results);
+      getRoleLength(results.length)
     });
-  }, [id]);
+  }, [id, getRoleLength]);
 
   return (
     <aside className='hidden xl:block xl:pl-8'>
@@ -20,11 +22,18 @@ const CompanyAside = ({ id, img, updatedAt }) => {
           alt='Company logo'
           className='text-center mx-auto rounded-md w-36 h-36'
         />
+         <div className='flex items-center space-x-2'>
+          <LockOpenIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+          <span className='text-gray-900 text-sm font-medium'>
+           Invite Credits:  {credits}
+          </span>
+        </div>
+
 
         <div className='flex items-center space-x-2'>
-          <ChatAltIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
+          <OfficeBuildingIcon className='h-5 w-5 text-gray-400' aria-hidden='true' />
           <span className='text-gray-900 text-sm font-medium'>
-            {roles.length} created roles
+           Roles Created:  {roles.length}
           </span>
         </div>
         <div className='flex items-center space-x-2'>
