@@ -3,13 +3,18 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
-import { firebaseConfig } from '../src/components/data/constants';
+import {
+  firebaseConfig,
+  firebaseConfigForLoop,
+} from '../src/components/data/constants';
 
 // https://react-query-firebase.invertase.dev/auth#usage
 const firebase = initializeApp(firebaseConfig);
+const firebaseLoop = initializeApp(firebaseConfigForLoop, 'second');
 
 const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);
+const firestoreLoop = getFirestore(firebaseLoop);
 const functions = getFunctions(getApp(), 'europe-west2');
 const storage = getStorage();
 if (process.env.NODE_ENV !== 'production') {
@@ -20,4 +25,4 @@ if (process.env.NODE_ENV !== 'production') {
   connectFirestoreEmulator(firestore, 'localhost', 8080);
 }
 
-export { auth, firestore, functions };
+export { auth, firestore, firestoreLoop, functions };

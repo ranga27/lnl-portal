@@ -1,7 +1,7 @@
 import SideBar from '../../components/layout/Sidebar';
 import Footer from '../../components/layout/Footer';
 import IntlMessages from '../../utils/IntlMessages';
-import Image from 'next/image';
+import SettingsContainer from '../../components/containers/SettingsContainer';
 
 export default function Applicants() {
   return (
@@ -14,12 +14,7 @@ export default function Applicants() {
             </h1>
           </div>
         </div>
-        <Image
-          layout="fill"
-          src={'/assets/coming.svg'}
-          className='mx-auto text-center'
-          alt='coming soon'
-        />
+        <SettingsContainer />
       </main>
       <Footer />
     </SideBar>
