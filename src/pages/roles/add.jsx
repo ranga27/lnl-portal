@@ -140,7 +140,6 @@ export default function AddRole() {
 
     if (
       !title ||
-      !location ||
       !department ||
       !positionType ||
       !salary ||
@@ -241,6 +240,8 @@ export default function AddRole() {
     }
   };
 
+  console.log();
+
   return (
     <AuthRoute>
       <SideBar>
@@ -270,7 +271,7 @@ export default function AddRole() {
                           handleChangeTab={handleChangeTab}
                           handleSaveFields={updateForm}
                           fields={fields}
-                          companyName={company[0].companyName}
+                          companyName={company[0]?.companyName}
                         />
                       ) : activeTab === 'tab2' ? (
                         <AddOwnerForm
