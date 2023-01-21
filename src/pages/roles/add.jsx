@@ -170,6 +170,7 @@ export default function AddRole() {
         // ...data,
         companyId: company[0].id,
         pinned: false,
+        isQuestion: customQuestions.length ? true : false,
       };
 
       if (role && role.id) {
