@@ -90,9 +90,10 @@ const DashboardContainer = () => {
   // GET ROLES
   const [postedRole, setpostedRole] = useState([]);
   useEffect(() => {
-    getCompanyDashboardMetrix(userId).then((result) =>
-      setpostedRole([...result])
-    );
+    userId &&
+      getCompanyDashboardMetrix(userId).then(
+        (result) => result?.length && setpostedRole([...result])
+      );
   }, [userId, deleteId]);
 
   return (
