@@ -12,7 +12,7 @@ import {
   getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
-import { firestore, firestoreLoop } from './clientApp';
+import { firestore } from './clientApp';
 
 export async function fetchUserProfileDataFromFirestore(uid) {
   const userDocRef = doc(firestore, 'companyUsers', uid);
@@ -22,7 +22,17 @@ export async function fetchUserProfileDataFromFirestore(uid) {
 }
 
 export async function fetchLoopUsers() {
-  const userDocRef = collection(firestoreLoop, 'users');
+  const userDocRef = collection(firestore, 'users');
+  const querySnapshot = await getDocs(userDocRef);
+  const data = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  return data;
+}
+
+export async function fetchCompanyUsers() {
+  const userDocRef = collection(firestore, 'companyUsers');
   const querySnapshot = await getDocs(userDocRef);
   const data = querySnapshot.docs.map((docu) => ({
     ...docu.data(),
@@ -234,4 +244,26 @@ export async function getStripeProducts() {
   }
 
   return array;
+}
+
+export async function fetchUserMatchedRolesFromFirestore(users) {
+  const roles = [];
+
+  for (const user of users) {
+    const roleRef = collection(firestore, 'users', user.id, 'matchedRoles');
+    const q = query(roleRef, where('applied', '==', true));
+    const querySnapshot = await getDocs(q);
+    const allRoles = querySnapshot.docs.map((docu) => ({
+      ...docu.data(),
+      id: docu.id,
+    }));
+    const mergedArray = {
+      ...user,
+      roles: allRoles,
+    };
+    roles.push(mergedArray);
+  }
+  const filteredRoles = roles.filter((role) => role.roles.length !== 0);
+
+  return filteredRoles;
 }

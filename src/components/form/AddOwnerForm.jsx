@@ -1,18 +1,18 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { InformationCircleIcon } from '@heroicons/react/solid';
-import { SelectField } from '../../components/UI/Form/SelectField';
+// import { SelectField } from '../../components/UI/Form/SelectField';
 import IntlMessages from '../../utils/IntlMessages';
-import { users } from '../data/users';
+import { fetchCompanyUsers } from '../../../firebase/firestoreService';
+import { TextInput } from '../UI/Form/Input';
 
 export default function AddOwnerForm({
   handleChangeTab,
-  handleLastTabButton,
   handleSaveFields,
-  fields,
+  companyUser,
 }) {
   const defaultValues = {
-    managerId: fields.managerId || '',
+    managerId: companyUser,
   };
 
   const {
@@ -27,6 +27,15 @@ export default function AddOwnerForm({
     handleSaveFields(data);
     handleChangeTab('tab3');
   };
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchCompanyUsers().then((results) => {
+      setUsers(results);
+    });
+  }, []);
+
+  const selectUserInfo = users.filter((user) => user.id === companyUser);
 
   return (
     <Fragment>
@@ -34,13 +43,29 @@ export default function AddOwnerForm({
         <div className='bg-white py-6 px-4 sm:p-6'>
           <div className='grid grid-cols-4 gap-x-6 gay-y-2'>
             <div className='col-span-4 sm:col-span-4'>
-              <SelectField
+              {/* <SelectField
                 label='Hiring manager'
                 name='managerId'
                 control={control}
-                options={users}
+                options={usersList}
                 data-cy='role-manager-select'
+                defaultValue={defaultValues.managerId}
                 menuPortalTarget={document.querySelector('body')}
+              /> */}
+              <TextInput
+                name='managerId'
+                label='Hiring Manager'
+                errors={errors.managerId}
+                control={control}
+                data-cy='role-manager-select'
+                value={
+                  selectUserInfo.length !== 0
+                    ? selectUserInfo[0].firstName +
+                      ' ' +
+                      selectUserInfo[0].lastName
+                    : ''
+                }
+                disabled
               />
             </div>
           </div>
@@ -60,9 +85,8 @@ export default function AddOwnerForm({
                 />
               </span>
               <span className='ml-4 text-sm font-medium text-gray-900'>
-                You are the only user in the company so all Roles will be
-                reviewed by you as default. You can invite a user to the
-                platform for the hiring process.
+                We are working on adding multiple users for one company. You
+                will be notified via email when this feature becomes available.
               </span>{' '}
             </span>
           </div>
