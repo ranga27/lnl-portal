@@ -43,6 +43,9 @@ export default function RenewCredits() {
         <h2 className='text-3xl font-extrabold text-gray-900'>
           <IntlMessages id='onboarding.paymentHeader' />
         </h2>
+        <p className='text-sm text-black'>
+          <IntlMessages id='onboarding.paymentSubtitle' />
+        </p>
       </div>
       <div className='bg-white'>
         <div className='mx-auto max-w-7xl'>

@@ -2,6 +2,7 @@ import { ChevronLeftIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
 import EmptyComponent from '../layout/EmptyComponent';
 import Applicant from './Applicant';
+import { format } from 'date-fns';
 
 export default function AllApplicants({ Applicants }) {
   const [isOpen, setOpen] = useState(false);
@@ -81,19 +82,19 @@ export default function AllApplicants({ Applicants }) {
                             scope='col'
                             className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                           >
-                            Email
+                            Percentage Match Score
                           </th>
                           <th
                             scope='col'
                             className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                           >
-                            Mobile Number
+                            Application Date
                           </th>
                           <th
                             scope='col'
                             className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
                           >
-                            Gender
+                            Status
                           </th>
                           <th
                             scope='col'
@@ -109,14 +110,17 @@ export default function AllApplicants({ Applicants }) {
                             <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8'>
                               {data.firstName + ' ' + data.lastName}
                             </td>
-                            <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.email}
+                            <td className='text-center whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                              {data.percentageMatch}%
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.mobileNumber}
+                            {format(
+                                  new Date(data.createdAt),
+                                  'dd-MM-yyyy'
+                                )}
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.gender}
+                              {data.status}
                             </td>
                             <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8'>
                               <button

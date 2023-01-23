@@ -24,25 +24,6 @@ const RoleInfo = ({ role }) => {
         </div>
 
         <div className='sm:col-span-1'>
-          <dt className='text-sm font-medium text-gray-500'>How To Apply</dt>
-          <dd className='mt-1 text-sm text-gray-900'>{role.howToApply}</dd>
-        </div>
-        {role.website && (
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Website</dt>
-            <dd className='mt-1 text-sm text-gray-900'>{role.website}</dd>
-          </div>
-        )}
-        {role.meetingLink && (
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Meeting Link for Hiring Manager
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900'>{role.meetingLink}</dd>
-          </div>
-        )}
-
-        <div className='sm:col-span-1'>
           <dt className='text-sm font-medium text-gray-500'>
             Behaviour Attributes Strengths
           </dt>

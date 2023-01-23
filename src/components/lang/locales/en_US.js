@@ -72,6 +72,8 @@ module.exports = {
   'onboarding.accountHeader': 'Account Details',
   'onboarding.companyHeader': 'Company Information',
   'onboarding.paymentHeader': 'Pricing Packages',
+  'onboarding.paymentSubtitle':
+    'It looks like you have run out of invite credits. Please purchase a new bundle below or contact us on hello@loopnotluck.com if you have any questions.',
   'onboarding.companyName': 'Company Name',
   'onboarding.companyLocation': 'Company Headquaters Location',
   'onboarding.industry': 'Industry',
