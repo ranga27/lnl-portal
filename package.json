@@ -12,7 +12,9 @@
     "shell": "npm run build && firebase functions:shell",
     "deploy": "firebase deploy --only hosting,functions",
     "logs": "firebase functions:log",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "lintES": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.4",
@@ -55,15 +57,25 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "concurrently": "^7.5.0",
-    "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",
     "firebase-functions-test": "^3.0.0",
     "firebase-tools": "^11.16.0",
     "husky": "^8.0.1",
     "postcss": "^8.4.18",
     "prettier": "^2.7.1",
-    "tailwindcss": "^3.2.1"
+    "tailwindcss": "^3.2.1",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/eslint-plugin": "^7.19.1"
   },
+
   "husky": {
     "hooks": {
       "pre-commit": "npm run prettier-format && npm run lint"

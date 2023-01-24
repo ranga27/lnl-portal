@@ -9,6 +9,7 @@ export const rolesSchema = Yup.object().shape({
   location: Yup.string().when('locationType', {
     is: (value) => value !== 'Remote',
     then: Yup.string().required('Please enter the location'),
+    otherwise: Yup.string().nullable().notRequired(),
   }),
   positionType: Yup.string().required('Please select Position Type'),
   description: Yup.string().required('Please provide the details'),

@@ -2,7 +2,7 @@ const functions = require('firebase-functions/v1');
 const { sendEmail } = require('./sendEmail');
 const nodemailer = require('nodemailer');
 
-exports.sendVerificationEmail = functions
+exports.sendCompanyVerificationEmail = functions
   .region('europe-west2')
   .runWith({ secrets: ['NODEMAILER_AUTH_PASSWORD'] })
   .firestore.document('temporaryCompanyUsers/{uid}')

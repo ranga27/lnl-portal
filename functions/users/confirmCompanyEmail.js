@@ -2,7 +2,7 @@ const functions = require('firebase-functions/v1');
 const admin = require('firebase-admin');
 const { FieldValue } = require('firebase-admin/firestore');
 
-exports.confirmEmail = functions
+exports.confirmCompanyEmail = functions
   .region('europe-west2')
   .https.onRequest(async (req, res) => {
     const confirmationHash = req.query.conf;

@@ -2,7 +2,7 @@ const { sendEmail } = require('./sendOnboardingEmail');
 const functions = require('firebase-functions/v1');
 const nodemailer = require('nodemailer');
 
-exports.sendOnboardingEmail = functions
+exports.sendCompanyOnboardingEmail = functions
   .region('europe-west2')
   .runWith({ secrets: ['NODEMAILER_AUTH_PASSWORD'] })
   .firestore.document('companyUsers/{userId}')
