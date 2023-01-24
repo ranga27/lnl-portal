@@ -6,12 +6,10 @@ export const rolesSchema = Yup.object().shape({
     .max(100, 'Title Too Long!')
     .required('Please enter the Title'),
   locationType: Yup.string().required('Please select location type'),
-  location: Yup.string()
-    .when('locationType', {
-      is: (value) => value !== 'Remote',
-      then: Yup.string().required('Please enter the location'),
-    })
-    .required('Please select the Location'),
+  location: Yup.string().when('locationType', {
+    is: (value) => value !== 'Remote',
+    then: Yup.string().required('Please enter the location'),
+  }),
   positionType: Yup.string().required('Please select Position Type'),
   description: Yup.string().required('Please provide the details'),
   customMessage: Yup.string().required('Please provide the details'),

@@ -263,10 +263,14 @@ export default function RolesList({ roles }) {
                     {role.location}
                   </td>
                   <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
-                    {format(new Date(role.startDate.toDate()), 'dd-MMM-yyyy')}
+                    {role?.startDate
+                      ? format(role?.startDate?.toDate(), 'dd-MMM-yyyy')
+                      : ''}
                   </td>
                   <td className='hidden md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-right'>
-                    {format(new Date(role.createdAt.toDate()), 'dd-MMM-yyyy')}
+                    {role?.createdAt
+                      ? format(role?.createdAt?.toDate(), 'dd-MMM-yyyy')
+                      : ''}
                   </td>
                   <td className='pr-6'>
                     <Menu
@@ -291,43 +295,44 @@ export default function RolesList({ roles }) {
                       >
                         <Menu.Items className='mx-3 origin-top-right absolute right-7 top-0 w-48 mt-1 rounded-md shadow-lg z-10 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none'>
                           <div className='py-1'>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <Link
-                                    href={{
-                                      pathname: '/roles/add',
-                                      query: {
-                                        ...role,
-                                        startDate:
-                                          format(
-                                            new Date(role.startDate.toDate()),
-                                            'dd-MMM-yyyy'
-                                          ) || null,
-                                        deadline: role.deadline ?
-                                          format(
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href={{
+                                    pathname: '/roles/add',
+                                    query: {
+                                      ...role,
+                                      startDate:
+                                        format(
+                                          new Date(role.startDate.toDate()),
+                                          'dd-MMM-yyyy'
+                                        ) || null,
+                                      deadline: role.deadline
+                                        ? format(
                                             new Date(role.deadline.toDate()),
                                             'dd-MMM-yyyy'
-                                          ) : null,
-                                      },
-                                    }}
+                                          )
+                                        : null,
+                                    },
+                                  }}
+                                >
+                                  <a
+                                    className={classNames(
+                                      active
+                                        ? 'bg-gray-100 text-gray-900 '
+                                        : 'text-gray-700 hover:bg-gray-100',
+                                      'group flex items-center px-4 py-2 text-sm'
+                                    )}
                                   >
-                                    <a
-                                      className={classNames(
-                                        active
-                                          ? 'bg-gray-100 text-gray-900 '
-                                          : 'text-gray-700 hover:bg-gray-100',
-                                        'group flex items-center px-4 py-2 text-sm'
-                                      )}
-                                    >
-                                      <PencilAltIcon
-                                        className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                                        aria-hidden='true'
-                                      />
-                                      Edit
-                                    </a>
-                                  </Link>
-                                )}
-                              </Menu.Item>
+                                    <PencilAltIcon
+                                      className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                      aria-hidden='true'
+                                    />
+                                    Edit
+                                  </a>
+                                </Link>
+                              )}
+                            </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
                                 <button

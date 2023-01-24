@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { dashboardJoyRide } from '../data/JoyrideConstants';
 import {
   BriefcaseIcon,
   UserGroupIcon,
@@ -7,23 +8,11 @@ import {
   ChartSquareBarIcon,
 } from '@heroicons/react/outline';
 import Avatar from 'react-avatar';
-
-const roles = [
-  {
-    title: 'HR Executive',
-    department: 'Human Resources',
-    createdAt: '12 Jun 2022',
-  },
-  {
-    title: 'Software Engineer',
-    department: 'Engineering',
-    createdAt: '22 Jun 2022',
-  },
-  { title: 'Sales Manager', department: 'Sales', createdAt: '26 April 2022' },
-  { title: 'Intern', department: 'Marketing', createdAt: '31 May 2022' },
-  { title: 'Intern', department: 'Operations', createdAt: '2 Sept 2022' },
-  { title: 'Intern', department: 'Marketing', createdAt: '11 Jan 2022' },
-];
+import ProductTour from '../ProductTour';
+import { AuthContext } from '../context/AuthContext';
+import { getCompanyDashboardMetrix } from '../../../firebase/firestoreService';
+import { format } from 'date-fns';
+import DeleteRole from './DeleteRole';
 
 const metrics = [
   {
@@ -82,11 +71,40 @@ const recentHires = [
     href: '#',
   },
 ];
+
 const DashboardContainer = () => {
+  // USER AUTH
+  const {
+    userData: { userId },
+  } = useContext(AuthContext);
+
+  //DELETE ROLE
+  const [deleteStatus, setDeleteStatus] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+
+  const handleDeleteRole = (id) => {
+    setDeleteStatus(true);
+    setDeleteId(id);
+  };
+
+  // GET ROLES
+  const [postedRole, setpostedRole] = useState([]);
+  useEffect(() => {
+    userId &&
+      getCompanyDashboardMetrix(userId).then(
+        (result) => result?.length && setpostedRole([...result])
+      );
+  }, [userId, deleteId]);
+
   return (
     <div className='container mt-6 mx-auto px-4 md:px-12'>
+      {deleteStatus && <DeleteRole id={deleteId} />}
+      <ProductTour JoyRideCustomConstant={dashboardJoyRide} />
       <div className='flex flex-wrap -mx-1 lg:-mx-4'>
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='number-of-roles-box'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-gray-800'>
@@ -96,7 +114,9 @@ const DashboardContainer = () => {
                 <BriefcaseIcon className='w-12 h-12 text-gray-700' />
               </div>
             </div>
-            <h2 className='text-xl font-bold mb-2 text-gray-800'>11</h2>
+            <h2 className='text-xl font-bold mb-2 text-gray-800'>
+              {postedRole ? postedRole.length : 0}
+            </h2>
             <div className='text-left'>
               <Link href='/roles/add' passHref>
                 <a className='text-black hover:text-[#F7B919]'>
@@ -106,7 +126,10 @@ const DashboardContainer = () => {
             </div>
           </div>
         </div>{' '}
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='num-of-total-applicant'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-gray-800'>
@@ -126,7 +149,10 @@ const DashboardContainer = () => {
             </div>
           </div>
         </div>{' '}
-        <div className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'>
+        <div
+          className='my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3'
+          id='number-of-account-user'
+        >
           <div className='bg-white p-6 rounded-lg shadow-lg border border-gray-300 hover:shadow-md hover:border-opacity-0 transform hover:-translate-y-1 transition-all duration-200'>
             <div className='flex justify-between'>
               <h2 className='text-lg font-semibold mb-2 text-Hgray-800'>
@@ -150,7 +176,10 @@ const DashboardContainer = () => {
 
       <section className=''>
         <div className='flex flex-wrap h-full'>
-          <div className='w-full mr-1 lg:my-4 lg:w-2xl md:max-w-2xl bg-white shadow-lg rounded-lg border border-gray-200'>
+          <div
+            className='w-full mr-1 lg:my-4 lg:w-2xl md:max-w-2xl bg-white shadow-lg rounded-lg border border-gray-200'
+            id='role-detail-view'
+          >
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>Roles</div>
             </header>
@@ -159,7 +188,6 @@ const DashboardContainer = () => {
               <table className='table-auto w-full'>
                 <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50'>
                   <tr>
-                    <th></th>
                     <th className='p-2'>
                       <div className='font-semibold text-left'>Title</div>
                     </th>
@@ -169,63 +197,60 @@ const DashboardContainer = () => {
                     <th className='p-2'>
                       <div className='font-semibold text-left'>Created At</div>
                     </th>
-                    <th className='p-2'>
+                    <th className='p-2' id='delete-role-button'>
                       <div className='font-semibold text-center'>Delete</div>
                     </th>
                   </tr>
                 </thead>
 
                 <tbody className='text-sm divide-y divide-gray-200'>
-                  {roles.map((item, index) => (
-                    <tr key={index}>
-                      <td className='p-2'>
-                        <input
-                          type='checkbox'
-                          className='w-5 h-5'
-                          value='id-1'
-                        />
-                      </td>
-                      <td className='p-2'>
-                        <div className='font-medium text-gray-800'>
-                          {item.title}
-                        </div>
-                      </td>
-                      <td className='p-2'>
-                        <div className='text-left'>{item.department}</div>
-                      </td>
-                      <td className='p-2'>
-                        <div className='text-left font-medium'>
-                          {item.createdAt}
-                        </div>
-                      </td>
-                      <td className='p-2'>
-                        <div className='flex justify-center text-gray-800'>
-                          <button>
-                            <svg
-                              className='w-8 h-8 hover:text-[#F7B919] rounded-full hover:bg-gray-100 p-1'
-                              fill='none'
-                              stroke='currentColor'
-                              viewBox='0 0 24 24'
-                              xmlns='http://www.w3.org/2000/svg'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                strokeWidth='2'
-                                d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-                              ></path>
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  {postedRole &&
+                    postedRole?.map((item, index) => (
+                      <tr key={index}>
+                        <td className='p-2'>
+                          <div className='font-medium text-gray-800'>
+                            {item.title}
+                          </div>
+                        </td>
+                        <td className='p-2'>
+                          <div className='text-left'>{item.department}</div>
+                        </td>
+                        <td className='p-2'>
+                          <div className='text-left font-medium'>
+                            {format(item.createdAt?.toDate(), 'dd-MMM-yyyy')}
+                          </div>
+                        </td>
+                        <td className='p-2'>
+                          <div className='flex justify-center text-gray-800'>
+                            <button onClick={() => handleDeleteRole(item.id)}>
+                              <svg
+                                className='w-8 h-8 hover:text-[#F7B919] rounded-full hover:bg-gray-100 p-1'
+                                fill='none'
+                                stroke='currentColor'
+                                viewBox='0 0 24 24'
+                                xmlns='http:www.w3.org/2000/svg'
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  strokeWidth='2'
+                                  d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+                                ></path>
+                              </svg>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
           </div>
 
-          <div className=' w-full ml-12 lg:my-4 lg:w-1/3 md:w-1/2 bg-white shadow-lg rounded-lg border border-gray-200'>
+          <div
+            className=' w-full ml-12 lg:my-4 lg:w-1/3 md:w-1/2 bg-white shadow-lg rounded-lg border border-gray-200'
+            id='metrix-details'
+          >
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>Metrics</div>
             </header>
@@ -271,7 +296,10 @@ const DashboardContainer = () => {
       </section>
 
       <section aria-labelledby='recent-applicants-title' className='mb-12'>
-        <div className='my-4 rounded-lg bg-white overflow-hidden shadow-lg border border-gray-200'>
+        <div
+          className='my-4 rounded-lg bg-white overflow-hidden shadow-lg border border-gray-200'
+          id='recent-appicant'
+        >
           <div className=''>
             <header className='px-5 py-4 border-b border-gray-100'>
               <div className='font-semibold text-gray-800'>
