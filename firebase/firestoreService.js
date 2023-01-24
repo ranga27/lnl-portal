@@ -246,6 +246,28 @@ export async function getStripeProducts() {
   return array;
 }
 
+export async function getCompanyDashboardMetrix(userId) {
+  const conpanyRef = collection(firestore, 'companyV2');
+  const q = query(conpanyRef, where('userId', '==', userId));
+  const querySnapshot = await getDocs(q);
+  const company = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  const companyID = company[0].id;
+
+  const roleRef = collection(firestore, 'companyRolesV2');
+  const roleQuery = query(roleRef, where('companyId', '==', companyID));
+  const roleQuerySnapshot = await getDocs(roleQuery);
+  const postedRole = roleQuerySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  return postedRole;
+}
+
 export async function fetchUserMatchedRolesFromFirestore(users) {
   const roles = [];
 
