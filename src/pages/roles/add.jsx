@@ -51,8 +51,7 @@ export default function AddRole() {
     positionType: role.positionType || '',
     salary: role.salary || '',
     description: role.description || '',
-    howToApply: role.howToApply || '',
-    meetingLink: role.meetingLink || '',
+    customMessage: role.customMessage || '',
     website: role.website || '',
     rolling: role.rolling || false,
     deadline: role.rolling === true ? null : defaultRoleDeadline,
@@ -90,6 +89,10 @@ export default function AddRole() {
           id: document.id,
           companyName: document.data().companyName,
           roleCredits: document.data().roleCredits,
+          companyUser: document.data().userId,
+          jobValues: document.data().companyValues,
+          logoUrl: document.data().logoUrl,
+          industry: document.data().industry,
         }));
         return companiesData;
       },
@@ -127,7 +130,7 @@ export default function AddRole() {
       positionType,
       salary,
       description,
-      howToApply,
+      customMessage,
       startDate,
       rolesOfInterests,
       technicalSkills,
@@ -144,7 +147,7 @@ export default function AddRole() {
       !positionType ||
       !salary ||
       !description ||
-      !howToApply ||
+      !customMessage ||
       !startDate ||
       !rolesOfInterests ||
       !technicalSkills ||
@@ -167,8 +170,11 @@ export default function AddRole() {
       const newData = {
         ...fields,
         ...date,
-        // ...data,
         companyId: company[0].id,
+        company: company[0].companyName,
+        jobValues: company[0].jobValues,
+        logoUrl: company[0].logoUrl,
+        industry: company[0].industry,
         pinned: false,
         isQuestion: customQuestions.length ? true : false,
       };
@@ -279,6 +285,7 @@ export default function AddRole() {
                           handleChangeTab={handleChangeTab}
                           handleSaveFields={updateForm}
                           fields={fields}
+                          companyUser={company[0].companyUser}
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation

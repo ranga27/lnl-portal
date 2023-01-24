@@ -11,7 +11,9 @@ import AllApplicants from './AllApplicants';
 
 const sampleApplicants = [
   {
-    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    createdAt: 'Tue Nov 22 2022 08:14:13 GMT+0000 (Greenwich Mean Time)',
+    percentageMatch: 30,
+    status: 'pending review',
     behaviorAttributes: [
       'Communication',
       'Leadership',
@@ -57,7 +59,9 @@ const sampleApplicants = [
     visaRequired: 'No',
   },
   {
-    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    createdAt: 'Tue Nov 22 2022 08:14:13 GMT+0000 (Greenwich Mean Time)',
+    percentageMatch: 91,
+        status: 'pending review',
     email: 'abraham+1@loopnotluck.com',
     behaviorAttributes: [
       'Communication',
@@ -103,7 +107,9 @@ const sampleApplicants = [
     visaRequired: 'No',
   },
   {
-    createdAt: 'Wed Jul 13 2022 10:59:15 GMT+0100 (West Africa Standard Time)',
+    createdAt: 'Tue Nov 22 2022 08:14:13 GMT+0000 (Greenwich Mean Time)',
+    percentageMatch: 10,
+    status: 'pending review',
     email: 'abraham+1@loopnotluck.com',
     behaviorAttributes: [
       'Communication',
