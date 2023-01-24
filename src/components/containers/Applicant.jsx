@@ -13,6 +13,7 @@ import {
   updateInviteCreditsInCompanyFirestore,
 } from '../../../firebase/firestoreService';
 import axios from 'axios';
+import { format } from 'date-fns';
 
 const tabs = [
   { name: 'About', href: '#', current: true },
@@ -89,11 +90,12 @@ const Applicant = ({ Applicant, roleData }) => {
         await axios
           .post(
             process.env.NODE_ENV === 'development'
-              ? process.env.NEXT_PUBLIC_DEV_SEND_APPLICANT_EMAIL
+              ? process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL
               : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
             emailData
           )
-          .then(() => console.log('email sent'));
+          .then(() => console.log('email sent'))
+          .catch((error) => console.log(error));
 
         Swal.fire({
           title: 'Success!',
@@ -319,7 +321,13 @@ const Applicant = ({ Applicant, roleData }) => {
             <dd className='mt-1 text-sm text-gray-900'>
               {Applicant.start || '-'}
               {Applicant.specificStartDate && (
-                <p>Specific Start Date: {Applicant.specificStartDate} </p>
+                <p>
+                  Specific Start Date:
+                  {format(
+                    new Date(Applicant.specificStartDate.toDate()),
+                    'dd-MMM-yyyy'
+                  )}
+                </p>
               )}
               {Applicant.noticePeriod && (
                 <p>Notice Period: {Applicant.noticePeriod} </p>
@@ -346,7 +354,7 @@ const Applicant = ({ Applicant, roleData }) => {
               Graduation Year
             </dt>
             <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.graduationYear || '-'}
+              {format(new Date(Applicant.graduationYear.toDate()), 'yyyy')}
             </dd>
           </div>
 

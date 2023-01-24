@@ -250,7 +250,12 @@ export async function fetchUserMatchedRolesFromFirestore(users) {
   const roles = [];
 
   for (const user of users) {
-    const roleRef = collection(firestore, 'users', user.id, 'matchedRoles');
+    const roleRef = collection(
+      firestore,
+      'users',
+      user.id,
+      'companyMatchedRoles'
+    );
     const q = query(roleRef, where('applied', '==', true));
     const querySnapshot = await getDocs(q);
     const allRoles = querySnapshot.docs.map((docu) => ({
@@ -266,4 +271,36 @@ export async function fetchUserMatchedRolesFromFirestore(users) {
   const filteredRoles = roles.filter((role) => role.roles.length !== 0);
 
   return filteredRoles;
+}
+
+export async function fetchUserData(roleId) {
+  const appliedDocRef = collection(firestore, 'appliedRoles');
+  const appliedRolesDoc = await query(
+    appliedDocRef,
+    where('roleId', '==', roleId)
+  );
+  const querySnapshot = await getDocs(appliedRolesDoc);
+  const appliedRoles = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  if (appliedRoles.length === 0) return [];
+
+  const userData = [];
+
+  for (const user of appliedRoles) {
+    const userRef = doc(firestore, 'users', user.userId);
+    const q = query(userRef);
+    const userDoc = await getDoc(q);
+    const data = userDoc.data();
+
+    const mergedArray = {
+      ...user,
+      ...data,
+    };
+    userData.push(mergedArray);
+  }
+
+  return userData;
 }

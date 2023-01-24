@@ -1,8 +1,10 @@
 import { ChevronLeftIcon } from '@heroicons/react/solid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EmptyComponent from '../layout/EmptyComponent';
 import Applicant from './Applicant';
 import { format } from 'date-fns';
+import { fetchUserData } from '../../../firebase/firestoreService';
+import Link from 'next/link';
 
 export default function AllApplicants({ Applicants }) {
   const [isOpen, setOpen] = useState(false);
@@ -12,16 +14,26 @@ export default function AllApplicants({ Applicants }) {
     setOpen(true);
     setApplicant(data);
   };
+
+  const [appliedUsers, setAppliedUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUserData(Applicants.id).then((results) => {
+      setAppliedUsers(results);
+    });
+  }, [Applicants.id]);
+
   return (
     <>
       {isOpen ? (
-        <main className='py-6 flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last'>
+        <main className='py-0 sm:py:6 flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last'>
           <nav
-            className='flex items-start px-4 py-3 sm:px-6 lg:px-8 xl:hidden'
+            className='flex items-start px-2 py-3 sm:px-4 lg:px-2'
             aria-label='Breadcrumb'
           >
-            <a
-              href='#'
+            <button
+              onClick={() => setOpen(!isOpen)}
+              type='button'
               className='inline-flex items-center space-x-3 text-sm font-medium text-gray-900'
             >
               <ChevronLeftIcon
@@ -29,7 +41,7 @@ export default function AllApplicants({ Applicants }) {
                 aria-hidden='true'
               />
               <span>Applicants</span>
-            </a>
+            </button>
           </nav>
           <Applicant Applicant={ApplicantData} roleData={Applicants} />
         </main>
@@ -55,7 +67,7 @@ export default function AllApplicants({ Applicants }) {
             </div>
           </div>
 
-          {Applicants.sampleApplicants.length === 0 ? (
+          {appliedUsers.length === 0 ? (
             <div className='mx-auto'>
               <EmptyComponent
                 title='applicant.empty-title'
@@ -105,19 +117,19 @@ export default function AllApplicants({ Applicants }) {
                         </tr>
                       </thead>
                       <tbody className='divide-y divide-gray-200 bg-white'>
-                        {Applicants?.sampleApplicants.map((data) => (
-                          <tr key={data.email}>
+                        {appliedUsers?.map((data) => (
+                          <tr key={data.uid}>
                             <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8'>
                               {data.firstName + ' ' + data.lastName}
                             </td>
                             <td className='text-center whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.percentageMatch}%
+                              {data.match}%
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                            {format(
-                                  new Date(data.createdAt),
-                                  'dd-MM-yyyy'
-                                )}
+                              {format(
+                                new Date(data.appliedAt.toDate()),
+                                'dd-MMM-yyyy'
+                              )}
                             </td>
                             <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
                               {data.status}
@@ -125,10 +137,10 @@ export default function AllApplicants({ Applicants }) {
                             <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8'>
                               <button
                                 onClick={() => handleOpenApplicant(data)}
+                                type='button'
                                 className='text-black hover:text-gray-600'
                               >
                                 View
-                                <span className='sr-only'>, {data.name}</span>
                               </button>
                             </td>
                           </tr>

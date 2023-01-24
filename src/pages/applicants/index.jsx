@@ -20,9 +20,6 @@ export default function Applicants() {
     });
   }, [userId]);
 
-  if (company.length === 0) {
-    return <div className='loading' />;
-  }
   const hasCompanyInviteCredits =
     company !== [] &&
     company.length !== 0 &&
