@@ -56,6 +56,21 @@ export async function fetchApplicantsCollection(roleId, userID) {
   return data;
 }
 
+export async function fetchRejectedApplicantsCollection(roleId, userID) {
+  const userDocRef = collection(
+    firestore,
+    `companyRolesV2/${roleId}/rejectedApplicants`
+  );
+  const doc = await query(userDocRef, where('userId', '==', userID));
+
+  const querySnapshot = await getDocs(doc);
+  const data = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  return data;
+}
+
 export async function getCompanyRoles(uid) {
   const companyDocRef = collection(firestore, 'companyV2');
   const companyDoc = await query(companyDocRef, where('userId', '==', uid));

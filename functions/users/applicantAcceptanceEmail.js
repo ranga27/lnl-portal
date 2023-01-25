@@ -1,4 +1,4 @@
-exports.applicantResultEmail = ({
+exports.applicantAcceptanceEmail = ({
   to,
   from,
   subject,
@@ -6,6 +6,7 @@ exports.applicantResultEmail = ({
   firstName,
   companyName,
   customMessage,
+  roleName,
   transporter,
 }) => {
   const mailOptions = {
@@ -36,47 +37,42 @@ exports.applicantResultEmail = ({
                             </a>
                           </td>
                         </tr>
+                       
                         <tr>
-                          <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
-                            <h2 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">
-                                Your profile has been ${
-                                  status === 'Accepted'
-                                    ? 'accepted'
-                                    : 'rejected'
-                                } by ${companyName}
-                            </h2>
-                          </td>
-                        </tr>
-                        <tr>
-                        <td style="padding-bottom: 5px; padding-left: 20px; padding-right: 20px;" align="center" valign="top" class="mainTitle">
-
-                          <h5 class="text" style="color:#000;font-family:Poppins,Helvetica,Arial,sans-serif;font-size:20px;font-weight:500;font-style:normal;letter-spacing:normal;line-height:36px;text-transform:none;text-align:center;padding:0;margin:0">Hi ${firstName}</h2>
-
-                        </td>
-                      </tr>
-                        <tr>
-                          <td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
+                          <td style="padding-left:20px;padding-top:20px;padding-right:20px" align="left" valign="top" class="containtTable ui-sortable">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
                               <tbody>
                                 <tr>
-                                  <td style="padding-bottom: 20px;" align="center" valign="top" class="description">
-                                    <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                                   Please go to your profile to see the next steps and expect an email from ${companyName} soon
+                                  <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                    <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                    Hi ${firstName}
                                   </td>
                                 </tr>
                               </tbody>
                             </table>
                           </td>
                         </tr>
-
                         <tr>
-                        <td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
+                        <td style="padding-left:20px;padding-right:20px" align="left" valign="top" class="containtTable ui-sortable">
                           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
                             <tbody>
                               <tr>
-                                <td style="padding-bottom: 20px;" align="center" valign="top" class="description">
-                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                                ${status === 'Accepted' && customMessage}
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                  Thank you for your application on the Loop Not Luck online careers portal for ${roleName} role at ${companyName}. We have decided to take you to the next stage as you have some very valuable experience. You will receive next steps via email from someone at ${companyName}.                             </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                        <tr>
+                        <td style="padding-left:20px;padding-right:20px" align="left" valign="top" class="containtTable ui-sortable">
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
+                            <tbody>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                ${customMessage}
                                 </td>
                               </tr>
                             </tbody>
