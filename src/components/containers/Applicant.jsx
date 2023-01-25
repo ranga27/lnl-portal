@@ -351,7 +351,7 @@ const Applicant = ({ Applicant, roleData }) => {
       {activeTab === 'tab1' ? (
         <ApplicantInfo Applicant={Applicant} />
       ) : activeTab === 'tab2' ? (
-        <RoleQuestions />
+        <RoleQuestions Applicant={Applicant} roleData={roleData} />
       ) : activeTab === 'tab3' ? (
         <HiringManager />
       ) : null}
