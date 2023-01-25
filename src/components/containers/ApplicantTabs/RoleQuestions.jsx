@@ -16,15 +16,15 @@ const RoleQuestions = ({ Applicant }) => {
     const data = await getDoc(sereeningQuestions);
     return data.data();
   };
-  useEffect(async () => {
-    const Screening = await getScreeningQuestions();
-    setQuestions(Screening?.answer);
-  }, []);
+
+  useEffect(() => {
+    getScreeningQuestions().then((result) => setQuestions(result?.answer));
+  }, [getScreeningQuestions]);
 
   if (questions?.length == 0 || questions === undefined)
     return (
       <p className='text-xl font-bold text-gray-600 truncate text-left mt-6 ml-10'>
-        User didn't answered the screeing Questions....!
+        User did not answer the screening Questions....!
       </p>
     );
   return (
