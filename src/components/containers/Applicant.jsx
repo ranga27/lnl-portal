@@ -1,24 +1,38 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from 'react-avatar';
-import { useFirestoreCollectionMutation } from '@react-query-firebase/firestore';
+import {
+  useFirestoreCollectionMutation,
+  useFirestoreDocumentMutation,
+} from '@react-query-firebase/firestore';
 import { getName } from '../../utils/commands';
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import Swal from 'sweetalert2';
-import { collection, serverTimestamp } from 'firebase/firestore';
+import {
+  query,
+  where,
+  doc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import {
+  fetchApplicantsCollection,
   getAcceptedUserInRoleFirestore,
   getRejectedUserInRoleFirestore,
   updateInviteCreditsInCompanyFirestore,
+  updateAppliedStatus,
 } from '../../../firebase/firestoreService';
 import axios from 'axios';
 import { format } from 'date-fns';
+import RoleQuestions from './ApplicantTabs/RoleQuestions';
+import ApplicantInfo from './ApplicantTabs/ApplicantInfo';
+import HiringManager from './ApplicantTabs/HiringManager';
 
 const tabs = [
-  { name: 'About', href: '#', current: true },
-  { name: 'Applied Roles', href: '#', current: false },
-  { name: 'Feedback', href: '#', current: false },
+  { tab: 'tab1', name: 'About', href: '#', current: true },
+  { tab: 'tab2', name: 'Role Questions', href: '#', current: false },
+  { tab: 'tab3', name: 'Hiring Manager', href: '#', current: false },
 ];
 
 function classNames(...classes) {
@@ -28,7 +42,16 @@ function classNames(...classes) {
 const Applicant = ({ Applicant, roleData }) => {
   const [acceptedUsers, setAcceptedUsers] = useState([]);
   const [rejectedUsers, setRejectedUsers] = useState([]);
-
+  const [activeTab, setActiveTab] = useState('tab1');
+  const handleChangeTab = async (data) => {
+    if (data === 'tab1') {
+      setActiveTab('tab1');
+    } else if (data === 'tab2') {
+      setActiveTab('tab2');
+    } else {
+      setActiveTab('tab3');
+    }
+  };
   const acceptCandidateRef = collection(
     firestore,
     'companyRolesV2',
@@ -56,21 +79,38 @@ const Applicant = ({ Applicant, roleData }) => {
     }
   );
 
+  const updateMatchedRoleMutation = useFirestoreDocumentMutation(
+    doc(
+      firestore,
+      `users/${Applicant.userId}/companyMatchedRoles`,
+      roleData.id
+    ),
+    { merge: true }
+  );
+
+  const appliedDocRef = collection(firestore, 'appliedRoles');
+  const appliedRolesDoc = query(
+    appliedDocRef,
+    where('roleId', '==', roleData.id)
+  );
+
   const handleAcceptCandidate = (data) => {
     const newData = {
       userId: data.userId,
       updatedAt: serverTimestamp(),
     };
-
+    const newStatus = 'Accepted';
     const emailData = {
       firstName: Applicant.firstName,
       status: 'Accepted',
       companyName: roleData.companyName,
       email: Applicant.email,
+      customMessage: roleData.customMessage,
     };
-
     acceptCandidateMutation.mutate(newData, {
       async onSuccess() {
+        await updateMatchedRoleMutation.mutate({ status: 'Accepted' });
+        await updateAppliedStatus(roleData.id, Applicant.userId, newStatus);
         await getAcceptedUserInRoleFirestore(
           roleData.id,
           Applicant.userId
@@ -87,23 +127,23 @@ const Applicant = ({ Applicant, roleData }) => {
           roleData.companyId,
           roleData.companyInviteCredits
         );
-        await axios
-          .post(
-            process.env.NODE_ENV === 'development'
-              ? process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL
-              : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
-            emailData
-          )
-          .then(() => console.log('email sent'))
-          .catch((error) => console.log(error));
-
-        Swal.fire({
+        await Swal.fire({
           title: 'Success!',
           text: 'Candidate Accepted.',
           icon: 'success',
           iconColor: '#3085d6',
           showConfirmButton: false,
         });
+        await axios
+          .post(
+            process.env.NODE_ENV === 'development'
+              ? process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL
+              : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
+            emailData,
+            { headers: { 'Access-Control-Allow-Origin': '*' } }
+          )
+          .then(() => console.log('email sent'))
+          .catch((error) => console.log(error));
       },
       onError() {
         Swal.fire('Oops!', 'Error accepting candidate.', 'error');
@@ -119,16 +159,21 @@ const Applicant = ({ Applicant, roleData }) => {
       userId: data.userId,
       updatedAt: serverTimestamp(),
     };
+    const newStatus = 'Rejected';
 
     const emailData = {
       firstName: Applicant.firstName,
       status: 'Rejected',
       companyName: roleData.companyName,
       email: Applicant.email,
+      customMessage: roleData.customMessage,
     };
 
     rejectCandidateMutation.mutate(newData, {
       async onSuccess() {
+        await updateMatchedRoleMutation.mutate({ status: 'Rejected' });
+        await updateAppliedStatus(roleData.id, Applicant.userId, newStatus);
+
         await getAcceptedUserInRoleFirestore(
           roleData.id,
           Applicant.userId
@@ -167,6 +212,17 @@ const Applicant = ({ Applicant, roleData }) => {
       },
     });
   };
+
+  const [getAppliedUserData, setAppliedUserData] = useState([]);
+  useEffect(() => {
+    fetchApplicantsCollection(roleData.id, Applicant.userId).then((result) =>
+      setAppliedUserData(result)
+    );
+  }, [roleData.id, Applicant.userId]);
+
+  console.log(roleData);
+  console.log(Applicant);
+
   return (
     <article>
       <div>
@@ -198,11 +254,15 @@ const Applicant = ({ Applicant, roleData }) => {
                 </h1>
               </div>
               <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                {acceptedUsers.length === 0 ? (
+                {acceptedUsers.length === 0 &&
+                getAppliedUserData.length === 0 ? (
                   <button
                     type='button'
                     onClick={() => handleAcceptCandidate(Applicant)}
-                    disabled={rejectedUsers.length === 1}
+                    disabled={
+                      rejectedUsers.length === 1 ||
+                      getAppliedUserData.length !== 0
+                    }
                     className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                   >
                     <CheckIcon
@@ -227,7 +287,10 @@ const Applicant = ({ Applicant, roleData }) => {
                 {rejectedUsers.length === 0 ? (
                   <button
                     type='button'
-                    disabled={acceptedUsers.length === 1}
+                    disabled={
+                      acceptedUsers.length === 1 ||
+                      getAppliedUserData.length !== 0
+                    }
                     onClick={() => handleRejectCandidate(Applicant)}
                     className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                   >
@@ -261,17 +324,16 @@ const Applicant = ({ Applicant, roleData }) => {
         </div>
       </div>
 
-      {/* Tabs */}
       <div className='mt-6 sm:mt-2 2xl:mt-5'>
         <div className='border-b border-gray-200'>
           <div className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
             <nav className='-mb-px flex space-x-8' aria-label='Tabs'>
               {tabs.map((tab) => (
-                <a
+                <button
                   key={tab.name}
-                  href={tab.href}
+                  onClick={() => handleChangeTab(tab.tab)}
                   className={classNames(
-                    tab.current
+                    tab.tab === activeTab
                       ? 'border-[#F7B919] text-gray-900'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                     'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm'
@@ -279,177 +341,20 @@ const Applicant = ({ Applicant, roleData }) => {
                   aria-current={tab.current ? 'page' : undefined}
                 >
                   {tab.name}
-                </a>
+                </button>
               ))}
             </nav>
           </div>
         </div>
       </div>
 
-      <div className='mt-6 mb-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <dl className='grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2'>
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Email</dt>
-            <dd className='mt-1 text-sm text-gray-900'>{Applicant.email}</dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Phone</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.mobileNumber || '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Gender</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.gender || '-'}
-              {Applicant.genderOther && <>{Applicant.genderOther} </>}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Ethnicity</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.ethnicity || '-'}
-              {Applicant.ethnicityOther && <>{Applicant.ethnicityOther} </>}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Start date</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.start || '-'}
-              {Applicant.specificStartDate && (
-                <p>
-                  Specific Start Date:
-                  {format(
-                    new Date(Applicant.specificStartDate.toDate()),
-                    'dd-MMM-yyyy'
-                  )}
-                </p>
-              )}
-              {Applicant.noticePeriod && (
-                <p>Notice Period: {Applicant.noticePeriod} </p>
-              )}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Disability</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.disability || '-'}
-
-              {Applicant.disability && (
-                <>
-                  <p className='pt-2'>Disability: </p>
-                  {Applicant.disabilityAnswer}{' '}
-                </>
-              )}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Graduation Year
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {format(new Date(Applicant.graduationYear.toDate()), 'yyyy')}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Degree Subject
-            </dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.degreeSubject || '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Visa Required</dt>
-            <dd className='mt-1 text-sm text-gray-900'>
-              {Applicant.visaRequired || '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Behaviour Attributes Strengths
-            </dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.behaviorAttributes
-                ? Applicant.behaviorAttributes.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Diversity</dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.diversity
-                ? Applicant.diversity.map((item) => <li key={item}>{item}</li>)
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Job Values</dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.jobValues
-                ? Applicant.jobValues.map((item) => <li key={item}>{item}</li>)
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Technical Skills
-            </dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.technicalSkills
-                ? Applicant.technicalSkills.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Roles Interested In
-            </dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.rolesInterestedIn
-                ? Applicant.rolesInterestedIn.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>Interests</dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.interests
-                ? Applicant.interests.map((item) => <li key={item}>{item}</li>)
-                : '-'}
-            </dd>
-          </div>
-
-          <div className='sm:col-span-1'>
-            <dt className='text-sm font-medium text-gray-500'>
-              Roles Of Interest
-            </dt>
-            <dd className='mt-1 max-w-prose text-sm text-gray-900'>
-              {Applicant.rolesOfInterest || '-'}
-            </dd>
-          </div>
-        </dl>
-      </div>
+      {activeTab === 'tab1' ? (
+        <ApplicantInfo Applicant={Applicant} />
+      ) : activeTab === 'tab2' ? (
+        <RoleQuestions />
+      ) : activeTab === 'tab3' ? (
+        <HiringManager />
+      ) : null}
     </article>
   );
 };
