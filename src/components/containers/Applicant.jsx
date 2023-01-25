@@ -8,13 +8,7 @@ import {
 import { getName } from '../../utils/commands';
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import Swal from 'sweetalert2';
-import {
-  query,
-  where,
-  doc,
-  collection,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { doc, collection, serverTimestamp } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import {
   fetchApplicantsCollection,
@@ -24,7 +18,6 @@ import {
   updateAppliedStatus,
 } from '../../../firebase/firestoreService';
 import axios from 'axios';
-import { format } from 'date-fns';
 import RoleQuestions from './ApplicantTabs/RoleQuestions';
 import ApplicantInfo from './ApplicantTabs/ApplicantInfo';
 import HiringManager from './ApplicantTabs/HiringManager';
@@ -86,12 +79,6 @@ const Applicant = ({ Applicant, roleData }) => {
       roleData.id
     ),
     { merge: true }
-  );
-
-  const appliedDocRef = collection(firestore, 'appliedRoles');
-  const appliedRolesDoc = query(
-    appliedDocRef,
-    where('roleId', '==', roleData.id)
   );
 
   const handleAcceptCandidate = (data) => {
@@ -236,16 +223,24 @@ const Applicant = ({ Applicant, roleData }) => {
         <div className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5'>
             <div className='flex'>
-              <Avatar
-                name={
-                  getName(Applicant.firstName) +
-                  ' ' +
-                  getName(Applicant.lastName)
-                }
-                size='120px'
-                className='rounded-full flex-shrink-0'
-                color='#26ADB4'
-              />
+              {Applicant.photoUrl ? (
+                <img
+                  src={Applicant.photoUrl}
+                  className='h-12 w-12 rounded-full'
+                  alt={Applicant.firstName + Applicant.lastName}
+                />
+              ) : (
+                <Avatar
+                  name={
+                    getName(Applicant.firstName) +
+                    ' ' +
+                    getName(Applicant.lastName)
+                  }
+                  size='120px'
+                  className='rounded-full flex-shrink-0'
+                  color='#26ADB4'
+                />
+              )}
             </div>
             <div className='mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1'>
               <div className='sm:hidden 2xl:block mt-6 min-w-0 flex-1'>

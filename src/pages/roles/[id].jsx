@@ -11,15 +11,15 @@ import SideBar from '../../components/layout/Sidebar';
 import { firestore } from '../../../firebase/clientApp';
 import Footer from '../../components/layout/Footer';
 import RoleInfo from '../../components/containers/RoleInfo';
-import RoleApplicants from '../../components/containers/RoleApplicants';
 import RoleOwner from '../../components/containers/RoleOwner';
 import { AuthContext } from '../../components/context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
-
+import CopyToClipboard from 'react-copy-to-clipboard';
+import withReactContent from 'sweetalert2-react-content';
+import Swal from 'sweetalert2';
 const tabs = [
   { tab: 'tab1', name: 'Role', href: '#', current: true },
-  { tab: 'tab2', name: 'Applicants', href: '#', current: false },
-  { tab: 'tab3', name: 'Hiring Manager', href: '#', current: false },
+  { tab: 'tab2', name: 'Hiring Manager', href: '#', current: false },
 ];
 
 function classNames(...classes) {
@@ -40,6 +40,8 @@ export default function ViewRole() {
 
   const [activeTab, setActiveTab] = useState('tab1');
   const [user, setUser] = useState([]);
+  const [copy, setCopy] = useState(false);
+
   const { id } = router.query;
   const ref = doc(firestore, 'companyRolesV2', id);
   const data = useFirestoreDocument(['companyRolesV2', id], ref);
@@ -61,12 +63,23 @@ export default function ViewRole() {
   const handleChangeTab = async (data) => {
     if (data === 'tab1') {
       setActiveTab('tab1');
-    } else if (data === 'tab2') {
-      setActiveTab('tab2');
     } else {
-      setActiveTab('tab3');
+      setActiveTab('tab2');
     }
   };
+  const alert = withReactContent(Swal);
+
+  const copyAlert = () => {
+    setCopy(true);
+    alert.fire({
+      title: 'Awesome!',
+      text: 'Role link copied to clipboard',
+      icon: 'success',
+      confirmButtonColor: '#3085d6',
+      iconColor: '#3085d6',
+    });
+  };
+  const copyLinkText = `https://lnl-dev.web.app/roles/${id}`;
 
   return (
     <AuthRoute>
@@ -109,36 +122,40 @@ export default function ViewRole() {
                             </h1>
                           </div>
                           <div className='mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4'>
-                            {user.role === 'super' && (
-                              <Link
-                                href={{
-                                  pathname: '/roles/add',
-                                  query: {
-                                    ...role,
-                                    startDate: startDate,
-                                    deadline: deadline,
-                                  },
-                                }}
-                              >
-                                <a className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
-                                  <PencilIcon
-                                    className='-ml-1 mr-2 h-5 w-5 text-gray-400'
-                                    aria-hidden='true'
-                                  />
-                                  <span>Edit</span>
-                                </a>
-                              </Link>
-                            )}
-                            <button
-                              type='button'
-                              className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                            <Link
+                              href={{
+                                pathname: '/roles/add',
+                                query: {
+                                  ...role,
+                                  startDate: startDate,
+                                  deadline: deadline,
+                                },
+                              }}
                             >
-                              <ShareIcon
-                                className='-ml-1 mr-2 h-5 w-5 text-black'
-                                aria-hidden='true'
-                              />
-                              <span>Share</span>
-                            </button>
+                              <a className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
+                                <PencilIcon
+                                  className='-ml-1 mr-2 h-5 w-5 text-gray-400'
+                                  aria-hidden='true'
+                                />
+                                <span>Edit</span>
+                              </a>
+                            </Link>
+
+                            <CopyToClipboard
+                              text={copyLinkText}
+                              onCopy={() => copyAlert()}
+                            >
+                              <button
+                                type='button'
+                                className='inline-flex justify-center px-4 py-2 border border-none shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                              >
+                                <ShareIcon
+                                  className='-ml-1 mr-2 h-5 w-5 text-black'
+                                  aria-hidden='true'
+                                />
+                                <span>Share</span>
+                              </button>
+                            </CopyToClipboard>
                           </div>
                         </div>
                       </div>
@@ -187,9 +204,7 @@ export default function ViewRole() {
                   {activeTab === 'tab1' ? (
                     <RoleInfo role={role} />
                   ) : activeTab === 'tab2' ? (
-                    <RoleApplicants />
-                  ) : activeTab === 'tab3' ? (
-                    <RoleOwner />
+                    <RoleOwner user={user} />
                   ) : null}
                 </article>
               </main>

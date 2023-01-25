@@ -47,7 +47,7 @@ export default function Dashboard() {
             </button>
           </div>
         </div>
-        <DashboardContainer />
+        <DashboardContainer user={user} />
       </main>
       <Footer />
     </SideBar>

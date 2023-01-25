@@ -2,9 +2,6 @@ import { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import SideBar from '../../components/layout/Sidebar';
 import IntlMessages from '../../utils/IntlMessages';
-import { collection, query, where } from 'firebase/firestore';
-import { useFirestoreQuery } from '@react-query-firebase/firestore';
-import { firestore } from '../../../firebase/clientApp';
 import { AuthContext } from '../../components/context/AuthContext';
 import RolesContainer from '../../components/containers/rolesContainer';
 import Footer from '../../components/layout/Footer';
@@ -33,12 +30,6 @@ export default function Roles() {
             </h1>
           </div>
           <div className='mt-4 flex sm:mt-0 sm:ml-4'>
-            <button
-              type='button'
-              className='order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-0 sm:ml-0'
-            >
-              Share Company Profile
-            </button>
             <Link href='/roles/add'>
               <a className='order-0 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-[#F7B919] hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919] sm:order-1 sm:ml-3'>
                 <IntlMessages id='roles.create' />
