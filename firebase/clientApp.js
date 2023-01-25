@@ -16,12 +16,12 @@ const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);
 const functions = getFunctions(getApp(), 'europe-west2');
 const storage = getStorage();
-// if (process.env.NODE_ENV !== 'production') {
-//   connectAuthEmulator(auth, 'http://localhost:9099');
-//   connectFunctionsEmulator(functions, 'localhost', 5001);
-//   connectStorageEmulator(storage, 'localhost', 9199);
-//   // TODO: check what host to connect based on firebase.json. On macOS explicit host IP is mandatory. Issue open in github
-//   connectFirestoreEmulator(firestore, 'localhost', 8080);
-// }
+if (process.env.NODE_ENV !== 'production') {
+  connectAuthEmulator(auth, 'http://localhost:9099');
+  connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectStorageEmulator(storage, 'localhost', 9199);
+  // TODO: check what host to connect based on firebase.json. On macOS explicit host IP is mandatory. Issue open in github
+  connectFirestoreEmulator(firestore, 'localhost', 8080);
+}
 
 export { auth, firestore, functions };

@@ -15,6 +15,7 @@ import {
   getAcceptedUserInRoleFirestore,
   getRejectedUserInRoleFirestore,
   updateInviteCreditsInCompanyFirestore,
+  fetchRejectedApplicantsCollection,
   updateAppliedStatus,
 } from '../../../firebase/firestoreService';
 import axios from 'axios';
@@ -93,6 +94,7 @@ const Applicant = ({ Applicant, roleData }) => {
       companyName: roleData.companyName,
       email: Applicant.email,
       customMessage: roleData.customMessage,
+      roleName: roleData.title,
     };
     acceptCandidateMutation.mutate(newData, {
       async onSuccess() {
@@ -154,6 +156,7 @@ const Applicant = ({ Applicant, roleData }) => {
       companyName: roleData.companyName,
       email: Applicant.email,
       customMessage: roleData.customMessage,
+      roleName: roleData.title,
     };
 
     rejectCandidateMutation.mutate(newData, {
@@ -207,8 +210,12 @@ const Applicant = ({ Applicant, roleData }) => {
     );
   }, [roleData.id, Applicant.userId]);
 
-  console.log(roleData);
-  console.log(Applicant);
+  const [getRejectedAppliedUserData, setRejectedAppliedUserData] = useState([]);
+  useEffect(() => {
+    fetchRejectedApplicantsCollection(roleData.id, Applicant.userId).then(
+      (result) => setRejectedAppliedUserData(result)
+    );
+  }, [roleData.id, Applicant.userId]);
 
   return (
     <article>
@@ -256,7 +263,8 @@ const Applicant = ({ Applicant, roleData }) => {
                     onClick={() => handleAcceptCandidate(Applicant)}
                     disabled={
                       rejectedUsers.length === 1 ||
-                      getAppliedUserData.length !== 0
+                      getAppliedUserData.length !== 0 ||
+                      getRejectedAppliedUserData.length !== 0
                     }
                     className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                   >
@@ -279,12 +287,14 @@ const Applicant = ({ Applicant, roleData }) => {
                     <span>Accepted</span>
                   </button>
                 )}
-                {rejectedUsers.length === 0 ? (
+                {rejectedUsers.length === 0 &&
+                getAppliedUserData.length === 0 ? (
                   <button
                     type='button'
                     disabled={
                       acceptedUsers.length === 1 ||
-                      getAppliedUserData.length !== 0
+                      getAppliedUserData.length !== 0 ||
+                      getRejectedAppliedUserData.length !== 0
                     }
                     onClick={() => handleRejectCandidate(Applicant)}
                     className='inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
