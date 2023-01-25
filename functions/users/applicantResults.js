@@ -9,15 +9,15 @@ exports.applicantResults = functions
   .runWith({ secrets: ['NODEMAILER_AUTH_PASSWORD'] })
   .https.onRequest(async (req, res) => {
     cors(req, res, async () => {
-      const { email, firstName, companyName, status } = req.body;
+      const { email, firstName, companyName, status, customMessage } = req.body;
 
       const transporter = nodemailer.createTransport({
-        host: process.env.NODEMAILER_HOST_URL,
-        port: process.env.NODEMAILER_PORT,
+        host: 'smtp-relay.sendinblue.com',
+        port: 465,
         secure: true,
         auth: {
-          user: process.env.NODEMAILER_AUTH_USER,
-          pass: process.env.NODEMAILER_AUTH_PASSWORD,
+          user: 'sarang@loopnotluck.com',
+          pass: '0MU6cxAR5wYsvZFD',
         },
       });
 
@@ -29,6 +29,7 @@ exports.applicantResults = functions
         status,
         transporter,
         companyName,
+        customMessage,
       })
         .then(() => console.log('email sent!'))
         .catch((err) => console.log(err));

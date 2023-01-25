@@ -41,6 +41,21 @@ export async function fetchCompanyUsers() {
   return data;
 }
 
+export async function fetchApplicantsCollection(roleId, userID) {
+  const userDocRef = collection(
+    firestore,
+    `companyRolesV2/${roleId}/acceptedApplicants`
+  );
+  const doc = await query(userDocRef, where('userId', '==', userID));
+
+  const querySnapshot = await getDocs(doc);
+  const data = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+  return data;
+}
+
 export async function getCompanyRoles(uid) {
   const companyDocRef = collection(firestore, 'companyV2');
   const companyDoc = await query(companyDocRef, where('userId', '==', uid));
@@ -293,6 +308,27 @@ export async function fetchUserMatchedRolesFromFirestore(users) {
   const filteredRoles = roles.filter((role) => role.roles.length !== 0);
 
   return filteredRoles;
+}
+
+export async function updateAppliedStatus(roleId, userId, newStatus) {
+  const appliedDocRef = collection(firestore, 'appliedRoles');
+  const appliedRolesDoc = await query(
+    appliedDocRef,
+    where('roleId', '==', roleId),
+    where('userId', '==', userId)
+  );
+
+  const querySnapshot = await getDocs(appliedRolesDoc);
+
+  querySnapshot.forEach((taskDoc) => {
+    setDoc(
+      taskDoc.ref,
+      {
+        status: newStatus,
+      },
+      { merge: true }
+    );
+  });
 }
 
 export async function fetchUserData(roleId) {

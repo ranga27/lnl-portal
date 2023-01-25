@@ -5,6 +5,7 @@ exports.applicantResultEmail = ({
   status,
   firstName,
   companyName,
+  customMessage,
   transporter,
 }) => {
   const mailOptions = {
@@ -67,6 +68,21 @@ exports.applicantResultEmail = ({
                             </table>
                           </td>
                         </tr>
+
+                        <tr>
+                        <td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
+                          <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
+                            <tbody>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="center" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
+                                ${status === 'Accepted' && customMessage}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
                         <tr>
                           <td style="font-size:1px;line-height:1px" height="20">&nbsp;</td>
                         </tr>
