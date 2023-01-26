@@ -377,3 +377,33 @@ export async function fetchUserData(roleId) {
 
   return userData;
 }
+
+export async function getCompanyApplicants(userId) {
+  const conpanyRef = collection(firestore, 'companyV2');
+  const q = query(conpanyRef, where('userId', '==', userId));
+  const querySnapshot = await getDocs(q);
+  const company = querySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  const companyID = company[0].id;
+
+  const roleRef = collection(firestore, 'appliedRoles');
+  const roleQuery = query(roleRef, where('companyId', '==', companyID));
+  const roleQuerySnapshot = await getDocs(roleQuery);
+  const applicants = roleQuerySnapshot.docs.map((docu) => ({
+    ...docu.data(),
+    id: docu.id,
+  }));
+
+  return applicants;
+}
+
+export async function updateUserTourInFirestore(uid) {
+  return setDoc(
+    doc(firestore, 'companyUsers', uid),
+    { tourCompleted: true },
+    { merge: true }
+  );
+}

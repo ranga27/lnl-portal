@@ -5,36 +5,38 @@ export const dashboardJoyRide = [
   },
   {
     target: '#number-of-roles-box',
-    content: 'Welcome on Board! Here you can find number of roles you posted.',
+    content:
+      'Welcome to Loop Not Luck Company Dashboard! Here you can find the number of roles you have created.',
   },
   {
     target: '#num-of-total-applicant',
     content:
-      'Here you can find number of total applicant that have applied that you have posted.',
+      'Here you can find the total number of candidates that have applied to your created roles.',
   },
   {
     target: '#number-of-account-user',
     content:
-      'Here you can find number of total users that can user this company profile acoount.',
+      'Here you can find the number of users you have added to the company to assist with the roles management.',
   },
   {
     target: '#role-detail-view',
     content:
-      'Here you can find detail description of the Role cpmpany have posted till now',
+      'Here you can find a detail view of all the roles your company has created on the platform.',
   },
   {
     target: '#delete-role-button',
     content:
-      'Here you can delete the specific role by clicking on the Delete Icon',
+      'Here you can delete a specific role by clicking on the Delete Icon',
   },
   {
     target: '#metrix-details',
     content:
-      'This is Matrix Box. Here you will find the user interaction with the role you posted',
+      'Here you will find the breakdown of the applied candidates by their status',
   },
   {
-    target: '#recent-appicant',
-    content: 'Here you can see the list of recent Applicant',
+    target: '#all-applicants',
+    content:
+      'Here you will find a  list of all the candidates that have applied to your roles',
   },
 ];
 
