@@ -64,6 +64,10 @@ const DashboardContainer = () => {
     (x) => x.status === 'Pending Review'
   );
 
+  if (!user.firstName) {
+    return <div className='loading' />;
+  }
+  
   return (
     <div className='container mt-6 mx-auto px-4 md:px-12'>
       {deleteStatus && <DeleteRole id={deleteId} />}
