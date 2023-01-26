@@ -32,8 +32,8 @@ const validationSchema = Yup.object().shape({
   visa: Yup.string().required('Visa Status is required'),
   description: Yup.string().required('Company description is required'),
   hearAbout: Yup.array()
-  .required('Select at least one option')
-  .min(1, 'Select at least one option'),
+    .required('Select at least one option')
+    .min(1, 'Select at least one option'),
   logoUrl: Yup.mixed()
     .required('You need to provide a file')
     .test(
@@ -110,7 +110,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
       mutateCollection({
         ats,
         companyLocation,
-        inviteCredits: 3,
+        inviteCredits: 1000000,
         companyName,
         companyValues,
         description,
@@ -366,7 +366,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                     }
                   )}
                 /> */}
-                  <FormikReactSelect
+                <FormikReactSelect
                   className={classnames('', {
                     'border-red-500': errors.hearAbout && touched.hearAbout,
                   })}

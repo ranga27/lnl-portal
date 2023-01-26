@@ -21,7 +21,6 @@ import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreSe
 import RolesList from './RolesList';
 import Onboarding from '../../pages/onboarding';
 import { lnlLogo } from '../data/constants';
-import ProductTour from '../ProductTour';
 
 const navigation = [
   {
@@ -93,7 +92,6 @@ export default function SideBar({ children }) {
   const fullName = user.firstName + ' ' + user.lastName;
   return (
     <div className='relative h-screen flex overflow-hidden bg-white'>
-      <ProductTour />
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog
           as='div'

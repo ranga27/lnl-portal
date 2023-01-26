@@ -1,8 +1,6 @@
 import { PlusIcon } from '@heroicons/react/solid';
 import Link from 'next/link';
 import IntlMessages from '../../utils/IntlMessages';
-import ProductTour from '../ProductTour';
-import { rolesJoyride } from '../data/JoyrideConstants';
 
 export default function EmptyComponent({
   title,
@@ -12,7 +10,6 @@ export default function EmptyComponent({
 }) {
   return (
     <div className='mt-48 text-center'>
-      <ProductTour JoyRideCustomConstant={rolesJoyride} />
       <svg
         className='mx-auto h-12 w-12 text-gray-400'
         fill='none'

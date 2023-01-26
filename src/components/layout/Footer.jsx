@@ -10,7 +10,7 @@ export default function Footer() {
         >
           <div>
             <p className='text-sm text-gray-900 hover:text-gray-900'>
-              &copy; Loop Not Luck 2022
+              &copy; Loop Not Luck 2023
             </p>
           </div>
           <div className='space-evenly flex space-x-3'>

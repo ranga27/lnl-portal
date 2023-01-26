@@ -247,7 +247,6 @@ export default function AddRole() {
     }
   };
 
-  console.log();
 
   return (
     <AuthRoute>
@@ -297,6 +296,7 @@ export default function AddRole() {
                         <CustomQuestions
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
+                          companyId={company[0]?.id}
                         />
                       ) : null}
                     </div>

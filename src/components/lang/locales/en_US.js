@@ -90,7 +90,7 @@ module.exports = {
 
   /* 05.Dashboard */
   'dashboard.title': 'Dashboard',
-  'dashboard.button_1': 'Share Company Profile',
+  'dashboard.button_1': 'Edit Company Profile',
   'dashboard.button_2': 'Post Role',
 
   /* 06.Applicants */
