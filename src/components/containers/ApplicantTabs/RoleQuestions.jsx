@@ -1,37 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { collection, doc, getDoc } from '@firebase/firestore';
-import { firestore } from '../../../../firebase/clientApp';
+import { getScreeningQuestions } from '../../../../firebase/firestoreService';
 
 const RoleQuestions = ({ Applicant }) => {
   const [questions, setQuestions] = useState(null);
 
-  //Demo RoleID = "32fd4281-d9b2-49c8-be64-3c8db73a4fe5" ---->  Applicant.roleId
-  // Demo User ID = "U0Jgfs29o3fs6PdNJ7FWyL7AEm02" --->  Applicant.uid
-
-  const getScreeningQuestions = async (role) => {
-    const roleRef = doc(firestore, `questionnaire/${Applicant.roleId}`);
-    const ansRef = collection(roleRef, 'Answers');
-    const sereeningQuestions = doc(ansRef, Applicant.uid);
-
-    const data = await getDoc(sereeningQuestions);
-    return data.data();
-  };
-
   useEffect(() => {
-    getScreeningQuestions().then((result) => setQuestions(result?.answer));
-  }, [getScreeningQuestions]);
+    getScreeningQuestions(Applicant.roleId, Applicant.uid).then((result) =>
+      setQuestions(result?.answer)
+    );
+  }, [Applicant]);
 
   if (questions?.length == 0 || questions === undefined)
     return (
-      <p className='text-xl font-bold text-gray-600 truncate text-left mt-6 ml-10'>
-        User did not answer the screening Questions....!
+      <p className='py-16 text-center text-xl font-bold text-gray-600 mt-6 ml-10'>
+        {Applicant.firstName} did not answer the screening questions.
       </p>
     );
   return (
     <div className='ml-10'>
       <div>
         <h2 className='text-2xl font-bold text-gray-900 truncate text-left mt-6'>
-          Candidate Answers For Screening Questions
+          Screening Questions answers by candidate
         </h2>
       </div>
       {questions &&
