@@ -11,6 +11,11 @@
       "extensionInstances": {
         "firestore-stripe-payments": "ec8d8d1fe7956d131466fdb4bafc2efce94a6057ea80b2acd37f28fce5d478ba"
       }
+    },
+    "lnl-prod": {
+      "extensionInstances": {
+        "firestore-stripe-payments": "e492757701d21468f57cb570a6df6b286d928d9d8ab112bd9f40f988dd928781"
+      }
     }
   }
 }
