@@ -20,7 +20,10 @@ export default function Roles() {
   return (
     <SideBar>
       {company.length !== 0 && (
-        <RolesContainer companyId={company && company[0]?.id} />
+        <RolesContainer
+          companyId={company && company[0]?.id}
+          roleCredits={company && company[0]?.roleCredits}
+        />
       )}
     </SideBar>
   );

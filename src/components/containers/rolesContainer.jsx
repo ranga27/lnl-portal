@@ -6,7 +6,7 @@ import Link from 'next/link';
 import IntlMessages from '../../utils/IntlMessages';
 import Footer from '../../components/layout/Footer';
 
-export default function RolesContainer({ companyId }) {
+export default function RolesContainer({ companyId, roleCredits }) {
   const [roles, setRoles] = useState([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function RolesContainer({ companyId }) {
               <IntlMessages id='roles.title' />
             </h1>
           </div>
-          {roles.length >= 1 ? (
+          {roleCredits === 0 ? (
             <p>Role limit Reached</p>
           ) : (
             <div className='mt-4 flex sm:mt-0 sm:ml-4'>
