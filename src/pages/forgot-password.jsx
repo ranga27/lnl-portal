@@ -1,7 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -12,6 +11,7 @@ import IntlMessages from '../utils/IntlMessages';
 import { TextInput } from '../components/UI/Form/Input';
 import { auth } from '../../firebase/clientApp';
 import { getForgotPasswordError } from '../utils/getForgotPasswordError';
+import { lnlLogo } from '../components/data/constants';
 
 const validateEmail = yup.object().shape({
   email: yup
@@ -21,7 +21,6 @@ const validateEmail = yup.object().shape({
 });
 
 export default function ForgotPassword() {
-  const router = useRouter();
   const alert = withReactContent(Swal);
   const defaultValues = {
     email: '',
@@ -38,7 +37,7 @@ export default function ForgotPassword() {
 
   const onForgotPassword = (data) => {
     sendPasswordResetEmail(auth, data.email, {
-      url: 'https://lnl-portal.web.app/login',
+      url: 'https://lnl-dev.web.app/login',
     })
       .then(() => {
         alert.fire({
@@ -68,13 +67,7 @@ export default function ForgotPassword() {
           <div className='flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6'>
             <div className='grow-0 shrink-1 md:shrink-0 basis-auto xl:w-5/12 lg:w-6/12 md:w-9/12 md:mb-0'>
               <div className='w-48 h-48 relative text-center mx-auto'>
-                <Image
-                  src='/assets/white.png'
-                  alt='Loop Not Luck'
-                  layout='fill'
-                  className='w-full'
-                  objectFit='cover'
-                />
+                <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
               </div>
             </div>
             <div className='xl:ml-0 xl:w-7/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0'>

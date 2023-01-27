@@ -1,5 +1,13 @@
+//Utility function to send email
 //TODO: move html to config db or a lightweight cms
-exports.sendEmail = ({ to, from, subject, message, firstName, transporter }) => {
+exports.sendEmail = ({
+  to,
+  from,
+  subject,
+  message,
+  firstName,
+  transporter,
+}) => {
   const mailOptions = {
     to,
     from,

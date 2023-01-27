@@ -3,9 +3,7 @@ import classnames from 'classnames';
 import * as Yup from 'yup';
 import IntlMessages from '../../utils/IntlMessages';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { locations } from '../../components/data/location';
 import { FormikReactSelect } from '../../components/UI/Form/FormikReactSelect';
-import { positionTypes } from '../../components/data/positionTypes';
 import { diversityTypes } from '../../components/data/diversity';
 import { visaRequiredOptions } from '../../components/data/visaRequiredOptions';
 import { jobValuesOptions } from '../../components/data/jobValuesOptions';
@@ -14,6 +12,8 @@ import { uploadFile } from '../../utils/uploadFile';
 import useDocumentMutation from '../../components/hooks/useDocumentMutation';
 import useCollectionMutation from '../../components/hooks/useCollectionMutation';
 import { v4 as uuidv4 } from 'uuid';
+import { interestOptions } from '../../components/data/interestOptions';
+import { hearAbout } from '../../components/data/hearAbout';
 
 const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
 
@@ -31,7 +31,9 @@ const validationSchema = Yup.object().shape({
     .min(1, 'Select at least one option'),
   visa: Yup.string().required('Visa Status is required'),
   description: Yup.string().required('Company description is required'),
-  hearAbout: Yup.string().required('This is required'),
+  hearAbout: Yup.array()
+    .required('Select at least one option')
+    .min(1, 'Select at least one option'),
   logoUrl: Yup.mixed()
     .required('You need to provide a file')
     .test(
@@ -108,6 +110,8 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
       mutateCollection({
         ats,
         companyLocation,
+        inviteCredits: 1000000,
+        roleCredits: 0,
         companyName,
         companyValues,
         description,
@@ -116,7 +120,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
         industry,
         visa,
         userId,
-        logoUrl
+        logoUrl,
       });
     }
   };
@@ -172,19 +176,18 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                 <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.companyLocation' />
                 </label>
-                <FormikReactSelect
-                  className={classnames('', {
-                    'border-red-500':
-                      errors.companyLocation && touched.companyLocation,
-                  })}
+                <Field
                   name='companyLocation'
-                  value={values.companyLocation}
-                  onChange={(value) =>
-                    setFieldValue('companyLocation', value.value)
-                  }
-                  styles={customStyles}
-                  options={locations}
-                  isMulti={false}
+                  placeholder='Company Location'
+                  variant='outlined'
+                  data-cy='onboarding-companyLocation-input'
+                  className={classnames(
+                    'form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-md transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-[#F7B919] focus:outline-none',
+                    {
+                      'border-red-500':
+                        errors.companyLocation && touched.companyLocation,
+                    }
+                  )}
                 />
                 <ErrorMessage name='companyLocation' render={renderError} />
               </div>
@@ -205,8 +208,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                     );
                   }}
                   styles={customStyles}
-                  options={positionTypes}
-                  placeholder='London'
+                  options={interestOptions}
                   isMulti={true}
                 />
                 <ErrorMessage name='industry' render={renderError} />
@@ -354,7 +356,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                 <label className='py-2 block text-sm font-medium text-gray-700'>
                   <IntlMessages id='onboarding.hearAbout' />
                 </label>
-                <Field
+                {/* <Field
                   name='hearAbout'
                   placeholder='LinkedIn'
                   data-cy='onboarding-hearAbout-input'
@@ -364,6 +366,22 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
                       'border-red-500': errors.hearAbout && touched.hearAbout,
                     }
                   )}
+                /> */}
+                <FormikReactSelect
+                  className={classnames('', {
+                    'border-red-500': errors.hearAbout && touched.hearAbout,
+                  })}
+                  name='hearAbout'
+                  onChange={(e) => {
+                    setFieldValue(
+                      'hearAbout',
+                      e.map((option) => option.value)
+                    );
+                  }}
+                  styles={customStyles}
+                  options={hearAbout}
+                  isMulti={true}
+                  data-cy='onboarding-hearAbout-input'
                 />
                 <ErrorMessage name='hearAbout' render={renderError} />
               </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { Controller } from 'react-hook-form';
 import { Group } from './Group';
 
@@ -12,12 +13,32 @@ export const MultiSelect = ({
   errors,
   clearErrors,
   defaultValue,
+  isCreatable,
   ...rest
 }) => {
-  const setDefaultValues = options.filter((o) => {
-    return defaultValue?.some((d) => {
-      return o.value === d;
+  if (isCreatable) {
+    // Build required data structure for options
+    options = !Array.isArray(options) ? [options] : options;
+    options = options.map((o) => {
+      return {
+        label: o,
+        value: o,
+      };
     });
+  }
+
+  const setDefaultValues = options.filter((o) => {
+    if (defaultValue === undefined) {
+      return null;
+    } else {
+      if (Array.isArray(defaultValue)) {
+        return defaultValue?.some((d) => {
+          return o.value === d;
+        });
+      } else {
+        return o.value === defaultValue;
+      }
+    }
   });
   const [selection, setSelection] = useState({
     selectedOptions: [],
@@ -36,22 +57,32 @@ export const MultiSelect = ({
     if (defaultValue) {
       setSelection({ selectedOptions: setDefaultValues });
     }
-  }, [defaultValue, setDefaultValues]);
+  }, [defaultValue]);
 
   return (
     <Group label={label} errors={errors}>
       <Controller
         name={name}
         control={control}
-        render={() => (
-          <Select
-            isMulti
-            options={options}
-            onChange={handleChange}
-            value={selection.selectedOptions}
-            {...rest}
-          />
-        )}
+        render={() =>
+          isCreatable ? (
+            <CreatableSelect
+              isMulti
+              options={options}
+              onChange={handleChange}
+              value={selection.selectedOptions}
+              {...rest}
+            />
+          ) : (
+            <Select
+              isMulti
+              options={options}
+              onChange={handleChange}
+              value={selection.selectedOptions}
+              {...rest}
+            />
+          )
+        }
       />
     </Group>
   );

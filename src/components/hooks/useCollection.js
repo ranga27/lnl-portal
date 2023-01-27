@@ -8,7 +8,7 @@ const useCollection = (collectionName, whereQuery) => {
     [collectionName],
     query(collection(firestore, collectionName), where(...whereQuery)),
     {
-      subscribe: true,
+      subscribe: false,
     },
     {
       select(snapshot) {

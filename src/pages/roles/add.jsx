@@ -21,10 +21,13 @@ import AuthRoute from '../../components/context/authRoute';
 import AddRoleForm from '../../components/form/AddRoleForm';
 import Tabs from '../../components/layout/roleTabs';
 import AdditionalRoleInformation from '../../components/form/AdditionalRoleInfo';
+import CustomQuestions from '../../components/form/customQuestions/CustomQuestions';
 import AddOwnerForm from '../../components/form/AddOwnerForm';
 import Footer from '../../components/layout/Footer';
 import {
+  addCustomQuestionsInQuestionnaireFirestore,
   addRoleInCompanyFirestore,
+  updateCustomQuestionsInQuestionnaireFirestore,
   updateRoleCreditsInCompanyFirestore,
 } from '../../../firebase/firestoreService';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,17 +48,14 @@ export default function AddRole() {
     title: role.title || '',
     location: role.location || '',
     department: role.department || '',
-    qualification: role.qualification || '',
     positionType: role.positionType || '',
     salary: role.salary || '',
     description: role.description || '',
-    howToApply: role.howToApply || '',
-    meetingLink: role.meetingLink || '',
+    customMessage: role.customMessage || '',
     website: role.website || '',
     rolling: role.rolling || false,
     deadline: role.rolling === true ? null : defaultRoleDeadline,
     startDate: startDate !== undefined ? defaultRoleStartDate : null,
-    coverLetter: role.coverLetter || false,
     rolesOfInterests: role.rolesOfInterests || null,
     technicalSkills: role.technicalSkills || null,
     managerId: role.managerId || '',
@@ -89,6 +89,10 @@ export default function AddRole() {
           id: document.id,
           companyName: document.data().companyName,
           roleCredits: document.data().roleCredits,
+          companyUser: document.data().userId,
+          jobValues: document.data().companyValues,
+          logoUrl: document.data().logoUrl,
+          industry: document.data().industry,
         }));
         return companiesData;
       },
@@ -104,8 +108,10 @@ export default function AddRole() {
       setActiveTab('tab1');
     } else if (data === 'tab2') {
       setActiveTab('tab2');
-    } else {
+    } else if (data === 'tab3') {
       setActiveTab('tab3');
+    } else {
+      setActiveTab('tab4');
     }
   };
 
@@ -121,11 +127,10 @@ export default function AddRole() {
       location,
       managerId,
       department,
-      qualification,
       positionType,
       salary,
       description,
-      howToApply,
+      customMessage,
       startDate,
       rolesOfInterests,
       technicalSkills,
@@ -134,15 +139,15 @@ export default function AddRole() {
       experience,
     } = newFields;
 
+    const customQuestions = data.customQuestions;
+
     if (
       !title ||
-      !location ||
       !department ||
-      !qualification ||
       !positionType ||
       !salary ||
       !description ||
-      !howToApply ||
+      !customMessage ||
       !startDate ||
       !rolesOfInterests ||
       !technicalSkills ||
@@ -165,14 +170,27 @@ export default function AddRole() {
       const newData = {
         ...fields,
         ...date,
-        ...data,
         companyId: company[0].id,
+        company: company[0].companyName,
+        jobValues: company[0].jobValues,
+        logoUrl: company[0].logoUrl,
+        industry: company[0].industry,
         pinned: false,
+        isQuestion: customQuestions.length ? true : false,
       };
+
       if (role && role.id) {
         rolesMutation.mutate(newData, {
           async onSuccess() {
             await addRoleInCompanyFirestore(newData, role.id);
+
+            // TODO: Fix below
+            await updateCustomQuestionsInQuestionnaireFirestore(
+              customQuestions,
+              company[0].id,
+              roleId
+            );
+
             Swal.fire({
               title: 'Success!',
               text: 'Role Updated.',
@@ -195,10 +213,18 @@ export default function AddRole() {
         mutation.mutate(newData, {
           async onSuccess() {
             await addRoleInCompanyFirestore(newData, roleId);
+
             await updateRoleCreditsInCompanyFirestore(
               company[0].roleCredits,
               company[0].id
             );
+
+            await addCustomQuestionsInQuestionnaireFirestore(
+              customQuestions,
+              company[0].id,
+              roleId
+            );
+
             Swal.fire({
               title: 'Success!',
               text: 'New Role Added.',
@@ -250,18 +276,27 @@ export default function AddRole() {
                           handleChangeTab={handleChangeTab}
                           handleSaveFields={updateForm}
                           fields={fields}
-                          companyName={company[0].companyName}
+                          companyName={company[0]?.companyName}
                         />
                       ) : activeTab === 'tab2' ? (
                         <AddOwnerForm
                           handleChangeTab={handleChangeTab}
                           handleSaveFields={updateForm}
                           fields={fields}
+                          companyUser={company[0].companyUser}
                         />
                       ) : activeTab === 'tab3' ? (
                         <AdditionalRoleInformation
+                          handleChangeTab={handleChangeTab}
+                          handleSaveFields={updateForm}
+                          fields={fields}
+                        />
+                      ) : activeTab === 'tab4' ? (
+                        <CustomQuestions
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
+                          companyId={company[0]?.id}
+                          roleCredits={company[0]?.roleCredits}
                         />
                       ) : null}
                     </div>

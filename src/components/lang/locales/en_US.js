@@ -48,6 +48,10 @@ module.exports = {
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',
   'roles.post': 'Post a role',
+  'roles.previewForm': 'Preview Form',
+  'roles.saveForm': 'Save Form',
+  'roles.close': 'Close',
+  'roles.submit': 'Submit',
 
   /* 04.Onboarding */
   'onboarding.lastName': 'Last Name',
@@ -55,7 +59,7 @@ module.exports = {
   'onboarding.nextVariant1': 'Next: Company Info',
   'onboarding.nextVariant2': 'Next: Payment',
   'onboarding.nextVariant3': 'Next: Skip Payment',
-  'onboarding.backVariant1': 'Back: Account details',
+  'onboarding.backVariant1': 'Back: Account Details',
   'onboarding.backVariant2': 'Back: Company Info',
   'onboarding.back': 'Back',
   'onboarding.stepper1': 'Personal Info',
@@ -65,14 +69,16 @@ module.exports = {
   'onboarding.confirm': 'Complete Onboarding',
   'onboarding.jobRole': 'Job Role',
   'onboarding.linkedinUrl': 'Linkedin Url',
-  'onboarding.accountHeader': 'Account details',
+  'onboarding.accountHeader': 'Account Details',
   'onboarding.companyHeader': 'Company Information',
   'onboarding.paymentHeader': 'Pricing Packages',
+  'onboarding.paymentSubtitle':
+    'It looks like you have run out of invite credits. Please purchase a new bundle below or contact us on hello@loopnotluck.com if you have any questions.',
   'onboarding.companyName': 'Company Name',
   'onboarding.companyLocation': 'Company Headquaters Location',
   'onboarding.industry': 'Industry',
   'onboarding.diversity':
-    'Which of these underrepresented groups are your company interested in reaching?(Select all that apply)',
+    'Which of the below underrepresented groups is your company proactively interested in encouraging to apply?',
   'onboarding.visa': 'Are you able to sponsor work visas for candidates?',
   'onboarding.values': 'Company Values',
   'onboarding.ats':
@@ -84,13 +90,15 @@ module.exports = {
 
   /* 05.Dashboard */
   'dashboard.title': 'Dashboard',
-  'dashboard.button_1': 'Share Company Profile',
+  'dashboard.button_1': 'Edit Company Profile',
   'dashboard.button_2': 'Post Role',
 
   /* 06.Applicants */
   'applicant.title': 'Applicants',
+  'role.empty-title': 'Roles list',
+  'role.empty-subtitle': 'Select a role to view the applicants.',
   'applicant.empty-title': 'Applicants list',
-  'applicant.empty-subtitle': 'Select a candidate to view their details.',
+  'applicant.empty-subtitle': 'No applicants yet for this role.',
   /* 07.Settings */
   'settings.title': 'Settings',
 

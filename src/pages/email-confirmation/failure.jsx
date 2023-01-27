@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import Link from 'next/link';
 import React from 'react';
-import Image from 'next/image';
+import { lnlLogo } from '../../components/data/constants';
 
 const SuccessMessage = () => (
   <div>
@@ -8,13 +9,7 @@ const SuccessMessage = () => (
       <div className='py-48 xl:py-64 h-full text-gray-800'>
         <div className='flex xl:justify-center lg:justify-center justify-center items-center flex-wrap'>
           <div className='w-48 h-48 relative text-center mx-auto'>
-            <Image
-              src='/assets/white.png'
-              alt='Loop Not Luck'
-              layout='fill'
-              className='w-full'
-              objectFit='cover'
-            />
+            <img src={lnlLogo} alt='Loop Not Luck' className='w-full' />
           </div>
           <div>
             <p className='text-center text-3xl font-extrabold text-gray-900 mb-8'>
