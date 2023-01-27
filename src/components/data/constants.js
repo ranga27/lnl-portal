@@ -42,7 +42,7 @@ export const firebaseConfigForLoop = {
   measurementId: 'G-VYCHZLSDJZ',
 };
 
-export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfig.storageBucket}/`;
+export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfigForLoop.storageBucket}/`;
 
 export const adminRoot = '/';
 export const buyUrl = '';

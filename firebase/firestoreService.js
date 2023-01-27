@@ -407,3 +407,12 @@ export async function updateUserTourInFirestore(uid) {
     { merge: true }
   );
 }
+
+export async function getScreeningQuestions(roleId, applicantId) {
+  const roleRef = doc(firestore, `questionnaire/${roleId}`);
+  const ansRef = collection(roleRef, 'Answers');
+  const sereeningQuestions = doc(ansRef, applicantId);
+
+  const data = await getDoc(sereeningQuestions);
+  return data.data();
+}

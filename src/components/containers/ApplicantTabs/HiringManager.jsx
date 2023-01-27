@@ -24,7 +24,7 @@ const HiringManager = () => {
         {user.photoUrl ? (
           <img
             src={user.photoUrl}
-            className='h-12 w-12 rounded-full'
+            className='h-16 w-16 rounded-full mx-auto text-center'
             alt={user.firstName + user.lastName}
           />
         ) : (
