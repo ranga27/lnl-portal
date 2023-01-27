@@ -46,7 +46,9 @@ export default function Dashboard() {
             </Link>
           </div>
         </div>
-        <DashboardContainer user={user} />
+        {user && user.isOnboarded === true ? (
+          <DashboardContainer user={user} />
+        ) : null}
       </main>
       <Footer />
     </SideBar>
