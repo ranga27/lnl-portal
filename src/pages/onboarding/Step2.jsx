@@ -111,6 +111,7 @@ export default function Step2({ nextStep, previousStep, userId, company }) {
         ats,
         companyLocation,
         inviteCredits: 1000000,
+        roleCredits: 0,
         companyName,
         companyValues,
         description,
