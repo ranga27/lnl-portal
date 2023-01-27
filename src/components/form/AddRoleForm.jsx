@@ -1,20 +1,22 @@
-import { Fragment } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { TextInput } from "../../components/UI/Form/Input";
-import { rolesSchema } from "../../components/schemas/rolesSchema";
-import { positionTypes } from "../../components/data/positionTypes";
-import { rolesOfInterests } from "../../components/data/rolesOfInterests";
-import { technicalSkills } from "../../components/data/technicalSkillsOptions";
-import { applicationOptions } from "../../components/data/constants";
-import { locations } from "../../components/data/location";
-import { SelectField } from "../../components/UI/Form/SelectField";
-import { TextArea } from "../../components/UI/Form/TextArea";
-import { MultiSelect } from "../../components/UI/Form/MultiSelect";
-import { CheckBox } from "../../components/UI/Form/CheckBox";
-import { DatePicker } from "../../components/UI/Form/DatePicker";
-import IntlMessages from "../../utils/IntlMessages";
-import "react-datepicker/dist/react-datepicker.css";
+import { Fragment } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { TextInput } from '../../components/UI/Form/Input';
+import { rolesSchema } from '../../components/schemas/rolesSchema';
+import { positionTypes } from '../../components/data/positionTypes';
+import getOptions, {
+  rolesOfInterests,
+} from '../../components/data/rolesOfInterests';
+import { technicalSkills } from '../../components/data/technicalSkillsOptions';
+import { locations } from '../../components/data/location';
+import { SelectField } from '../../components/UI/Form/SelectField';
+import { TextArea } from '../../components/UI/Form/TextArea';
+import { MultiSelect } from '../../components/UI/Form/MultiSelect';
+import { CheckBox } from '../../components/UI/Form/CheckBox';
+import { DatePicker } from '../../components/UI/Form/DatePicker';
+import IntlMessages from '../../utils/IntlMessages';
+import 'react-datepicker/dist/react-datepicker.css';
+import { areaOfInterestOptions } from '../data/areaOfInterest';
 
 function AddRoleForm({
   handleChangeTab,
@@ -23,23 +25,22 @@ function AddRoleForm({
   companyName,
 }) {
   const defaultValues = {
-    title: fields.title || "",
-    location: fields.location || "",
-    department: fields.department || "",
-    qualification: fields.qualification || "",
-    positionType: fields.positionType || "",
-    salary: fields.salary || "",
-    description: fields.description || "",
-    howToApply: fields.howToApply || "",
-    meetingLink: fields.meetingLink || "",
-    website: fields.website || "",
+    title: fields.title || '',
+    locationType: fields.locationType || '',
+    location: fields.location || '',
+    department: fields.department || '',
+    positionType: fields.positionType || '',
+    salary: fields.salary || '',
+    description: fields.description || '',
+    customMessage: fields.customMessage || '',
+    website: fields.website || '',
     rolling: fields.rolling || false,
     deadline: fields.deadline || null,
     startDate: fields.startDate || null,
-    coverLetter: fields.coverLetter || false,
     rolesOfInterests: fields.rolesOfInterests || null,
     technicalSkills: fields.technicalSkills || null,
-    technicalSkillsOther: fields.technicalSkillsOther || "",
+    technicalSkillsOther: fields.technicalSkillsOther || '',
+    areaOfInterests: fields.areaOfInterests || null,
   };
 
   const {
@@ -54,16 +55,26 @@ function AddRoleForm({
     resolver: yupResolver(rolesSchema),
   });
 
-  const howToApply = watch("howToApply");
-  const rolling = watch("rolling");
-  const technicalSkillsOther = watch("technicalSkills");
-  const roleTitle = watch("title");
-  const meetingLinkValue = watch("meetingLink");
+  const locationType = watch('locationType');
+  const rolling = watch('rolling');
+  const technicalSkillsOther = watch('technicalSkills');
+  const roleTitle = watch('title');
+  const customMessageValue = watch('customMessage');
 
   const onSubmit = async (data) => {
     handleSaveFields(data);
-    handleChangeTab("tab2");
+    handleChangeTab('tab2');
   };
+  const rolesOfInterestCheck = watch('areaOfInterests');
+  const areasOfInterests =
+    control._formValues.areaOfInterests === undefined ||
+    control._formValues.areaOfInterests === null
+      ? []
+      : control._formValues.areaOfInterests.map((interest) => {
+          return getOptions(interest);
+        });
+  const selectAreaOfInterest =
+    areasOfInterests === undefined ? [] : areasOfInterests.flatMap((x) => x);
 
   return (
     <Fragment>
@@ -81,15 +92,26 @@ function AddRoleForm({
             </div>
             <div className='col-span-4 sm:col-span-2'>
               <SelectField
-                label='Location'
-                name='location'
+                label='Location Type'
+                name='locationType'
                 control={control}
                 options={locations}
-                errors={errors.location}
-                data-cy='role-location-select'
+                errors={errors.locationType}
+                data-cy='role-locationType-select'
               />
             </div>
             <div className='col-span-4 sm:col-span-2'>
+              {locationType !== 'Remote' && (
+                <TextInput
+                  name='location'
+                  label='Location'
+                  control={control}
+                  errors={errors.location}
+                  data-cy='role-location-input'
+                />
+              )}
+            </div>
+            <div className='col-span-8 sm:col-span-4'>
               <TextArea
                 name='description'
                 type='textarea'
@@ -98,17 +120,6 @@ function AddRoleForm({
                 control={control}
                 rows={5}
                 data-cy='role-description-input'
-              />
-            </div>
-            <div className='col-span-4 sm:col-span-2'>
-              <TextArea
-                name='qualification'
-                type='textarea'
-                label='Required Qualifications'
-                errors={errors.qualification}
-                control={control}
-                rows={5}
-                data-cy='role-qualification-input'
               />
             </div>
             <div className='col-span-4 sm:col-span-2'>
@@ -139,63 +150,43 @@ function AddRoleForm({
                 data-cy='role-department-input'
               />
             </div>
-            <div className='col-span-4 sm:col-span-2'>
-              <SelectField
-                label='How to Apply'
-                name='howToApply'
-                control={control}
-                options={applicationOptions}
-                errors={errors.howToApply}
-                data-cy='role-howToApply-select'
-              />
-            </div>
+            <div className='col-span-4 sm:col-span-2'></div>
             <div className='col-span-4 sm:col-span-4'>
-              {howToApply === "Email to Hiring Manager" && (
-                <>
-                  <TextInput
-                    name='meetingLink'
-                    label='Meeting Link'
-                    control={control}
-                    errors={errors.meetingLink}
-                    data-cy='role-meetingLink-input'
-                  />
-
-                  <div className='pt-6'>
-                    <p>
-                      Hello [candidate name],
-                      <br /> <br />
-                      Congratulations! You&apos;ve been invited on to the next
-                      stage for the position of{" "}
-                      <span className='font-bold'>
-                        {roleTitle ? roleTitle : "[role name]"}
-                      </span>{" "}
-                      at{" "}
-                      <span className='font-bold'>
-                        {companyName ? companyName : "[Company Name]"}.
-                      </span>{" "}
-                      Please book a meeting with a member of the team here -{" "}
-                      <span className='font-bold'>
-                        {meetingLinkValue
-                          ? meetingLinkValue
-                          : " [meeting link]"}
-                      </span>{" "}
-                      <br /> <br />
-                      Best,
-                      <br />
-                      Loop Not Luck Team
-                    </p>
-                  </div>
-                </>
-              )}
-              {howToApply === "Apply on website" && (
+              <div>
                 <TextInput
-                  name='website'
-                  label='Link to application on website'
+                  name='customMessage'
+                  label='Custom Message.'
                   control={control}
-                  errors={errors.website}
-                  data-cy='role-website-input'
+                  errors={errors.customMessage}
+                  data-cy='role-customMessage-input'
                 />
-              )}
+
+                <div className='pt-6'>
+                  <p>
+                    Hello [candidate name],
+                    <br /> <br />
+                    Congratulations! You&apos;ve been invited on to the next
+                    stage for the position of{' '}
+                    <span className='font-bold'>
+                      {roleTitle ? roleTitle : '[role name]'}
+                    </span>{' '}
+                    at{' '}
+                    <span className='font-bold'>
+                      {companyName ? companyName : '[Company Name]'}.
+                    </span>{' '}
+                    Please book a meeting with a member of the team here -{' '}
+                    <span className='font-bold'>
+                      {customMessageValue
+                        ? customMessageValue
+                        : ' [custom message]'}
+                    </span>{' '}
+                    <br /> <br />
+                    Best,
+                    <br />
+                    Loop Not Luck Team
+                  </p>
+                </div>
+              </div>
             </div>
             <div className='col-span-4 sm:col-span-2'>
               <CheckBox
@@ -228,18 +219,35 @@ function AddRoleForm({
             </div>
             <div className='col-span-4 sm:col-span-4'>
               <MultiSelect
-                label='Roles of Interests'
-                name='rolesOfInterests'
+                label='Areas of Interests'
+                name='areaOfInterests'
                 control={control}
-                options={rolesOfInterests}
+                options={areaOfInterestOptions}
                 setValue={setValue}
                 clearErrors={clearErrors}
-                errors={errors.rolesOfInterests}
-                defaultValue={defaultValues.rolesOfInterests}
+                errors={errors.areaOfInterests}
+                defaultValue={defaultValues.areaOfInterests}
                 closeMenuOnSelect={false}
-                data-cy='role-rolesOfInterests-multiselect'
+                data-cy='role-areaOfInterests-multiselect'
               />
             </div>
+            {rolesOfInterestCheck !== null && (
+              <div className='col-span-4 sm:col-span-4'>
+                <MultiSelect
+                  label='Roles of Interests'
+                  name='rolesOfInterests'
+                  control={control}
+                  options={selectAreaOfInterest}
+                  setValue={setValue}
+                  clearErrors={clearErrors}
+                  errors={errors.rolesOfInterests}
+                  defaultValue={defaultValues.rolesOfInterests}
+                  closeMenuOnSelect={false}
+                  data-cy='role-rolesOfInterests-multiselect'
+                />
+              </div>
+            )}
+
             <div className='col-span-4 sm:col-span-4'>
               <MultiSelect
                 label='Technical Skills'
@@ -251,13 +259,13 @@ function AddRoleForm({
                 errors={errors.technicalSkills}
                 closeMenuOnSelect={false}
                 defaultValue={defaultValues.technicalSkills}
-                menuPortalTarget={document.querySelector("body")}
+                menuPortalTarget={document.querySelector('body')}
                 data-cy='role-technicalSkills-multiselect'
               />
             </div>
             <div className='col-span-4 sm:col-span-4'>
               {technicalSkillsOther !== null &&
-                technicalSkillsOther.includes("Other") && (
+                technicalSkillsOther.includes('Other') && (
                   <TextInput
                     name='technicalSkillsOther'
                     label='Other Technical Skills'
@@ -265,16 +273,6 @@ function AddRoleForm({
                     errors={errors.technicalSkillsOther}
                   />
                 )}
-            </div>
-            <div className='col-span-4 sm:col-span-4'>
-              {" "}
-              <CheckBox
-                name='coverLetter'
-                label='Cover Letter Required'
-                control={control}
-                checked={defaultValues.coverLetter}
-                data-cy='role-coverLetter-checkbox'
-              />
             </div>
           </div>
         </div>

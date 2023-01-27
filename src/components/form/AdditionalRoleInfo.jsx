@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function AdditionalRoleInformation({
-  handleLastTabButton,
+  handleChangeTab,
   handleSaveFields,
   fields,
 }) {
@@ -45,6 +45,7 @@ export default function AdditionalRoleInformation({
 
   const onSubmit = (data) => {
     handleSaveFields(data);
+    handleChangeTab('tab4');
   };
 
   return (
@@ -95,7 +96,7 @@ export default function AdditionalRoleInformation({
             type='submit'
             className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
           >
-            <IntlMessages id='general.submit' />
+            <IntlMessages id='roles.next' />
           </button>
         </div>
       </form>

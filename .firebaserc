@@ -1,7 +1,16 @@
 {
   "projects": {
     "default": "lnl-dev",
+    "second": "loop-luck",
     "staging": "lnl-staging",
     "production": "lnl-prod"
+  },
+  "targets": {},
+  "etags": {
+    "lnl-dev": {
+      "extensionInstances": {
+        "firestore-stripe-payments": "ec8d8d1fe7956d131466fdb4bafc2efce94a6057ea80b2acd37f28fce5d478ba"
+      }
+    }
   }
 }

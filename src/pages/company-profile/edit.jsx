@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
@@ -11,7 +12,7 @@ import { firestore } from '../../../firebase/clientApp';
 import { TextInput } from '../../components/UI/Form/Input';
 import { MultiSelect } from '../../components/UI/Form/MultiSelect';
 import SideBar from '../../components/layout/Sidebar';
-import { locations } from '../../components/data/location';
+import { locations } from '../../components/data/locationBackup';
 import { SelectField } from '../../components/UI/Form/SelectField';
 import { TextArea } from '../../components/UI/Form/TextArea';
 import { visaRequiredOptions } from '../../components/data/visaRequiredOptions';
@@ -140,7 +141,7 @@ export default function UpdateCompany() {
 
     const newData = {
       logoUrl,
-      ...data,
+      ...rest,
       updatedAt: serverTimestamp(),
     };
 

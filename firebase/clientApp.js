@@ -3,10 +3,14 @@ import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
-import { firebaseConfig } from '../src/components/data/constants';
+import {
+  firebaseConfigForLoop,
+  // firebaseConfig,
+} from '../src/components/data/constants';
 
 // https://react-query-firebase.invertase.dev/auth#usage
-const firebase = initializeApp(firebaseConfig);
+// const firebase = initializeApp(firebaseConfig);
+const firebase = initializeApp(firebaseConfigForLoop);
 
 const auth = getAuth(firebase);
 const firestore = getFirestore(firebase);

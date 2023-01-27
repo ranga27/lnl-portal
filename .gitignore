@@ -43,8 +43,10 @@ firestore-stripe-payments.secret.local
 
 lnlDevServiceAccount.json
 
-.env.local
-
 /test-data/
 
 .env
+
+.vscode
+
+/firebase-export**

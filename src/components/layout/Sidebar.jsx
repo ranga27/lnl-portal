@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Fragment, useState, useContext, useEffect } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
@@ -18,35 +19,52 @@ import Avatar from 'react-avatar';
 import { AuthContext } from '../context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 import RolesList from './RolesList';
-import Image from 'next/image';
 import Onboarding from '../../pages/onboarding';
+import { lnlLogo } from '../data/constants';
+
 const navigation = [
   {
     name: 'Dashboard',
     href: '/dashboard',
     icon: DesktopComputerIcon,
     current: false,
+    id: 'dashboard',
   },
-  { name: 'Roles', href: '/roles', icon: BriefcaseIcon, current: false },
+  {
+    name: 'Roles',
+    href: '/roles',
+    icon: BriefcaseIcon,
+    current: false,
+    id: 'roles',
+  },
   {
     name: 'Manage Applicants',
     href: '/applicants',
     icon: UserGroupIcon,
     current: false,
+    id: 'manage-applicants',
   },
   {
     name: 'Internal Company Profile',
     href: '/company-profile',
     icon: ShieldCheckIcon,
     current: false,
+    id: 'internal-company-profile',
   },
   {
     name: 'External Company Profile',
     href: '/external-profile',
     icon: OfficeBuildingIcon,
     current: false,
+    id: 'external-company-profile',
   },
-  { name: 'Settings', href: '/settings', icon: CogIcon, current: false },
+  {
+    name: 'Settings',
+    href: '/settings',
+    icon: CogIcon,
+    current: false,
+    id: 'setting',
+  },
 ];
 
 function classNames(...classes) {
@@ -122,13 +140,7 @@ export default function SideBar({ children }) {
                 </div>
               </Transition.Child>
               <div className='flex-shrink-0 flex text-center mx-auto items-center px-4'>
-                <Image
-                  className='h-16 w-16'
-                  src='/assets/black.png'
-                  width={50}
-                  height={50}
-                  alt='LNL'
-                />
+                <img className='h-16 w-16' src={lnlLogo} alt='LNL' />
               </div>
               <div className='mt-5 flex-1 h-0 overflow-y-auto'>
                 <nav className='px-2'>
@@ -191,13 +203,7 @@ export default function SideBar({ children }) {
       <div className='hidden lg:flex lg:flex-shrink-0'>
         <div className='flex flex-col w-64 border-r border-gray-200 pt-0 pb-4 bg-gray-800'>
           <div className='flex-shrink-0 flex text-center mx-auto items-center px-4 pt-4'>
-            <Image
-              className='h-16 w-16'
-              src='/assets/black.png'
-              width={50}
-              height={50}
-              alt='LNL'
-            />
+            <img className='h-16 w-16' src={lnlLogo} alt='LNL' />
           </div>
           <div className='h-0 flex-1 flex flex-col overflow-y-auto'>
             {/* User account dropdown */}
@@ -209,12 +215,20 @@ export default function SideBar({ children }) {
                 <Menu.Button className='group w-full rounded-md px-3.5 py-2 text-sm text-left font-medium focus:outline-none focus:ring-2 focus:ring-[#F7B919]'>
                   <span className='flex w-full justify-between items-center'>
                     <span className='flex min-w-0 items-center justify-between space-x-3'>
-                      <Avatar
-                        name={fullName}
-                        size='45px'
-                        className='rounded-full flex-shrink-0'
-                        color='#26ADB4'
-                      />
+                      {user.photoUrl ? (
+                        <img
+                          src={user.photoUrl}
+                          className='h-12 w-12 rounded-full'
+                          alt={user.firstName + user.lastName}
+                        />
+                      ) : (
+                        <Avatar
+                          name={fullName}
+                          size='45px'
+                          className='rounded-full flex-shrink-0'
+                          color='#26ADB4'
+                        />
+                      )}
 
                       <span className='flex-1 flex flex-col min-w-0'>
                         <span className='text-white  text-sm font-bold truncate'>
@@ -438,12 +452,20 @@ export default function SideBar({ children }) {
                 <div>
                   <Menu.Button className='max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'>
                     <span className='sr-only'>Open user menu</span>
-                    <Avatar
-                      name={fullName}
-                      size='45px'
-                      className='rounded-full flex-shrink-0'
-                      color='#26ADB4'
-                    />
+                    {user.photoUrl ? (
+                      <img
+                        src={user.photoUrl}
+                        className='h-12 w-12 rounded-full'
+                        alt={user.firstName + user.lastName}
+                      />
+                    ) : (
+                      <Avatar
+                        name={fullName}
+                        size='45px'
+                        className='rounded-full flex-shrink-0'
+                        color='#26ADB4'
+                      />
+                    )}
                   </Menu.Button>
                 </div>
                 <Transition

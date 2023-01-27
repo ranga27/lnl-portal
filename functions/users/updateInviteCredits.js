@@ -1,23 +1,16 @@
 const admin = require('firebase-admin');
 const { sendStripeEmail } = require('./sendStripeEmail');
 const functions = require('firebase-functions/v1');
+const nodemailer = require('nodemailer');
 
-const getRoleCredits = (amount) => {
+const getInviteCredits = (amount) => {
   switch (true) {
-    case amount / 100 === 688:
-      return 20;
-    case amount / 100 === 354:
-      return 10;
-    case amount / 100 === 188:
+    case amount / 100 === 79:
+      return 1;
+    case amount / 100 === 250:
       return 5;
     case amount / 100 === 500:
-      return 1;
-    case amount / 100 === 2250:
-      return 5;
-    case amount / 100 === 4250:
       return 10;
-    case amount / 100 === 8250:
-      return 20;
     default:
       return 0;
   }
@@ -43,7 +36,9 @@ const fulFillOrder = async (session) => {
                 .doc(doc.id)
                 .set(
                   {
-                    roleCredits: getRoleCredits(session.amount_subtotal),
+                    inviteCredits:
+                      doc.data().inviteCredits +
+                      getInviteCredits(session.amount_subtotal),
                   },
                   { merge: true }
                 );
@@ -53,7 +48,7 @@ const fulFillOrder = async (session) => {
     });
 };
 
-exports.updaterolecredits = functions
+exports.updateInviteCredits = functions
   .region('europe-west2')
   .runWith({
     secrets: [
@@ -70,8 +65,17 @@ exports.updaterolecredits = functions
     const webhookStripeSignatureHeader = req.headers['stripe-signature'];
     const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-    let event;
+    const transporter = nodemailer.createTransport({
+      host: process.env.NODEMAILER_HOST_URL,
+      port: process.env.NODEMAILER_PORT,
+      secure: true,
+      auth: {
+        user: process.env.NODEMAILER_AUTH_USER,
+        pass: process.env.NODEMAILER_AUTH_PASSWORD,
+      },
+    });
 
+    let event;
     try {
       event = stripe.webhooks.constructEvent(
         payloadString,
@@ -93,7 +97,8 @@ exports.updaterolecredits = functions
             to: session.customer_details.email,
             from: 'Loop Not Luck hello@loopnotluck.com',
             subject: 'Loop Not Luck Credits bought successfully!',
-            credits: getRoleCredits(session.amount_subtotal),
+            credits: getInviteCredits(session.amount_subtotal),
+            transporter,
           });
           return res.sendStatus(200);
         })

@@ -31,7 +31,18 @@ export const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfig.storageBucket}/`;
+export const firebaseConfigForLoop = {
+  apiKey: 'AIzaSyASO7xWsWqUHXXxkcMlbmaLWBuI6hOK5gA',
+  authDomain: 'loop-luck.firebaseapp.com',
+  databaseURL: 'https://loop-luck.firebaseio.com',
+  projectId: 'loop-luck',
+  storageBucket: 'loop-luck.appspot.com',
+  messagingSenderId: '254916519702',
+  appId: '1:254916519702:web:bd8ba9a53a0f27486c9237',
+  measurementId: 'G-VYCHZLSDJZ',
+};
+
+export const storageRootUrl = `https://storage.googleapis.com/${firebaseConfigForLoop.storageBucket}/`;
 
 export const adminRoot = '/';
 export const buyUrl = '';
@@ -62,3 +73,6 @@ export const applicationOptions = [
   { value: 'Email to Hiring Manager', label: 'Email to Hiring Manager' },
   { value: 'Apply on website', label: 'Apply on website' },
 ];
+
+export const lnlLogo =
+  'https://firebasestorage.googleapis.com/v0/b/loop-luck.appspot.com/o/companyLogos%2Fwhite.png?alt=media&token=93b1b8cc-e66b-4c82-ac61-040e316c897b';
