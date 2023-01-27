@@ -69,6 +69,7 @@
   ],
   "hosting": {
     "public": "public",
+    "site": "loop-luck-portal",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
