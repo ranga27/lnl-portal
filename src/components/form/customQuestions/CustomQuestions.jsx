@@ -22,7 +22,12 @@ const removeUndefinedFields = (data) => {
   return data;
 };
 
-const CustomQuestions = ({ handleSaveFields, fields, companyId }) => {
+const CustomQuestions = ({
+  handleSaveFields,
+  fields,
+  companyId,
+  roleCredits,
+}) => {
   const [data, setData] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
 
@@ -55,7 +60,7 @@ const CustomQuestions = ({ handleSaveFields, fields, companyId }) => {
         >
           <IntlMessages id='roles.previewForm' />
         </button>
-        {rolesList.length >= 1 ? (
+        {roleCredits === 0 ? (
           <p>Role Limit Reached</p>
         ) : (
           <button

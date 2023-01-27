@@ -247,7 +247,6 @@ export default function AddRole() {
     }
   };
 
-
   return (
     <AuthRoute>
       <SideBar>
@@ -297,6 +296,7 @@ export default function AddRole() {
                           handleSaveFields={(data) => onSubmit(data)}
                           fields={fields}
                           companyId={company[0]?.id}
+                          roleCredits={company[0]?.roleCredits}
                         />
                       ) : null}
                     </div>
