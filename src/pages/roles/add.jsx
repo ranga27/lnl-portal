@@ -72,6 +72,11 @@ export default function AddRole() {
     merge: true,
   });
 
+  const updatedRoleConfigMutation = useFirestoreDocumentMutation(
+    doc(firestore, `config/companyRoles`),
+    { merge: true }
+  );
+
   const {
     userData: { userId },
   } = useContext(AuthContext);
@@ -224,6 +229,10 @@ export default function AddRole() {
               company[0].id,
               roleId
             );
+
+            updatedRoleConfigMutation.mutate({
+              lastUpdated: serverTimestamp(),
+            });
 
             Swal.fire({
               title: 'Success!',
