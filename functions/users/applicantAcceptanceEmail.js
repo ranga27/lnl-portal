@@ -73,6 +73,7 @@ exports.applicantAcceptanceEmail = ({
                                 <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
                                   <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
                                 ${customMessage}
+                                </p>
                                 </td>
                               </tr>
                             </tbody>

@@ -7,6 +7,8 @@ import {
 import { getRoles } from '../../../../firebase/firestoreService';
 // Components
 import IntlMessages from '../../../utils/IntlMessages';
+import { QuestionInfo } from '../../layout/QuestionInfo';
+import { Modal } from '../../UI/Modal';
 // Helpers
 import { toolbarItems } from './helpers';
 
@@ -42,6 +44,10 @@ const CustomQuestions = ({
   };
 
   const [rolesList, setRoles] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     getRoles(companyId).then((results) => {
@@ -52,14 +58,9 @@ const CustomQuestions = ({
   return (
     <div className='form-builder-custom-css bg-white py-6 px-4 sm:p-6'>
       <div className='flex justify-between items-center w-[70%] m-3'>
-        <h4>Make your questionnaire form</h4>
+        <h1>Candidate screening questions</h1>
         {/* //TODO: Tooltip can be used here which shows explanation how to use */}
-        <button
-          className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-          onClick={() => setPreviewVisible(true)}
-        >
-          <IntlMessages id='roles.previewForm' />
-        </button>
+
         {roleCredits === 0 ? (
           <p>Role Limit Reached</p>
         ) : (
@@ -67,8 +68,35 @@ const CustomQuestions = ({
             className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
             onClick={onSubmit}
           >
-            <IntlMessages id='general.submit' />
+            <IntlMessages id='roles.post-role' />
           </button>
+        )}
+      </div>
+      <div>
+        <button
+          className='text-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-2 text-sm font-medium'
+          onClick={() => setPreviewVisible(true)}
+        >
+          <IntlMessages id='roles.previewForm' />
+        </button>
+        <button
+          type='button'
+          className='ml-8 text-sm text-gray-900 underline hover:text-[#F7B919]'
+          onClick={() => handleOpenModal()}
+        >
+          <IntlMessages id='roles.screening-description' />
+        </button>
+        {isModalOpen && (
+          <Modal
+            isOpen={isModalOpen}
+            setOpen={setIsModalOpen}
+            cancelButton={true}
+            confirmButton={false}
+            modalSize='xl'
+            title='Screening Questions Tutorial'
+            showIcon={false}
+            Content={QuestionInfo}
+          />
         )}
       </div>
 

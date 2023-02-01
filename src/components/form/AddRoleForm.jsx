@@ -163,10 +163,10 @@ function AddRoleForm({
 
                 <div className='pt-6'>
                   <p>
-                    Hello [candidate name],
+                    Dear [candidate name],
                     <br /> <br />
-                    Congratulations! You&apos;ve been invited on to the next
-                    stage for the position of{' '}
+                    Congratulations! 
+                    You have been invited to the next stage for the {' '}
                     <span className='font-bold'>
                       {roleTitle ? roleTitle : '[role name]'}
                     </span>{' '}
@@ -174,7 +174,7 @@ function AddRoleForm({
                     <span className='font-bold'>
                       {companyName ? companyName : '[Company Name]'}.
                     </span>{' '}
-                    Please book a meeting with a member of the team here -{' '}
+                    <br />
                     <span className='font-bold'>
                       {customMessageValue
                         ? customMessageValue

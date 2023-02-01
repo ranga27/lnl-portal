@@ -126,7 +126,7 @@ const Applicant = ({ Applicant, roleData }) => {
         await axios
           .post(
             process.env.NODE_ENV === 'development'
-              ? process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL
+              ? process.env.NEXT_PUBLIC_DEV_SEND_APPLICANT_EMAIL
               : process.env.NEXT_PUBLIC_PROD_SEND_APPLICANT_EMAIL,
             emailData,
             { headers: { 'Access-Control-Allow-Origin': '*' } }
