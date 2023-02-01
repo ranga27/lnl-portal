@@ -52,7 +52,7 @@ exports.sendEmail = ({ to, from, subject, transporter }) => {
                         <tr>
                         <td style="padding-bottom:0px;" align="center" valign="top" class="description">
                           <p class="text" style="color:#000000;width:90%;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                            If this account has been created on your behalf please click <a href='https://lnl-portal.web.app/forgot-password' target="_blank">here</a> to reset your password and access your account.
+                            If this account has been created on your behalf please click <a href='https://loop-luck-portal.web.app//forgot-password' target="_blank">here</a> to reset your password and access your account.
                           </p>
                           <br />
                           <br />
