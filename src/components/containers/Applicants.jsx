@@ -24,18 +24,17 @@ export default function ApplicantsList({
       setRoles(results);
     });
   }, [companyId]);
-
   useEffect(() => {
     if (SearchTerms !== '') {
       setSearchResult(
         roles.filter((x) => {
           return (
-            x.firstName.includes(SearchTerms) || x.email.includes(SearchTerms)
+            x.title.includes(SearchTerms) || x.department.includes(SearchTerms)
           );
         })
       );
     } else {
-      setSearchResult([]);
+      setSearchResult(roles);
     }
   }, [roles, SearchTerms]);
 
@@ -55,7 +54,7 @@ export default function ApplicantsList({
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setApplicant(SearchResult[0]);
+    setSearchResult(SearchResult);
   };
 
   return (
@@ -94,10 +93,10 @@ export default function ApplicantsList({
               <p className='mt-1 text-sm text-gray-600'>
                 Search list of applicants
               </p>
-              <form className='mt-6 flex space-x-4' onSubmit={handleSearch}>
+              <form className='mt-6 flex space-x-4'>
                 <div className='flex-1 min-w-0'>
                   <label htmlFor='search' className='sr-only'>
-                    Search
+                    Search for roles
                   </label>
                   <div className='relative rounded-md shadow-sm'>
                     <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
@@ -113,12 +112,13 @@ export default function ApplicantsList({
                       onChange={onChangeSearch}
                       id='search'
                       className='py-2 focus:ring-[#F7B919] focus:border-[#F7B919] block w-full border pl-10 sm:text-sm border-solid form-control border-gray-300 rounded-md focus:outline-none'
-                      placeholder='Search'
+                      placeholder='Search for roles'
                     />
                   </div>
                 </div>
                 <button
-                  type='submit'
+                  type='button'
+                  onClick={handleSearch}
                   className='inline-flex justify-center px-3.5 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
                 >
                   <FilterIcon
@@ -133,7 +133,7 @@ export default function ApplicantsList({
               className='flex-1 min-h-0 overflow-y-auto'
               aria-label='Applicants'
             >
-              {roles.map((role) => (
+              {SearchResult.map((role) => (
                 <div key={role.id} className='relative'>
                   <div className='z-10 sticky top-0 border-t border-b border-gray-200 bg-gray-50 px-6 text-sm font-medium text-gray-500'></div>
                   <ul
