@@ -155,7 +155,7 @@ function AddRoleForm({
               <div>
                 <TextInput
                   name='customMessage'
-                  label='Custom Message.'
+                  label='Custom Message'
                   control={control}
                   errors={errors.customMessage}
                   data-cy='role-customMessage-input'
@@ -229,6 +229,7 @@ function AddRoleForm({
                 defaultValue={defaultValues.areaOfInterests}
                 closeMenuOnSelect={false}
                 data-cy='role-areaOfInterests-multiselect'
+                menuPortalTarget={document.querySelector('body')}
               />
             </div>
             {rolesOfInterestCheck !== null && (
@@ -244,6 +245,7 @@ function AddRoleForm({
                   defaultValue={defaultValues.rolesOfInterests}
                   closeMenuOnSelect={false}
                   data-cy='role-rolesOfInterests-multiselect'
+                  menuPortalTarget={document.querySelector('body')}
                 />
               </div>
             )}
