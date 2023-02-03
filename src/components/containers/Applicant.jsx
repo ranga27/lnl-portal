@@ -8,7 +8,7 @@ import {
 import { getName } from '../../utils/commands';
 import { CheckIcon, XIcon } from '@heroicons/react/outline';
 import Swal from 'sweetalert2';
-import { doc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, collection, serverTimestamp, getDoc } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import {
   fetchApplicantsCollection,
@@ -37,6 +37,19 @@ const Applicant = ({ Applicant, roleData }) => {
   const [acceptedUsers, setAcceptedUsers] = useState([]);
   const [rejectedUsers, setRejectedUsers] = useState([]);
   const [activeTab, setActiveTab] = useState('tab1');
+  const [hiringManagerEmail, setHiringManagerEmail] = useState('');
+
+  const getHiringManagerData = async () => {
+    const hiringManagerData = await (
+      await getDoc(doc(firestore, 'companyUsers', roleData.managerId))
+    ).data();
+    setHiringManagerEmail(hiringManagerData.email);
+  };
+
+  useEffect(() => {
+    getHiringManagerData();
+  }, []);
+
   const handleChangeTab = async (data) => {
     if (data === 'tab1') {
       setActiveTab('tab1');
@@ -83,6 +96,7 @@ const Applicant = ({ Applicant, roleData }) => {
   );
 
   const handleAcceptCandidate = (data) => {
+    console.log(hiringManagerEmail, 'InAcceptFunction');
     const newData = {
       userId: data.userId,
       updatedAt: serverTimestamp(),
@@ -95,6 +109,7 @@ const Applicant = ({ Applicant, roleData }) => {
       email: Applicant.email,
       customMessage: roleData.customMessage,
       roleName: roleData.title,
+      hiringManagerEmail: hiringManagerEmail,
     };
     acceptCandidateMutation.mutate(newData, {
       async onSuccess() {
@@ -157,6 +172,7 @@ const Applicant = ({ Applicant, roleData }) => {
       email: Applicant.email,
       customMessage: roleData.customMessage,
       roleName: roleData.title,
+      hiringManagerEmail: hiringManagerEmail,
     };
 
     rejectCandidateMutation.mutate(newData, {
