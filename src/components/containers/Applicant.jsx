@@ -131,13 +131,7 @@ const Applicant = ({ Applicant, roleData }) => {
           roleData.companyId,
           roleData.companyInviteCredits
         );
-        await Swal.fire({
-          title: 'Success!',
-          text: 'Candidate Accepted.',
-          icon: 'success',
-          iconColor: '#3085d6',
-          showConfirmButton: false,
-        });
+
         await axios
           .post(
             process.env.NODE_ENV === 'development'
@@ -146,8 +140,15 @@ const Applicant = ({ Applicant, roleData }) => {
             emailData,
             { headers: { 'Access-Control-Allow-Origin': '*' } }
           )
-          .then(() => console.log('email sent'))
-          .catch((error) => console.log(error));
+          .then(() => console.log('email sent'));
+
+        Swal.fire({
+          title: 'Success!',
+          text: 'Candidate Accepted.',
+          icon: 'success',
+          iconColor: '#3085d6',
+          showConfirmButton: false,
+        });
       },
       onError() {
         Swal.fire('Oops!', 'Error accepting candidate.', 'error');
