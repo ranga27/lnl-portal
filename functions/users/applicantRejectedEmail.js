@@ -7,10 +7,12 @@ exports.applicantRejectedEmail = ({
   companyName,
   roleName,
   transporter,
+  cc,
 }) => {
   const mailOptions = {
     to,
     from,
+    cc,
     subject,
     status,
     firstName,
