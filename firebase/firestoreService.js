@@ -44,7 +44,7 @@ export async function fetchCompanyUsers() {
 export async function fetchApplicantsCollection(roleId, userID) {
   const userDocRef = collection(
     firestore,
-    `companyRolesV2/${roleId}/acceptedApplicants`
+    `roles/${roleId}/acceptedApplicants`
   );
   const doc = await query(userDocRef, where('userId', '==', userID));
 
@@ -59,7 +59,7 @@ export async function fetchApplicantsCollection(roleId, userID) {
 export async function fetchRejectedApplicantsCollection(roleId, userID) {
   const userDocRef = collection(
     firestore,
-    `companyRolesV2/${roleId}/rejectedApplicants`
+    `roles/${roleId}/rejectedApplicants`
   );
   const doc = await query(userDocRef, where('userId', '==', userID));
 
@@ -82,7 +82,7 @@ export async function getCompanyRoles(uid) {
 
   if (data.length === 0) return [];
 
-  const rolesDocRef = collection(firestore, 'companyRolesV2');
+  const rolesDocRef = collection(firestore, 'roles');
   const rolesDoc = await query(
     rolesDocRef,
     where('companyId', '==', data[0].id)
@@ -107,7 +107,7 @@ export async function getCompany(uid) {
 }
 
 export async function getRoles(uid) {
-  const rolesDocRef = collection(firestore, 'companyRolesV2');
+  const rolesDocRef = collection(firestore, 'roles');
   const rolesDoc = await query(rolesDocRef, where('companyId', '==', uid));
   const rolesQuerySnapshot = await getDocs(rolesDoc);
   const roles = rolesQuerySnapshot.docs.map((docu) => ({
@@ -165,7 +165,7 @@ export async function addRoleInCompanyFirestore(data, id) {
 export async function getAcceptedUserInRoleFirestore(roleId, userId) {
   const docRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleId,
     'acceptedApplicants'
   );
@@ -186,7 +186,7 @@ export async function getAcceptedUserInRoleFirestore(roleId, userId) {
 export async function getRejectedUserInRoleFirestore(roleId, userId) {
   const docRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleId,
     'rejectedApplicants'
   );
@@ -287,7 +287,7 @@ export async function getCompanyDashboardMetrix(userId) {
 
   const companyID = company[0].id;
 
-  const roleRef = collection(firestore, 'companyRolesV2');
+  const roleRef = collection(firestore, 'roles');
   const roleQuery = query(roleRef, where('companyId', '==', companyID));
   const roleQuerySnapshot = await getDocs(roleQuery);
   const postedRole = roleQuerySnapshot.docs.map((docu) => ({

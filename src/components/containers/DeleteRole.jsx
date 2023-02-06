@@ -4,7 +4,7 @@ import { collection, doc } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 
 export default function DeleteRole({ id }) {
-  const deleteRoleRef = collection(firestore, 'companyRolesV2');
+  const deleteRoleRef = collection(firestore, 'roles');
   const ref = doc(deleteRoleRef, id);
   const mutation = useFirestoreDocumentDeletion(ref);
 

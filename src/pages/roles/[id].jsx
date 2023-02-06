@@ -43,8 +43,8 @@ export default function ViewRole() {
   const [copy, setCopy] = useState(false);
 
   const { id } = router.query;
-  const ref = doc(firestore, 'companyRolesV2', id);
-  const data = useFirestoreDocument(['companyRolesV2', id], ref);
+  const ref = doc(firestore, 'roles', id);
+  const data = useFirestoreDocument(['roles', id], ref);
   if (data.isLoading) {
     return <div>Loading...</div>;
   }

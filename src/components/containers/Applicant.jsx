@@ -61,14 +61,14 @@ const Applicant = ({ Applicant, roleData }) => {
   };
   const acceptCandidateRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleData.id,
     'acceptedApplicants'
   );
 
   const rejectCandidateRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleData.id,
     'rejectedApplicants'
   );

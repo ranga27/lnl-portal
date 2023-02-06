@@ -33,7 +33,7 @@ export default function RolesList({ roles }) {
     userData: { userId },
   } = useContext(AuthContext);
 
-  const roleRef = doc(firestore, 'companyRolesV2', pinned);
+  const roleRef = doc(firestore, 'roles', pinned);
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
     merge: true,
   });
