@@ -61,14 +61,14 @@ const Applicant = ({ Applicant, roleData }) => {
   };
   const acceptCandidateRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleData.id,
     'acceptedApplicants'
   );
 
   const rejectCandidateRef = collection(
     firestore,
-    'companyRolesV2',
+    'roles',
     roleData.id,
     'rejectedApplicants'
   );
@@ -89,7 +89,7 @@ const Applicant = ({ Applicant, roleData }) => {
   const updateMatchedRoleMutation = useFirestoreDocumentMutation(
     doc(
       firestore,
-      `users/${Applicant.userId}/companyMatchedRoles`,
+      `users/${Applicant.userId}/matchedRoles`,
       roleData.id
     ),
     { merge: true }

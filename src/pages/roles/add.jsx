@@ -36,7 +36,7 @@ export default function AddRole() {
   const roleId = uuidv4();
 
   const mutation = useFirestoreDocumentMutation(
-    doc(firestore, 'companyRolesV2', roleId)
+    doc(firestore, 'roles', roleId)
   );
 
   const router = useRouter();
@@ -67,7 +67,7 @@ export default function AddRole() {
       : null,
   });
 
-  const roleRef = doc(firestore, 'companyRolesV2', role.id || '1');
+  const roleRef = doc(firestore, 'roles', role.id || '1');
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
     merge: true,
   });
