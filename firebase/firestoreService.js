@@ -306,7 +306,7 @@ export async function fetchUserMatchedRolesFromFirestore(users) {
       firestore,
       'users',
       user.id,
-      'companyMatchedRoles'
+      'matchedRoles'
     );
     const q = query(roleRef, where('applied', '==', true));
     const querySnapshot = await getDocs(q);

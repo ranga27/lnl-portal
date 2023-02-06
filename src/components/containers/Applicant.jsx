@@ -89,7 +89,7 @@ const Applicant = ({ Applicant, roleData }) => {
   const updateMatchedRoleMutation = useFirestoreDocumentMutation(
     doc(
       firestore,
-      `users/${Applicant.userId}/companyMatchedRoles`,
+      `users/${Applicant.userId}/matchedRoles`,
       roleData.id
     ),
     { merge: true }
