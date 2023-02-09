@@ -7,6 +7,7 @@ import {
 import { getRoles } from '../../../../firebase/firestoreService';
 // Components
 import IntlMessages from '../../../utils/IntlMessages';
+import useCollection from '../../hooks/useCollection';
 import { QuestionInfo } from '../../layout/QuestionInfo';
 import { Modal } from '../../UI/Modal';
 // Helpers
@@ -29,13 +30,44 @@ const CustomQuestions = ({
   fields,
   companyId,
   roleCredits,
+  role,
 }) => {
+  const { data: questionnaire, isLoading } = useCollection('questionnaire', [
+    'roleId',
+    '==',
+    role.id ? role.id : 'noId',
+  ]);
+
   const [data, setData] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
+  useEffect(() => {
+    ElementStore.subscribe((state) => {
+      setData(state.data);
+    });
+  });
+
+  var count = true;
 
   useEffect(() => {
-    ElementStore.subscribe((state) => setData(state.data));
-  });
+    if (role.id && questionnaire) {
+      ElementStore.subscribe((state) => {
+        const current = state.data;
+        const questionID = [];
+        for (let j = 0; j < current.length; j++) {
+          questionID.push(current[j].id);
+        }
+        if (count) {
+          for (let i = 0; i < questionnaire[0].questions.length; i++) {
+            if (!questionID.includes(questionnaire[0].questions[i].id)) {
+              state.data.push(questionnaire[0].questions[i]);
+              setData(state.data);
+            }
+          }
+          count = false;
+        }
+      });
+    }
+  }, [questionnaire]);
 
   const onSubmit = () => {
     const filteredData = removeUndefinedFields(data);
