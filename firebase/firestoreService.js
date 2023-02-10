@@ -163,12 +163,7 @@ export async function addRoleInCompanyFirestore(data, id) {
 }
 
 export async function getAcceptedUserInRoleFirestore(roleId, userId) {
-  const docRef = collection(
-    firestore,
-    'roles',
-    roleId,
-    'acceptedApplicants'
-  );
+  const docRef = collection(firestore, 'roles', roleId, 'acceptedApplicants');
 
   const querySnapshot = await getDocs(docRef);
   const acceptedUsers = querySnapshot.docs.map((docu) => ({
@@ -184,12 +179,7 @@ export async function getAcceptedUserInRoleFirestore(roleId, userId) {
 }
 
 export async function getRejectedUserInRoleFirestore(roleId, userId) {
-  const docRef = collection(
-    firestore,
-    'roles',
-    roleId,
-    'rejectedApplicants'
-  );
+  const docRef = collection(firestore, 'roles', roleId, 'rejectedApplicants');
 
   const querySnapshot = await getDocs(docRef);
   const rejectedUsers = querySnapshot.docs.map((docu) => ({
@@ -226,7 +216,7 @@ export async function updateCustomQuestionsInQuestionnaireFirestore(
   await setDoc(
     docRef,
     {
-      customQuestions,
+      questions: customQuestions,
     },
     { merge: true }
   );
@@ -302,12 +292,7 @@ export async function fetchUserMatchedRolesFromFirestore(users) {
   const roles = [];
 
   for (const user of users) {
-    const roleRef = collection(
-      firestore,
-      'users',
-      user.id,
-      'matchedRoles'
-    );
+    const roleRef = collection(firestore, 'users', user.id, 'matchedRoles');
     const q = query(roleRef, where('applied', '==', true));
     const querySnapshot = await getDocs(q);
     const allRoles = querySnapshot.docs.map((docu) => ({

@@ -192,8 +192,7 @@ export default function AddRole() {
             // TODO: Fix below
             await updateCustomQuestionsInQuestionnaireFirestore(
               customQuestions,
-              company[0].id,
-              roleId
+              role.id
             );
 
             Swal.fire({
@@ -306,6 +305,7 @@ export default function AddRole() {
                           fields={fields}
                           companyId={company[0]?.id}
                           roleCredits={company[0]?.roleCredits}
+                          role={role}
                         />
                       ) : null}
                     </div>
