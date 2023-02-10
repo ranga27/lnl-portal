@@ -52,7 +52,7 @@ export default function RolesList({ roles }) {
 
   useEffect(() => {
     if (pinned === '3a43ocoGT2') {
-      return console.log('Error');
+      return console.log('Page Loaded successfully');
     } else {
       handleSave();
     }
@@ -65,6 +65,7 @@ export default function RolesList({ roles }) {
         {
           onSuccess() {
             console.log('Successful');
+            window.location.reload();
           },
         }
       );
@@ -337,7 +338,6 @@ export default function RolesList({ roles }) {
                                 </button>
                               )}
                             </Menu.Item>
-                           
                           </div>
                           <div className='py-1'>
                             <Menu.Item>
