@@ -1,4 +1,6 @@
 {
+  "name": "company-portal",
+  "description": "Loop Not Luck Company Portal",
   "private": true,
   "main": "firebaseFunctions.js",
   "scripts": {
