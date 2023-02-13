@@ -47,6 +47,7 @@ export default function AddRole() {
   const [fields, setFields] = useState({
     title: role.title || '',
     location: role.location || '',
+    locationType: role.locationType || '',
     department: role.department || '',
     positionType: role.positionType || '',
     salary: role.salary || '',
@@ -57,6 +58,7 @@ export default function AddRole() {
     deadline: role.rolling === true ? null : defaultRoleDeadline,
     startDate: startDate !== undefined ? defaultRoleStartDate : null,
     rolesOfInterests: role.rolesOfInterests || null,
+    areaOfInterests: role.areaOfInterests || null,
     technicalSkills: role.technicalSkills || null,
     managerId: role.managerId || '',
     moreRoleInfo: role.moreRoleInfo || '',
@@ -85,7 +87,7 @@ export default function AddRole() {
     ['companyV2'],
     query(collection(firestore, 'companyV2'), where('userId', '==', userId)),
     {
-      subscribe: true,
+      subscribe: false,
     },
     {
       // React Query data selector

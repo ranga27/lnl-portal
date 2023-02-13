@@ -60,7 +60,7 @@ export default function ExternalProfile() {
             </div>
           </div>
           <div className='py-8 xl:py-10'>
-            <div className='max-w-3xl mx-auto px-4 sm:px-6 lg:px-8'>
+            <div className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8'>
               <div className='md:flex md:items-center md:justify-between md:space-x-4 border-b xl:pb-6'>
                 <div className='flex items-center'>
                   <img
