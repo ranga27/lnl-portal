@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '../../../../firebase/clientApp';
 import { format } from 'date-fns';
+import VerificationCountChart from './VerificationCountChart';
 
-const UnverifiedUserCount = () => {
+const UnverifiedUserCount = ({ totalSigneduser }) => {
   const [userData, setUserdata] = useState({
     users: [],
     count: 0,
@@ -30,60 +31,69 @@ const UnverifiedUserCount = () => {
     getUnverifiedUserCount();
   }, []);
 
+  if (userData.count === 0) return <div className='loading' />;
+
   return (
-    <div className='max-w-[60%] rounded shadow-lg p-5 mt-5'>
-      <h1 className='p-2 py-4'>
-        Number of Unverified candidate on portal -{' '}
-        <strong>
-          Total Unverified User :{' '}
-          {userData.count !== 0 ? userData.count : 'Loading...'}{' '}
-        </strong>
-      </h1>
-      <div className='max-h-[250px] overflow-auto'>
-        <table className='table-auto w-full'>
-          <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50 sticky top-0 p-0'>
-            <tr>
-              {tableColums.map((col) => (
-                <th className='p-2'>
-                  <div className='font-semibold text-left'>{col}</div>
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className='text-sm divide-y divide-gray-200'>
-            {userData.users.length &&
-              userData.users.map((user, index) => (
-                <tr>
-                  <td className='p-2'>
-                    <div className='font-medium text-gray-800'>{index}</div>
-                  </td>
-                  <td className='p-2'>
-                    <div className='font-medium text-gray-800'>
-                      {`${user?.firstName} ${
-                        user?.lastName ? user?.lastName : ''
-                      }`}
-                    </div>
-                  </td>
-                  <td className='p-2'>
-                    <div className='font-medium text-gray-800'>
-                      {user.email}
-                    </div>
-                  </td>
-                  <td className='p-2'>
-                    <div className='font-medium text-gray-800'>
-                      {user?.createdAt
-                        ? format(
-                            new Date(user.createdAt.toDate()),
-                            'dd-MMM-yyyy'
-                          )
-                        : 'No Date Found'}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+    <div className='flex justify-start mt-5'>
+      <div className='max-w-[60%] rounded shadow-lg mt-5 p-5'>
+        <h1 className='pb-5'>
+          Unverified candidate on portal -{' '}
+          <strong>
+            Total Unverified User :{' '}
+            {userData.count !== 0 ? userData.count : 'Loading...'}{' '}
+          </strong>
+        </h1>
+        <div className='max-h-[250px] overflow-auto mt-5'>
+          <table className='table-auto w-full'>
+            <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50 sticky top-0 p-0'>
+              <tr>
+                {tableColums.map((col) => (
+                  <th className='p-2'>
+                    <div className='font-semibold text-left'>{col}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className='text-sm divide-y divide-gray-200'>
+              {userData.users.length &&
+                userData.users.map((user, index) => (
+                  <tr>
+                    <td className='p-2'>
+                      <div className='font-medium text-gray-800'>{index}</div>
+                    </td>
+                    <td className='p-2'>
+                      <div className='font-medium text-gray-800'>
+                        {`${user?.firstName} ${
+                          user?.lastName ? user?.lastName : ''
+                        }`}
+                      </div>
+                    </td>
+                    <td className='p-2'>
+                      <div className='font-medium text-gray-800'>
+                        {user.email}
+                      </div>
+                    </td>
+                    <td className='p-2'>
+                      <div className='font-medium text-gray-800'>
+                        {user?.createdAt
+                          ? format(
+                              new Date(user.createdAt.toDate()),
+                              'dd-MMM-yyyy'
+                            )
+                          : 'No Date Found'}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+      <VerificationCountChart
+        totalSigneduser={totalSigneduser}
+        totalUnverifiedUser={userData.count}
+        className='w-[40%]'
+      />
     </div>
   );
 };

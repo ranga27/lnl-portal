@@ -12,7 +12,7 @@ const CandidateStatistics = () => {
       <h1>Candidate Statistics</h1>
       <div>
         <SignupUserCount setTotalSigneduser={setTotalSigneduser} />
-        <UnverifiedUserCount />
+        <UnverifiedUserCount totalSigneduser={totalSigneduser} />
       </div>
     </div>
   );
