@@ -11,7 +11,7 @@ const admin = () => {
           <nav className='w-full h-fit border-y-2'>
             <h1 className='p-5 text-xl'>Admin Dashboard</h1>
           </nav>
-          <div className='p-5'>
+          <div className='p-5 h-[88vh] overflow-auto'>
             <CandidateStatistics />
           </div>
         </div>

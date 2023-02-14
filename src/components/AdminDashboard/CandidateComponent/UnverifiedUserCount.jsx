@@ -1,9 +1,9 @@
-import { collection, getDocs } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
 import { firestore } from '../../../../firebase/clientApp';
 import { format } from 'date-fns';
 
-const SignupUserCount = ({ setTotalSigneduser }) => {
+const UnverifiedUserCount = () => {
   const [userData, setUserdata] = useState({
     users: [],
     count: 0,
@@ -11,9 +11,9 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
 
   const tableColums = ['ID', 'Username', 'Email', 'Signup On'];
 
-  const getSignedUserCount = async () => {
+  const getUnverifiedUserCount = async () => {
     let userData = [];
-    const coll = collection(firestore, 'users');
+    const coll = collection(firestore, 'temporaryUsers');
     const snapshot = await getDocs(coll);
 
     snapshot.forEach((user) => {
@@ -27,21 +27,15 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
   };
 
   useEffect(() => {
-    setTotalSigneduser(userData.count);
-  }, [userData]);
-
-  useEffect(() => {
-    getSignedUserCount();
+    getUnverifiedUserCount();
   }, []);
 
-  if (userData.count === 0) return <div className='loading' />;
-
   return (
-    <div className='max-w-[100%] rounded shadow-lg p-5'>
+    <div className='max-w-[60%] rounded shadow-lg p-5 mt-5'>
       <h1 className='p-2 py-4'>
-        Number of candidate signup For portal -{' '}
+        Number of Unverified candidate on portal -{' '}
         <strong>
-          Total Verified User :{' '}
+          Total Unverified User :{' '}
           {userData.count !== 0 ? userData.count : 'Loading...'}{' '}
         </strong>
       </h1>
@@ -94,4 +88,4 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
   );
 };
 
-export default SignupUserCount;
+export default UnverifiedUserCount;
