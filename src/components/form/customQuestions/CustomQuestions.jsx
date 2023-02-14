@@ -93,7 +93,7 @@ const CustomQuestions = ({
         <h1>Candidate screening questions</h1>
         {/* //TODO: Tooltip can be used here which shows explanation how to use */}
 
-        {roleCredits === 0 ? (
+        {roleCredits === 0 && !role.id ? (
           <p>Role Limit Reached</p>
         ) : (
           <button
