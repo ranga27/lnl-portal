@@ -24,13 +24,13 @@ const navigation = [
     name: 'Candidate Statistics',
     icon: UserIcon,
     current: false,
-    id: 'dashboard',
+    id: 'candidate',
   },
   {
     name: 'Product Statistics',
     icon: OfficeBuildingIcon,
     current: false,
-    id: 'roles',
+    id: 'product',
   },
 ];
 
@@ -38,7 +38,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function AdminSidebar({ children }) {
+export default function AdminSidebar({ children, setTab }) {
   const [user, setUser] = useState([]);
   const { pathname } = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -122,6 +122,9 @@ export default function AdminSidebar({ children }) {
                             'mr-3 flex-shrink-0 h-6 w-6'
                           )}
                           aria-hidden='true'
+                          onClick={() => {
+                            setTab(item.id);
+                          }}
                         />
                         {item.name}
                       </a>
@@ -243,6 +246,7 @@ export default function AdminSidebar({ children }) {
                     key={item.name}
                     aria-current={item.current ? 'page' : undefined}
                     className='group flex items-center px-2 py-3 text-base leading-5 rounded-md text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold'
+                    onClick={() => setTab(item.id)}
                   >
                     <item.icon
                       className={classNames(

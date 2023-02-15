@@ -1,5 +1,4 @@
 export const getHearAboutusdata = (userData) => {
-  console.log(userData.length);
   const graphData = [];
   for (let i = 0; i < userData.length; i++) {
     const user = userData[i];
@@ -7,7 +6,6 @@ export const getHearAboutusdata = (userData) => {
       const hearAboutData = user.hearAbout[j];
       const added = false;
       graphData.map((data) => {
-        console.log(hearAboutData);
         if (data.name === hearAboutData) {
           data.count = data.count + 1;
           added = true;

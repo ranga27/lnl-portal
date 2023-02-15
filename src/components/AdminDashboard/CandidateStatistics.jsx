@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import HearAboutUsGraph from './CandidateComponent/HearAboutUsGraph';
 import SignupUserCount from './CandidateComponent/SignupUserCount';
+import TalentPartners from './CandidateComponent/TalentPartners';
 import UnverifiedUserCount from './CandidateComponent/UnverifiedUserCount';
 
 const CandidateStatistics = () => {
@@ -13,6 +14,7 @@ const CandidateStatistics = () => {
         <SignupUserCount setTotalSigneduser={setTotalSigneduser} />
         <UnverifiedUserCount totalSigneduser={totalSigneduser} />
         <HearAboutUsGraph />
+        <TalentPartners />
       </div>
     </div>
   );
