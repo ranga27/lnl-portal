@@ -15,9 +15,17 @@ const RoleStatusStatistics = () => {
     'Deadline',
   ];
 
-  useEffect(async () => {
-    const data = await getSavedAppliedStatistics();
-    setRoleStatistics(data);
+  const getRoleData = async () => {
+    try {
+      const data = await getSavedAppliedStatistics();
+      setRoleStatistics(data);
+    } catch (err) {
+      console.log('');
+    }
+  };
+
+  useEffect(() => {
+    getRoleData();
   }, []);
 
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;

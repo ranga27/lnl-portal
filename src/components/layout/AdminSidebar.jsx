@@ -2,12 +2,12 @@
 import { Fragment, useState, useContext, useEffect } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import {
-  DesktopComputerIcon,
   MenuAlt1Icon,
   XIcon,
   LogoutIcon,
   UserIcon,
   OfficeBuildingIcon,
+  HomeIcon,
 } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -130,7 +130,15 @@ export default function AdminSidebar({ children, setTab }) {
                       </a>
                     ))}
                   </div>
-                  {user.isOnboarded && <RolesList userId={userId} />}
+                  <Link href={'/dashboard'} passHref>
+                    <a className='group flex items-center px-2 py-3 text-base leading-5 rounded-md text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold'>
+                      <HomeIcon
+                        aria-hidden='true'
+                        className='mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-900'
+                      />
+                      Company Dashboard
+                    </a>
+                  </Link>
                 </nav>
               </div>
               <div className='flex-shrink-0 flex border-t border-gray-400 pt-4 px-3'>
@@ -261,7 +269,15 @@ export default function AdminSidebar({ children, setTab }) {
                   </a>
                 ))}
               </div>
-              <RolesList userId={userId} />
+              <Link href={'/dashboard'} passHref>
+                <a className='group flex items-center px-2 py-3 text-base leading-5 rounded-md text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold'>
+                  <HomeIcon
+                    className='mr-3 flex-shrink-0 h-6 w-6 text-white group-hover:text-gray-900'
+                    aria-hidden='true'
+                  />
+                  Company Dashboard
+                </a>
+              </Link>
             </nav>
           </div>
           <div className='flex-shrink-0 flex border-t border-gray-400 pt-4 px-3'>
