@@ -12,9 +12,10 @@ import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
 import { signInSchema } from '../components/schemas/loginSchema';
 import GoogleSignIn from '../components/layout/googleSignIn';
-import { auth } from '../../firebase/clientApp';
+import { auth, firestore } from '../../firebase/clientApp';
 import { getUserError } from '../utils/getUserError';
 import { lnlLogo } from '../components/data/constants';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Login() {
   const router = useRouter();
@@ -34,13 +35,23 @@ export default function Login() {
     resolver: yupResolver(signInSchema),
   });
 
+  async function userData(uid) {
+    const roleRef = doc(firestore, `companyUsers/${uid}`);
+    const data = await getDoc(roleRef);
+    return data.data().role;
+  }
+
   const mutation = useAuthSignInWithEmailAndPassword(auth, {
-    onSuccess(userCred) {
+    async onSuccess(userCred) {
       console.debug('User is signed in!');
       if (userCred && !userCred?.user?.emailVerified) {
         setErrorText('Please verify your email before trying to login');
       } else {
         setErrorText('');
+        const role = await userData(userCred.user.uid);
+        if (role === 'admin') {
+          router.push('/admin');
+        }
         router.push('/dashboard');
       }
     },
