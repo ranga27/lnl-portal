@@ -5,9 +5,12 @@ import ProductStatistics from '../components/AdminDashboard/ProductStatistics';
 import { AuthContext } from '../components/context/AuthContext';
 import { fetchUserProfileDataFromFirestore } from '../../firebase/firestoreService';
 import { useRouter } from 'next/router';
+import { getSavedAppliedStatistics } from '../utils/getSavedAppliedStatistics';
 
 const admin = () => {
   const [user, setUser] = useState('');
+  const [roleStatistics, setRoleStatistics] = useState([]);
+
   const router = useRouter();
   const {
     userData: { userId },
@@ -18,6 +21,19 @@ const admin = () => {
       setUser(results);
     });
   }, [userId]);
+
+  const getRoleData = async () => {
+    try {
+      const data = await getSavedAppliedStatistics();
+      setRoleStatistics(data);
+    } catch (err) {
+      console.log('');
+    }
+  };
+
+  useEffect(() => {
+    getRoleData();
+  }, []);
 
   const [tab, setTab] = useState('candidate');
   if (user.role === 'admin') {
@@ -33,7 +49,7 @@ const admin = () => {
               {tab === 'candidate' ? (
                 <CandidateStatistics />
               ) : (
-                <ProductStatistics />
+                <ProductStatistics roleStatistics={roleStatistics} />
               )}
             </div>
           </div>

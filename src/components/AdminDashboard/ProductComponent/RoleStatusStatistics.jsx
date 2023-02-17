@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getSavedAppliedStatistics } from '../../../utils/getSavedAppliedStatistics';
 import { format } from 'date-fns';
 
-const RoleStatusStatistics = () => {
-  const [roleStatistics, setRoleStatistics] = useState([]);
+const RoleStatusStatistics = ({ roleStatistics }) => {
+  const [statistics, setStatistics] = useState(roleStatistics);
   const tableColums = [
     'ID',
     'Title',
@@ -15,18 +14,9 @@ const RoleStatusStatistics = () => {
     'Deadline',
   ];
 
-  const getRoleData = async () => {
-    try {
-      const data = await getSavedAppliedStatistics();
-      setRoleStatistics(data);
-    } catch (err) {
-      console.log('');
-    }
-  };
-
   useEffect(() => {
-    getRoleData();
-  }, []);
+    setStatistics(roleStatistics);
+  }, [roleStatistics]);
 
   const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
 
@@ -35,7 +25,7 @@ const RoleStatusStatistics = () => {
       <div className='max-w-[100%] rounded shadow-lg p-5'>
         <h1 className='p-2 py-4'>
           Role Statistics :{' '}
-          {roleStatistics.length <= 0
+          {statistics.length <= 0
             ? 'Please Wait we are preparing Data for you...'
             : ''}
         </h1>
@@ -51,8 +41,8 @@ const RoleStatusStatistics = () => {
               </tr>
             </thead>
             <tbody className='text-sm divide-y divide-gray-200'>
-              {roleStatistics?.length &&
-                roleStatistics.map((role, index) => (
+              {statistics?.length &&
+                statistics.map((role, index) => (
                   <tr>
                     <td className='p-2'>
                       <div className='font-medium text-gray-800'>{index}</div>

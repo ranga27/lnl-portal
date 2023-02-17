@@ -11,6 +11,7 @@ import {
   CogIcon,
   ShieldCheckIcon,
   OfficeBuildingIcon,
+  CalculatorIcon,
 } from '@heroicons/react/outline';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -169,6 +170,24 @@ export default function SideBar({ children }) {
                         </a>
                       </Link>
                     ))}
+                    {user.role === 'admin' ? (
+                      <Link href='/admin' passHref>
+                        <a
+                          className={classNames(
+                            'logout' === pathname
+                              ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                              : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                            'group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                          )}
+                        >
+                          <CalculatorIcon
+                            className='mr-3 flex-shrink-0 h-6 w-6 group-hover:text-gray-900 text-white'
+                            aria-hidden='true'
+                          />
+                          Statistics
+                        </a>
+                      </Link>
+                    ) : null}
                   </div>
                   {user.isOnboarded && <RolesList userId={userId} />}
                 </nav>
@@ -390,6 +409,24 @@ export default function SideBar({ children }) {
                     </a>
                   </Link>
                 ))}
+                {user.role === 'admin' ? (
+                  <Link href='/admin' passHref>
+                    <a
+                      className={classNames(
+                        'logout' === pathname
+                          ? 'bg-[#F7B919] text-gray-900 font-semibold'
+                          : 'text-white hover:text-gray-900 hover:bg-[#F7B919] font-bold',
+                        'group w-full flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                      )}
+                    >
+                      <CalculatorIcon
+                        className='mr-3 flex-shrink-0 h-6 w-6 group-hover:text-gray-900 text-white'
+                        aria-hidden='true'
+                      />
+                      Statistics
+                    </a>
+                  </Link>
+                ) : null}
               </div>
               <RolesList userId={userId} />
             </nav>
