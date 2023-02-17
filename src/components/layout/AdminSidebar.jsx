@@ -113,7 +113,10 @@ export default function AdminSidebar({ children, setTab }) {
                 <nav className='px-2'>
                   <div className='space-y-1'>
                     {navigation.map((item) => (
-                      <a aria-current={item.current ? 'page' : undefined}>
+                      <a
+                        aria-current={item.current ? 'page' : undefined}
+                        key={item.name}
+                      >
                         <item.icon
                           className={classNames(
                             item.href === pathname

@@ -7,7 +7,7 @@ import { fetchUserProfileDataFromFirestore } from '../../firebase/firestoreServi
 import { useRouter } from 'next/router';
 import { getSavedAppliedStatistics } from '../utils/getSavedAppliedStatistics';
 
-const admin = () => {
+const Admin = () => {
   const [user, setUser] = useState('');
   const [roleStatistics, setRoleStatistics] = useState([]);
 
@@ -63,4 +63,4 @@ const admin = () => {
   }
 };
 
-export default admin;
+export default Admin;

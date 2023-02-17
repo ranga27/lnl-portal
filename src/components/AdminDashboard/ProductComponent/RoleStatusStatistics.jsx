@@ -82,7 +82,7 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
             <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50 sticky top-0 p-0'>
               <tr>
                 {tableColums.map((col) => (
-                  <th className='p-2'>
+                  <th className='p-2' key={col}>
                     <div className='font-semibold text-left'>{col}</div>
                   </th>
                 ))}
@@ -187,7 +187,7 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
             <tbody className='text-sm divide-y divide-gray-200'>
               {filtered?.length &&
                 filtered.map((role, index) => (
-                  <tr>
+                  <tr key={index}>
                     <td className='p-2'>
                       <div className='font-medium text-gray-800'>{index}</div>
                     </td>
