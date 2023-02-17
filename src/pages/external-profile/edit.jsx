@@ -42,7 +42,6 @@ const validationSchema = Yup.object().shape({
 export default function UpdateExternalCompany() {
   const router = useRouter();
   const { ...company } = router.query;
-
   const defaultValues = {
     companyName: company.companyName || '',
     tagline: company.tagline || '',
@@ -53,8 +52,16 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: company.interestingStats?.join('\n') || null,
-    articles: company.articles?.join('\n') || null,
+    interestingStats: Array.isArray(company.interestingStats)
+      ? company.interestingStats.join('\n')
+      : !Array.isArray(company.interestingStats)
+      ? company.interestingStats
+      : null,
+    articles: Array.isArray(company.articles)
+      ? company.articles.join('\n')
+      : !Array.isArray(company.articles)
+      ? company.articles
+      : null,
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
     websiteUrl: company.websiteUrl || '',
