@@ -89,7 +89,7 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
     setFiltered(sorting);
   }, [typeSort, sorting]);
 
-  if (filtered.count === 0) return <div className='loading' />;
+  if (userData.count === 0) return <div className='loading' />;
 
   return (
     <div className='max-w-[100%] rounded shadow-lg p-5'>

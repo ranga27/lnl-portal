@@ -54,7 +54,7 @@ export const searchData = (searchObj, allData) => {
   if (filtered?.length) {
     return filtered;
   }
-  return allData;
+  return [];
 };
 
 // Convert date into form

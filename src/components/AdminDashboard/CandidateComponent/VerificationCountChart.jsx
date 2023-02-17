@@ -20,15 +20,15 @@ const VerificationCountChart = ({ totalSigneduser, totalUnverifiedUser }) => {
   }, [totalSigneduser, totalUnverifiedUser]);
   return (
     <div className='mt-[-50px]'>
-      <PieChart width={540} height={420} style={{ marginLeft: '-50px' }}>
+      <PieChart width={520} height={420} style={{ marginLeft: '-70px' }}>
         <Pie
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
           cx={300}
           cy={300}
-          innerRadius={80}
-          outerRadius={100}
+          innerRadius={60}
+          outerRadius={80}
           fill='#1F2937'
           dataKey='value'
           onMouseEnter={onPieEnter}
