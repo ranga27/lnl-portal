@@ -62,37 +62,12 @@ export const formatDate = (input) => {
   return format(new Date(input.toDate()), 'dd-MMM-yyyy');
 };
 
+//function to calculte average
+const average = (arr) => arr.reduce((p, c) => p + c, 0) / arr.length;
+
 // Function make filtering according to given sortBy string.
 export const sortScreeningUserList = (userList, sortBy) => {
   switch (sortBy) {
-    case 'companyAscending':
-      return userList.sort((a, b) => a.company.localeCompare(b.company));
-
-    case 'companyDescending':
-      return userList.sort((a, b) => b.company.localeCompare(a.company));
-
-    case 'usernameAscending':
-      return userList.sort((a, b) =>
-        a.userFullname.localeCompare(b.userFullname)
-      );
-
-    case 'usernameDescending':
-      return userList.sort((a, b) =>
-        b.userFullname.localeCompare(a.userFullname)
-      );
-
-    case 'emailAscending':
-      return userList.sort((a, b) => a.email.localeCompare(b.email));
-
-    case 'emailDescending':
-      return userList.sort((a, b) => b.email.localeCompare(a.email));
-
-    case 'departmentAscending':
-      return userList.sort((a, b) => a.department.localeCompare(b.department));
-
-    case 'departmentDescending':
-      return userList.sort((a, b) => b.department.localeCompare(a.department));
-
     case 'appliedAtAscending':
       return userList.sort(
         (a, b) =>
@@ -164,6 +139,24 @@ export const sortScreeningUserList = (userList, sortBy) => {
 
     case 'rejectedDescending':
       return userList.sort((a, b) => b.rejected.length - a.rejected.length);
+
+    case 'savedAscending':
+      return userList.sort((a, b) => a.saved - b.saved);
+
+    case 'savedDescending':
+      return userList.sort((a, b) => b.saved - a.saved);
+
+    case 'aplliedAscending':
+      return userList.sort((a, b) => a.applied - b.applied);
+
+    case 'appliedDescending':
+      return userList.sort((a, b) => b.applied - a.applied);
+
+    case 'averageMatchAscending':
+      return userList.sort((a, b) => average(a.score) - average(b.score));
+
+    case 'averageMatchDescending':
+      return userList.sort((a, b) => average(b.score) - average(a.score));
 
     default:
       return userList;

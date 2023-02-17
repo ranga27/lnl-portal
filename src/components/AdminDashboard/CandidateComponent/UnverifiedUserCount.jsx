@@ -91,7 +91,7 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
 
   return (
     <div
-      className='w-[100%] flex justify-between mt-5'
+      className='w-[100%] flex justify-between mt-[30px]'
       style={{ margin: 'auto' }}
     >
       <div className='w-[70%] rounded shadow-lg mt-5 p-5'>
@@ -104,15 +104,15 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
             </strong>
           </h1>
           <button
-            className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm z-10'
+            className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm z-20'
             onClick={clearSearch}
           >
             Clear
           </button>
         </div>
-        <div className='max-h-[250px] overflow-auto mt-5'>
+        <div className='max-h-[250px] overflow-auto mt-5 z-10'>
           <table className='table-auto w-full'>
-            <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50 sticky top-0 p-0'>
+            <thead className='text-xs font-semibold uppercase text-gray-400 bg-gray-50 sticky top-0 p-0 z-20'>
               <tr>
                 {tableColums.map((col) => (
                   <th className='p-2'>
