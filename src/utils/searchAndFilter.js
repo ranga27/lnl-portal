@@ -36,9 +36,9 @@ export const searchData = (searchObj, allData) => {
       const key = keysToSearch[j];
       if (
         record[key]
-          .toString()
-          .toLowerCase()
-          .includes(searchObj[key].toString().toLowerCase())
+          ?.toString()
+          ?.toLowerCase()
+          ?.includes(searchObj[key].toString().toLowerCase())
       ) {
         check = true;
       } else {
@@ -124,6 +124,46 @@ export const sortScreeningUserList = (userList, sortBy) => {
           new Date(formatDate(b.createdAt)).getTime() -
           new Date(formatDate(a.createdAt)).getTime()
       );
+
+    case 'rolePostedAtAscending':
+      return userList.sort(
+        (a, b) =>
+          new Date(formatDate(a.createdAt)).getTime() -
+          new Date(formatDate(b.createdAt)).getTime()
+      );
+
+    case 'rolePostedAtDescending':
+      return userList.sort(
+        (a, b) =>
+          new Date(formatDate(b.createdAt)).getTime() -
+          new Date(formatDate(a.createdAt)).getTime()
+      );
+
+    case 'roleDeadlineAscending':
+      return userList.sort(
+        (a, b) =>
+          new Date(formatDate(a.deadline)).getTime() -
+          new Date(formatDate(b.deadline)).getTime()
+      );
+
+    case 'roleDeadlineDescending':
+      return userList.sort(
+        (a, b) =>
+          new Date(formatDate(b.deadline)).getTime() -
+          new Date(formatDate(a.deadline)).getTime()
+      );
+
+    case 'acceptedAscending':
+      return userList.sort((a, b) => a.accepted.length - b.accepted.length);
+
+    case 'acceptedDescending':
+      return userList.sort((a, b) => b.accepted.length - a.accepted.length);
+
+    case 'rejectedAscending':
+      return userList.sort((a, b) => a.rejected.length - b.rejected.length);
+
+    case 'rejectedDescending':
+      return userList.sort((a, b) => b.rejected.length - a.rejected.length);
 
     default:
       return userList;
