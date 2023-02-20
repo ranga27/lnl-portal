@@ -54,56 +54,47 @@ exports.applicantRejectedEmail = ({
                           </td>
                         </tr>
                         <tr>
-                        <td style="padding-left:20px;padding-right:20px" align="left" valign="top" class="containtTable ui-sortable">
+                        <td style="padding-left:20px;padding-right:20px" align="center" valign="top" class="containtTable ui-sortable">
                           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
                             <tbody>
                               <tr>
                                 <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
                                   <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
-                                  Your application has been reviewed on the Loop Not Luck online careers portal. Thank you for taking the time to apply for ${roleName} role at ${companyName}. You have good experience however, it unfortunately doesn't meet the criteria for this role.
+                                  Your application has been reviewed on the Loop Not Luck online careers portal. Thank you for taking the time to apply for the ${roleName} position at ${companyName}. You haven't been invited on to the next stage for this position. At this point, we cannot offer personalised feedback for each applicant.
+                                  </p>
+                                <td/>
+                              </tr>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                  Please don't let this discourage you from putting yourself forward for other suitable positions on the Loop Not Luck platform - <a href="https://loop-luck.web.app/app" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">https://loop-luck.web.app/app</a>
+                                  </p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                  If you have questions or feedback please send an email to <br> <a href="hello@loopnotluck.com" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">hello@loopnotluck.com</a> 
+                                  </p>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
+                                  Best of luck in your job search!
+                                  </p>
+                                </td>  
+                              </tr>
+                              <tr>
+                                <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">Kind regards,</p>
+                                  <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">Loop Not Luck Team</p>
+                                </td>
                               </tr>
                             </tbody>
                           </table>
                         </td>
                       </tr>
-
-                      <tr>
-                      <td style="padding-left:20px;padding-right:20px" align="left" valign="top" class="containtTable ui-sortable">
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription" style="">
-                          <tbody>
-                            <tr>
-                              <td style="padding-bottom: 20px;" align="left" valign="top" class="description">
-                                <p class="text" style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0">
-                                You can continue to
-                                look and apply for
-                                roles on the portal -
-                                <a
-                                  href='https://loop-luck.web.app/app'
-                                  class='text'
-                                  style="color:#000000;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:left;padding:0;margin:0"
-                                >
-                                  https://loop-luck.web.app/app
-                                </a>          
-                                </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                      
-                       
-                        <tr>
-                          <td style="font-size:1px;line-height:1px" height="20">&nbsp;</td>
-                        </tr>
-                        <tr>
-                        <td style="padding-bottom:0px;" align="center" valign="top" class="description">
-                          <p class="text" style="color:#000000;width:90%;font-family:'Poppins', sans-serif;font-size:14px;font-weight:400;font-style:normal;letter-spacing:normal;line-height:22px;text-transform:none;text-align:center;padding:0;margin:0">
-                            If you have questions/feedback about our services, please send an email to hello@loopnotluck.com and we will adress every feedback.
-                          </p>
-                          <br />
-                          <br />
-                        </td>
-                      </tr>
-                     
                       </tbody>
                     </table>
                     <table border="0" cellpadding="0" cellspacing="0" width="100%" class="space">
