@@ -57,6 +57,23 @@ export const searchData = (searchObj, allData) => {
   return [];
 };
 
+// Filter by Date range - For Dashboard
+export const filterByDateTange = (dateObj, allData) => {
+  if (dateObj.to === '' || dateObj.from === '') {
+    return allData;
+  } else {
+    const data = allData.filter((item) => {
+      if (
+        new Date(formatDate(item.createdAt)) <= new Date(dateObj.to) &&
+        new Date(formatDate(item.createdAt)) >= new Date(dateObj.from)
+      ) {
+        return item;
+      }
+    });
+    return data;
+  }
+};
+
 // Convert date into form
 export const formatDate = (input) => {
   return format(new Date(input.toDate()), 'dd-MMM-yyyy');
