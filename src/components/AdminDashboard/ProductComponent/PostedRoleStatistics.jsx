@@ -73,7 +73,8 @@ const PostedRoleStatistics = () => {
     setFiltered(sorting);
   }, [typeSort, sorting]);
 
-  if (roleData.length <= 0) return <div className='loading'></div>;
+  if (roleData.length <= 0 || roleData.length === undefined)
+    return <div className='loading'></div>;
 
   return (
     <>
@@ -90,7 +91,7 @@ const PostedRoleStatistics = () => {
             className='mr-2 bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm mt-3 ml-10'
             onClick={clearSearch}
           >
-            Clear
+            Clear Search
           </button>
         </div>
         <div className='max-h-[300px] overflow-auto'>

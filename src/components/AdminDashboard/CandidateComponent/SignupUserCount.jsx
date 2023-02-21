@@ -4,6 +4,7 @@ import { firestore } from '../../../../firebase/clientApp';
 import { format } from 'date-fns';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/outline';
 import StoreInUsestate, {
+  filterByDateTange,
   searchData,
   sortScreeningUserList,
 } from '../../../utils/searchAndFilter';
@@ -29,6 +30,23 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
   const [typeSort, settypeSort] = useState([]);
 
   const tableColums = ['ID', 'Username', 'Email', 'Signup On'];
+
+  const [dateRange, setDateRange] = useState({
+    from: '',
+    to: '',
+  });
+
+  const getDataInDateRange = async () => {
+    const filteredByDateData = await filterByDateTange(
+      dateRange,
+      userData.users
+    );
+    console.log(filteredByDateData);
+    setFiltered({
+      users: filteredByDateData,
+      count: filteredByDateData.length,
+    });
+  };
 
   const getSignedUserCount = async () => {
     let userData = [];
@@ -66,6 +84,10 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
     setSearchInput({
       firstName: '',
       email: '',
+    });
+    setDateRange({
+      from: '',
+      to: '',
     });
   };
 
@@ -105,7 +127,39 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
           className='mr-2 bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm mt-3'
           onClick={clearSearch}
         >
-          Clear
+          Clear Search
+        </button>
+      </div>
+      <div className='w-[60%] flex justify-between items-center ml-2 mb-5'>
+        <p>Get Users from </p>
+
+        <input
+          type='date'
+          style={{ width: '150px' }}
+          name='from'
+          onChange={(e) => {
+            StoreInUsestate.handleChange(e, setDateRange);
+          }}
+          value={dateRange.from}
+        />
+
+        <p>to </p>
+
+        <input
+          type='date'
+          style={{ width: '150px' }}
+          name='to'
+          onChange={(e) => {
+            StoreInUsestate.handleChange(e, setDateRange);
+          }}
+          value={dateRange.to}
+        />
+
+        <button
+          className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm'
+          onClick={getDataInDateRange}
+        >
+          Get Users
         </button>
       </div>
       <div className='max-h-[300px] overflow-auto'>

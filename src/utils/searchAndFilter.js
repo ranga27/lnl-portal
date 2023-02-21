@@ -57,6 +57,43 @@ export const searchData = (searchObj, allData) => {
   return [];
 };
 
+// Filter by Date range - For Dashboard
+export const filterByDateTange = (
+  dateObj,
+  allData,
+  dateToUse = 'createdAt'
+) => {
+  if (dateToUse === 'createdAt') {
+    if (dateObj.to === '' || dateObj.from === '') {
+      return allData;
+    } else {
+      const data = allData.filter((item) => {
+        if (
+          new Date(formatDate(item.createdAt)) <= new Date(dateObj.to) &&
+          new Date(formatDate(item.createdAt)) >= new Date(dateObj.from)
+        ) {
+          return item;
+        }
+      });
+      return data;
+    }
+  } else if (dateToUse === 'appliedAt') {
+    if (dateObj.to === '' || dateObj.from === '') {
+      return allData;
+    } else {
+      const data = allData.filter((item) => {
+        if (
+          new Date(formatDate(item.appliedAt)) <= new Date(dateObj.to) &&
+          new Date(formatDate(item.appliedAt)) >= new Date(dateObj.from)
+        ) {
+          return item;
+        }
+      });
+      return data;
+    }
+  }
+};
+
 // Convert date into form
 export const formatDate = (input) => {
   return format(new Date(input.toDate()), 'dd-MMM-yyyy');
@@ -71,13 +108,15 @@ export const sortScreeningUserList = (userList, sortBy) => {
     case 'appliedAtAscending':
       return userList.sort(
         (a, b) =>
-          new Date(a.appliedAt).getTime() - new Date(b.appliedAt).getTime()
+          new Date(formatDate(a.appliedAt)).getTime() -
+          new Date(formatDate(b.appliedAt)).getTime()
       );
 
     case 'appliedAtDescending':
       return userList.sort(
         (a, b) =>
-          new Date(b.appliedAt).getTime() - new Date(a.appliedAt).getTime()
+          new Date(formatDate(b.appliedAt)).getTime() -
+          new Date(formatDate(a.appliedAt)).getTime()
       );
 
     case 'scoreAscending':
@@ -85,6 +124,33 @@ export const sortScreeningUserList = (userList, sortBy) => {
 
     case 'scoreDescending':
       return userList.sort((a, b) => b.score - a.score);
+
+    case 'matchAscending':
+      return userList.sort((a, b) => a.match - b.match);
+
+    case 'matchDescending':
+      return userList.sort((a, b) => b.match - a.match);
+
+    case 'getPendingApplication':
+      return userList.filter((item) => {
+        if (item.status === 'Pending Review') {
+          return item;
+        }
+      });
+
+    case 'getAcceptedApplication':
+      return userList.filter((item) => {
+        if (item.status === 'Accepted') {
+          return item;
+        }
+      });
+
+    case 'getRejectedApplication':
+      return userList.filter((item) => {
+        if (item.status === 'Rejected') {
+          return item;
+        }
+      });
 
     case 'signupAtAscending':
       return userList.sort(

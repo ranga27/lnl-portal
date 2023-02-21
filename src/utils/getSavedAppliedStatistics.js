@@ -34,6 +34,7 @@ export const getSavedAppliedStatistics = async () => {
           applied: roleData.applied ? 1 : 0,
           salary: roleData.salary,
           deadline: roleData.deadline,
+          createdAt: roleData.createdAt,
           score: [roleData.score],
         });
       }

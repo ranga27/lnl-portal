@@ -97,7 +97,7 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
       <div className='w-[70%] rounded shadow-lg mt-5 p-5'>
         <div className='flex justify-between'>
           <h1 className='pb-5'>
-            Unverified candidate on portal -{' '}
+            Unverified candidates -{' '}
             <strong>
               Total Unverified User :{' '}
               {filtered.count !== 0 ? userData.count : 'Loading...'}{' '}
@@ -107,7 +107,7 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
             className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm z-20'
             onClick={clearSearch}
           >
-            Clear
+            Clear Search
           </button>
         </div>
         <div className='max-h-[250px] overflow-auto mt-5 z-10'>
