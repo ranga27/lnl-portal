@@ -127,7 +127,7 @@ const SignupUserCount = ({ setTotalSigneduser }) => {
           className='mr-2 bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm mt-3'
           onClick={clearSearch}
         >
-          Clear
+          Clear Search
         </button>
       </div>
       <div className='w-[60%] flex justify-between items-center ml-2 mb-5'>

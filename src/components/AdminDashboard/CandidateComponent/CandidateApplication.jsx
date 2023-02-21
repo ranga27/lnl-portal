@@ -116,7 +116,7 @@ const CandidateApplication = () => {
           className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm z-20'
           onClick={clearSearch}
         >
-          Clear
+          Clear Search
         </button>
       </div>
       <div className='w-[60%] flex justify-between items-center ml-2 mb-5'>

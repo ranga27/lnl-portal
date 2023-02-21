@@ -107,7 +107,7 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
             className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm z-20'
             onClick={clearSearch}
           >
-            Clear
+            Clear Search
           </button>
         </div>
         <div className='max-h-[250px] overflow-auto mt-5 z-10'>
