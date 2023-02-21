@@ -183,6 +183,7 @@ export default function AddRole() {
         logoUrl: company[0].logoUrl,
         industry: company[0].industry,
         pinned: false,
+        type: 'company-role',
         isQuestion: customQuestions.length ? true : false,
       };
 
