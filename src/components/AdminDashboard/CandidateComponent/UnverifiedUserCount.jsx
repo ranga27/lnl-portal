@@ -97,7 +97,7 @@ const UnverifiedUserCount = ({ totalSigneduser }) => {
       <div className='w-[70%] rounded shadow-lg mt-5 p-5'>
         <div className='flex justify-between'>
           <h1 className='pb-5'>
-            Unverified candidate on portal -{' '}
+            Unverified candidates -{' '}
             <strong>
               Total Unverified User :{' '}
               {filtered.count !== 0 ? userData.count : 'Loading...'}{' '}
