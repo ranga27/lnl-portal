@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import StoreInUsestate, {
+  filterByDateTange,
   searchData,
   sortScreeningUserList,
 } from '../../../utils/searchAndFilter';
@@ -17,6 +18,10 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
 
   const [sorting, setsorting] = useState([]);
   const [typeSort, settypeSort] = useState([]);
+  const [dateRange, setDateRange] = useState({
+    from: '',
+    to: '',
+  });
 
   const tableColums = [
     'ID',
@@ -26,7 +31,7 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
     'Applied By',
     'Average Match %',
     'Salary',
-    'Deadline',
+    'Posted At',
   ];
 
   useEffect(() => {
@@ -49,6 +54,15 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
       company: '',
       email: '',
     });
+    setDateRange({
+      from: '',
+      to: '',
+    });
+  };
+
+  const getDataInDateRange = async () => {
+    const filteredByDateData = await filterByDateTange(dateRange, statistics);
+    setFiltered(filteredByDateData);
   };
 
   useEffect(() => {
@@ -75,6 +89,38 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
             onClick={clearSearch}
           >
             Clear
+          </button>
+        </div>
+        <div className='w-[60%] flex justify-between items-center ml-2 mb-5'>
+          <p>Get Roles from </p>
+
+          <input
+            type='date'
+            style={{ width: '150px' }}
+            name='from'
+            onChange={(e) => {
+              StoreInUsestate.handleChange(e, setDateRange);
+            }}
+            value={dateRange.from}
+          />
+
+          <p>to </p>
+
+          <input
+            type='date'
+            style={{ width: '150px' }}
+            name='to'
+            onChange={(e) => {
+              StoreInUsestate.handleChange(e, setDateRange);
+            }}
+            value={dateRange.to}
+          />
+
+          <button
+            className='bg-[#1F2937] h-8 px-5 text-white rounded-[5px] text-sm'
+            onClick={getDataInDateRange}
+          >
+            Get Roles
           </button>
         </div>
         <div className='max-h-[300px] overflow-auto'>
@@ -164,24 +210,24 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
                   </div>
                 </td>
                 <td />
-                {/* <td>
+                <td>
                   <div className='flex ml-[5px]'>
                     <ArrowUpIcon
                       className='mr-1 flex-shrink-0 h-3 w-6'
                       aria-hidden='true'
                       onClick={() => {
-                        sortingAscendingDescending('roleDeadlineAscending');
+                        sortingAscendingDescending('rolePostedAtAscending');
                       }}
                     />
                     <ArrowDownIcon
                       className='mr-3 flex-shrink-0 h-3 w-6'
                       aria-hidden='true'
                       onClick={() => {
-                        sortingAscendingDescending('roleDeadlineDescending');
+                        sortingAscendingDescending('rolePostedAtDescending');
                       }}
                     />
                   </div>
-                </td> */}
+                </td>
               </tr>
             </thead>
             <tbody className='text-sm divide-y divide-gray-200'>
@@ -223,9 +269,9 @@ const RoleStatusStatistics = ({ roleStatistics }) => {
                     </td>
                     <td className='p-2'>
                       <div className='font-medium text-gray-800'>
-                        {role?.deadline
+                        {role?.createdAt
                           ? format(
-                              new Date(role.deadline.toDate()),
+                              new Date(role.createdAt.toDate()),
                               'dd-MMM-yyyy'
                             )
                           : 'No Date Found'}

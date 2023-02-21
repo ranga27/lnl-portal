@@ -73,7 +73,8 @@ const PostedRoleStatistics = () => {
     setFiltered(sorting);
   }, [typeSort, sorting]);
 
-  if (roleData.length <= 0) return <div className='loading'></div>;
+  if (roleData.length <= 0 || roleData.length === undefined)
+    return <div className='loading'></div>;
 
   return (
     <>
