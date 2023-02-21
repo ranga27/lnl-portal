@@ -39,9 +39,9 @@ const Admin = () => {
   if (user.role === 'admin') {
     return (
       <div>
-        <div className='flex w-100'>
+        <div className='flex w-[100%] justify-between'>
           <AdminSidebar setTab={setTab} />
-          <div className='w-[85%] h-fit'>
+          <div className='w-[80%] h-fit'>
             <nav className='w-full h-fit border-y-2'>
               <h1 className='p-5 text-xl'>Admin Dashboard</h1>
             </nav>
