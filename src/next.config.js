@@ -4,6 +4,10 @@ const nextConfig = {
   distDir: "../.next",
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    appDir: true
+  },
+
   images: {
     domains: [
       'storage.googleapis.com',
