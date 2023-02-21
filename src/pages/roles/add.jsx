@@ -184,6 +184,7 @@ export default function AddRole() {
         industry: company[0].industry,
         pinned: false,
         type: 'company-role',
+        archived:  false,
         isQuestion: customQuestions.length ? true : false,
       };
 
