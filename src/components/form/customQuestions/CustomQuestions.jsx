@@ -7,6 +7,9 @@ import {
 import { getRoles } from '../../../../firebase/firestoreService';
 // Components
 import IntlMessages from '../../../utils/IntlMessages';
+import useCollection from '../../hooks/useCollection';
+import { QuestionInfo } from '../../layout/QuestionInfo';
+import { Modal } from '../../UI/Modal';
 // Helpers
 import { toolbarItems } from './helpers';
 
@@ -27,13 +30,44 @@ const CustomQuestions = ({
   fields,
   companyId,
   roleCredits,
+  role,
 }) => {
+  const { data: questionnaire, isLoading } = useCollection('questionnaire', [
+    'roleId',
+    '==',
+    role.id ? role.id : 'noId',
+  ]);
+
   const [data, setData] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
+  useEffect(() => {
+    ElementStore.subscribe((state) => {
+      setData(state.data);
+    });
+  });
+
+  var count = true;
 
   useEffect(() => {
-    ElementStore.subscribe((state) => setData(state.data));
-  });
+    if (role.id && questionnaire) {
+      ElementStore.subscribe((state) => {
+        const current = state.data;
+        const questionID = [];
+        for (let j = 0; j < current.length; j++) {
+          questionID.push(current[j].id);
+        }
+        if (count) {
+          for (let i = 0; i < questionnaire[0].questions.length; i++) {
+            if (!questionID.includes(questionnaire[0].questions[i].id)) {
+              state.data.push(questionnaire[0].questions[i]);
+              setData(state.data);
+            }
+          }
+          count = false;
+        }
+      });
+    }
+  }, [questionnaire]);
 
   const onSubmit = () => {
     const filteredData = removeUndefinedFields(data);
@@ -42,6 +76,10 @@ const CustomQuestions = ({
   };
 
   const [rolesList, setRoles] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   useEffect(() => {
     getRoles(companyId).then((results) => {
@@ -52,23 +90,45 @@ const CustomQuestions = ({
   return (
     <div className='form-builder-custom-css bg-white py-6 px-4 sm:p-6'>
       <div className='flex justify-between items-center w-[70%] m-3'>
-        <h4>Make your questionnaire form</h4>
+        <h1>Candidate screening questions</h1>
         {/* //TODO: Tooltip can be used here which shows explanation how to use */}
-        <button
-          className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-          onClick={() => setPreviewVisible(true)}
-        >
-          <IntlMessages id='roles.previewForm' />
-        </button>
-        {roleCredits === 0 ? (
+
+        {roleCredits === 0 && !role.id ? (
           <p>Role Limit Reached</p>
         ) : (
           <button
             className='bg-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-black hover:bg-[#F7B919] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
             onClick={onSubmit}
           >
-            <IntlMessages id='general.submit' />
+            <IntlMessages id='roles.post-role' />
           </button>
+        )}
+      </div>
+      <div>
+        <button
+          className='text-[#F7B919] border border-transparent rounded-md shadow-sm py-2 px-2 text-sm font-medium'
+          onClick={() => setPreviewVisible(true)}
+        >
+          <IntlMessages id='roles.previewForm' />
+        </button>
+        <button
+          type='button'
+          className='ml-8 text-sm text-gray-900 underline hover:text-[#F7B919]'
+          onClick={() => handleOpenModal()}
+        >
+          <IntlMessages id='roles.screening-description' />
+        </button>
+        {isModalOpen && (
+          <Modal
+            isOpen={isModalOpen}
+            setOpen={setIsModalOpen}
+            cancelButton={true}
+            confirmButton={false}
+            modalSize='xl'
+            title='Screening Questions Tutorial'
+            showIcon={false}
+            Content={QuestionInfo}
+          />
         )}
       </div>
 

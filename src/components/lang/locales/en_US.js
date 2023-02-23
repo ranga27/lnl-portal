@@ -48,10 +48,12 @@ module.exports = {
   'roles.subtitle': 'Pinned Roles',
   'roles.next': 'Next',
   'roles.post': 'Post a role',
-  'roles.previewForm': 'Preview Form',
+  'roles.previewForm': 'Click here to preview the screening questions before submitting',
   'roles.saveForm': 'Save Form',
   'roles.close': 'Close',
   'roles.submit': 'Submit',
+  'roles.post-role': 'Post Role',
+  'roles.screening-description': 'How to use?',
 
   /* 04.Onboarding */
   'onboarding.lastName': 'Last Name',

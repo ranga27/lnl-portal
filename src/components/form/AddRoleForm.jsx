@@ -65,14 +65,18 @@ function AddRoleForm({
     handleSaveFields(data);
     handleChangeTab('tab2');
   };
+
   const rolesOfInterestCheck = watch('areaOfInterests');
   const areasOfInterests =
     control._formValues.areaOfInterests === undefined ||
     control._formValues.areaOfInterests === null
       ? []
-      : control._formValues.areaOfInterests.map((interest) => {
+      : Array.isArray(control._formValues.areaOfInterests)
+      ? control._formValues.areaOfInterests.map((interest) => {
           return getOptions(interest);
-        });
+        })
+      : getOptions(control._formValues.areaOfInterests);
+
   const selectAreaOfInterest =
     areasOfInterests === undefined ? [] : areasOfInterests.flatMap((x) => x);
 
@@ -155,7 +159,7 @@ function AddRoleForm({
               <div>
                 <TextInput
                   name='customMessage'
-                  label='Custom Message.'
+                  label='Custom Message'
                   control={control}
                   errors={errors.customMessage}
                   data-cy='role-customMessage-input'
@@ -163,10 +167,10 @@ function AddRoleForm({
 
                 <div className='pt-6'>
                   <p>
-                    Hello [candidate name],
+                    Dear [candidate name],
                     <br /> <br />
-                    Congratulations! You&apos;ve been invited on to the next
-                    stage for the position of{' '}
+                    Congratulations! You have been invited to the next stage for
+                    the{' '}
                     <span className='font-bold'>
                       {roleTitle ? roleTitle : '[role name]'}
                     </span>{' '}
@@ -174,7 +178,7 @@ function AddRoleForm({
                     <span className='font-bold'>
                       {companyName ? companyName : '[Company Name]'}.
                     </span>{' '}
-                    Please book a meeting with a member of the team here -{' '}
+                    <br />
                     <span className='font-bold'>
                       {customMessageValue
                         ? customMessageValue
@@ -229,6 +233,7 @@ function AddRoleForm({
                 defaultValue={defaultValues.areaOfInterests}
                 closeMenuOnSelect={false}
                 data-cy='role-areaOfInterests-multiselect'
+                menuPortalTarget={document.querySelector('body')}
               />
             </div>
             {rolesOfInterestCheck !== null && (
@@ -244,6 +249,7 @@ function AddRoleForm({
                   defaultValue={defaultValues.rolesOfInterests}
                   closeMenuOnSelect={false}
                   data-cy='role-rolesOfInterests-multiselect'
+                  menuPortalTarget={document.querySelector('body')}
                 />
               </div>
             )}

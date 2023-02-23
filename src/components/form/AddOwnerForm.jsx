@@ -72,23 +72,10 @@ export default function AddOwnerForm({
 
           <div className='py-6'>
             <p>
-              Would you like hiring manager to review those that have applied or
+              Would you like a hiring manager to review those that have applied or
               progress them on to the next step, select a user above to manage
               that process.
             </p>
-
-            <span className='px-6 py-4 flex items-center text-sm font-medium'>
-              <span className='flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full group-hover:bg-[#F7B919]'>
-                <InformationCircleIcon
-                  className='w-10 h-10 text-[#F7B919] '
-                  aria-hidden='true'
-                />
-              </span>
-              <span className='ml-4 text-sm font-medium text-gray-900'>
-                We are working on adding multiple users for one company. You
-                will be notified via email when this feature becomes available.
-              </span>{' '}
-            </span>
           </div>
         </div>
 

@@ -3,12 +3,54 @@ import { useState, useEffect } from 'react';
 import EmptyComponent from '../layout/EmptyComponent';
 import Applicant from './Applicant';
 import { format } from 'date-fns';
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ArrowRightIcon,
+  ArrowLeftIcon,
+} from '@heroicons/react/outline';
 import { fetchUserData } from '../../../firebase/firestoreService';
 import Link from 'next/link';
+import StoreInUsestate, {
+  searchData,
+  sortScreeningUserList,
+} from '../../utils/searchAndFilter';
 
 export default function AllApplicants({ Applicants }) {
   const [isOpen, setOpen] = useState(false);
   const [ApplicantData, setApplicant] = useState([]);
+
+  const [filtered, setFiltered] = useState([]);
+  const [searchInput, setSearchInput] = useState({
+    firstName: '',
+  });
+  const [sorting, setsorting] = useState([]);
+  const [typeSort, settypeSort] = useState([]);
+
+  const [dataToFilter, setDataToFilter] = useState([]);
+
+  const sortingAscendingDescending = async (sortRequest) => {
+    settypeSort(sortRequest);
+    const orderedData = await sortScreeningUserList(dataToFilter, sortRequest);
+    setsorting(orderedData);
+  };
+
+  const clearSearch = () => {
+    setSearchInput({
+      firstName: '',
+    });
+  };
+
+  useEffect(() => {
+    const tempSearchData = searchData(searchInput, appliedUsers);
+    setFiltered(tempSearchData);
+    setDataToFilter(tempSearchData);
+    console.log(tempSearchData, 'temp search data');
+  }, [searchInput]);
+
+  useEffect(() => {
+    setFiltered(sorting);
+  }, [typeSort, sorting]);
 
   const handleOpenApplicant = (data) => {
     setOpen(true);
@@ -20,6 +62,9 @@ export default function AllApplicants({ Applicants }) {
   useEffect(() => {
     fetchUserData(Applicants.id).then((results) => {
       setAppliedUsers(results);
+      setFiltered(results);
+      setsorting(results);
+      setDataToFilter(results);
     });
   }, [Applicants.id]);
 
@@ -104,9 +149,17 @@ export default function AllApplicants({ Applicants }) {
                           </th>
                           <th
                             scope='col'
-                            className='px-3 py-3.5 text-left text-sm font-semibold text-gray-900'
+                            className='px-3 py-3.5 text-sm font-semibold text-gray-900 text-center'
                           >
                             Status
+                          </th>
+                          <th>
+                            <button
+                              className='bg-[#1F2937] h-10 px-2 text-white rounded-[5px] text-xs z-20 mb-2 font-thin'
+                              onClick={clearSearch}
+                            >
+                              Clear Search
+                            </button>
                           </th>
                           <th
                             scope='col'
@@ -115,36 +168,124 @@ export default function AllApplicants({ Applicants }) {
                             <span className='sr-only'>View</span>
                           </th>
                         </tr>
+                        <tr className=''>
+                          <td>
+                            <input
+                              className='border-2 h-[25px] w-[150px] text-black pl-2 search-input-style ml-[10px] mb-2 text-xs'
+                              name='firstName'
+                              onChange={(e) => {
+                                StoreInUsestate.handleChange(e, setSearchInput);
+                              }}
+                              placeholder='Search by firstname..'
+                              value={searchInput.firstName}
+                            />
+                          </td>
+                          <td className='text-center whitespace-nowrap px-3 text-sm text-gray-500'>
+                            <div className='flex ml-8 mb-2'>
+                              <ArrowUpIcon
+                                className='mr-1 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending('matchAscending');
+                                }}
+                              />
+                              <ArrowDownIcon
+                                className='mr-3 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending('matchDescending');
+                                }}
+                              />
+                            </div>
+                          </td>
+                          <td className='text-center whitespace-nowrap px-3 text-sm text-gray-500'>
+                            <div className='flex ml-5 mb-2'>
+                              <ArrowUpIcon
+                                className='mr-1 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending(
+                                    'appliedAtAscending'
+                                  );
+                                }}
+                              />
+                              <ArrowDownIcon
+                                className='mr-3 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending(
+                                    'appliedAtDescending'
+                                  );
+                                }}
+                              />
+                            </div>
+                          </td>
+                          <td className='text-center whitespace-nowrap px-3 text-sm text-gray-500'>
+                            <div className='flex ml-7 mb-2'>
+                              <ArrowLeftIcon
+                                className='mr-3 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending(
+                                    'getRejectedApplication'
+                                  );
+                                }}
+                              />
+                              <ArrowDownIcon
+                                className='mr-3 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending(
+                                    'getPendingApplication'
+                                  );
+                                }}
+                              />
+                              <ArrowRightIcon
+                                className='mr-3 flex-shrink-0 h-3 w-6'
+                                aria-hidden='true'
+                                onClick={() => {
+                                  sortingAscendingDescending(
+                                    'getAcceptedApplication'
+                                  );
+                                }}
+                              />
+                            </div>
+                          </td>
+                        </tr>
                       </thead>
                       <tbody className='divide-y divide-gray-200 bg-white'>
-                        {appliedUsers?.map((data) => (
-                          <tr key={data.uid}>
-                            <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8'>
-                              {data.firstName + ' ' + data.lastName}
-                            </td>
-                            <td className='text-center whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.match}%
-                            </td>
-                            <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {format(
-                                new Date(data.appliedAt.toDate()),
-                                'dd-MMM-yyyy'
-                              )}
-                            </td>
-                            <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
-                              {data.status}
-                            </td>
-                            <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8'>
-                              <button
-                                onClick={() => handleOpenApplicant(data)}
-                                type='button'
-                                className='text-black hover:text-gray-600'
-                              >
-                                View
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
+                        {!filtered?.length ? (
+                          <h3 className='p-10 w-[300px]'>No user found...!</h3>
+                        ) : (
+                          filtered.map((data) => (
+                            <tr key={data.uid}>
+                              <td className='whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 lg:pl-8'>
+                                {data.firstName + ' ' + data.lastName}
+                              </td>
+                              <td className='text-center whitespace-nowrap px-3 py-4 text-sm text-gray-500'>
+                                {data.match}%
+                              </td>
+                              <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center'>
+                                {format(
+                                  new Date(data.appliedAt.toDate()),
+                                  'dd-MMM-yyyy'
+                                )}
+                              </td>
+                              <td className='whitespace-nowrap px-3 py-4 text-sm text-gray-500 text-center'>
+                                {data.status}
+                              </td>
+                              <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 lg:pr-8'>
+                                <button
+                                  onClick={() => handleOpenApplicant(data)}
+                                  type='button'
+                                  className='text-black hover:text-gray-600'
+                                >
+                                  View
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        )}
                       </tbody>
                     </table>
                   </div>

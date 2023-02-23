@@ -36,7 +36,7 @@ export default function AddRole() {
   const roleId = uuidv4();
 
   const mutation = useFirestoreDocumentMutation(
-    doc(firestore, 'companyRolesV2', roleId)
+    doc(firestore, 'roles', roleId)
   );
 
   const router = useRouter();
@@ -47,6 +47,7 @@ export default function AddRole() {
   const [fields, setFields] = useState({
     title: role.title || '',
     location: role.location || '',
+    locationType: role.locationType || '',
     department: role.department || '',
     positionType: role.positionType || '',
     salary: role.salary || '',
@@ -57,6 +58,7 @@ export default function AddRole() {
     deadline: role.rolling === true ? null : defaultRoleDeadline,
     startDate: startDate !== undefined ? defaultRoleStartDate : null,
     rolesOfInterests: role.rolesOfInterests || null,
+    areaOfInterests: role.areaOfInterests || null,
     technicalSkills: role.technicalSkills || null,
     managerId: role.managerId || '',
     moreRoleInfo: role.moreRoleInfo || '',
@@ -67,10 +69,15 @@ export default function AddRole() {
       : null,
   });
 
-  const roleRef = doc(firestore, 'companyRolesV2', role.id || '1');
+  const roleRef = doc(firestore, 'roles', role.id || '1');
   const rolesMutation = useFirestoreDocumentMutation(roleRef, {
     merge: true,
   });
+
+  const updatedRoleConfigMutation = useFirestoreDocumentMutation(
+    doc(firestore, `config/companyRoles`),
+    { merge: true }
+  );
 
   const {
     userData: { userId },
@@ -80,7 +87,7 @@ export default function AddRole() {
     ['companyV2'],
     query(collection(firestore, 'companyV2'), where('userId', '==', userId)),
     {
-      subscribe: true,
+      subscribe: false,
     },
     {
       // React Query data selector
@@ -176,6 +183,8 @@ export default function AddRole() {
         logoUrl: company[0].logoUrl,
         industry: company[0].industry,
         pinned: false,
+        type: 'company-role',
+        archived:  false,
         isQuestion: customQuestions.length ? true : false,
       };
 
@@ -187,8 +196,7 @@ export default function AddRole() {
             // TODO: Fix below
             await updateCustomQuestionsInQuestionnaireFirestore(
               customQuestions,
-              company[0].id,
-              roleId
+              role.id
             );
 
             Swal.fire({
@@ -224,6 +232,10 @@ export default function AddRole() {
               company[0].id,
               roleId
             );
+
+            updatedRoleConfigMutation.mutate({
+              lastUpdated: serverTimestamp(),
+            });
 
             Swal.fire({
               title: 'Success!',
@@ -297,6 +309,7 @@ export default function AddRole() {
                           fields={fields}
                           companyId={company[0]?.id}
                           roleCredits={company[0]?.roleCredits}
+                          role={role}
                         />
                       ) : null}
                     </div>
