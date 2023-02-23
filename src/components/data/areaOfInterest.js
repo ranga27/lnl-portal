@@ -18,10 +18,11 @@ export const areaOfInterestOptions = [
   { label: 'Technology', value: 'Technology' },
   { label: 'Law', value: 'Law' },
   {
-    label: 'National and Local Government or Public Sector',
-    value: 'National and Local Government or Public Sector',
+    label: 'National and Local Government (Public Sector)',
+    value: 'National and Local Government (Public Sector)',
   },
   { label: 'Charity and Third Sector', value: 'Charity and Third Sector' },
   { label: 'Sustainability', value: 'Sustainability' },
   { label: 'Sales and Supply Chain', value: 'Sales and Supply Chain' },
+  { label: 'HR and Recruitment', value: 'HR and Recruitment' },
 ];
