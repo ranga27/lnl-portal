@@ -6,7 +6,6 @@ exports.companyEmailConfirmation = functions
   .region('europe-west2')
   .https.onRequest(async (req, res) => {
     const confirmationHash = req.query.conf;
-    console.log(confirmationHash, 'conf HAsh');
     const auth = admin.auth();
     const store = admin.firestore();
 

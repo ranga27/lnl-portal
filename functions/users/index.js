@@ -1,4 +1,3 @@
-const confirmCompanyEmail = require('./confirmCompanyEmail');
 const sendCompanyOnboardingEmail = require('./onboardingEmail');
 const updateInviteCredits = require('./updateInviteCredits');
 const fetchQuestions = require('./fetchQuestions');
@@ -10,7 +9,6 @@ const { companyEmailConfirmation } = require('./companyEmailConfirmation');
 
 exports.sendCompanyVerificationEmail =
   sendCompanyVerificationEmail.sendCompanyVerificationEmail;
-exports.confirmCompanyEmail = confirmCompanyEmail.confirmCompanyEmail;
 exports.sendCompanyOnboardingEmail =
   sendCompanyOnboardingEmail.sendCompanyOnboardingEmail;
 exports.updateInviteCredits = updateInviteCredits.updateInviteCredits;
