@@ -1,4 +1,4 @@
-const { sendEmail } = require('./sendOnboardingEmail');
+const { sendOnboardingEmail } = require('./sendOnboardingEmail');
 const functions = require('firebase-functions/v1');
 const nodemailer = require('nodemailer');
 
@@ -22,7 +22,7 @@ exports.sendCompanyOnboardingEmail = functions
     });
 
     if (isOnboarded === true) {
-      return sendEmail({
+      return sendOnboardingEmail({
         to: email,
         from: 'Loop Not Luck hello@loopnotluck.com',
         subject: 'Welcome to Loop Not Luck',
