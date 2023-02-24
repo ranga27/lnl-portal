@@ -259,7 +259,7 @@ const getOptions = (message) => {
         { label: 'Staff Attorney', value: 'Staff Attorney' },
       ];
 
-    case /National and Local Government or Public Sector/i.test(message):
+    case /National and Local Government (Public Sector)/i.test(message):
       return [
         { label: 'Arts administrator', value: 'Arts administrator' },
         {
@@ -382,6 +382,24 @@ const getOptions = (message) => {
         { label: 'Transport Coordinator ', value: 'Transport Coordinator ' },
         { label: 'Warehouse Coordinator', value: 'Warehouse Coordinator' },
       ];
+
+      case /HR and Recruitment/i.test(message):
+      return [
+        { label: 'Director of People', value: 'Director of People' },
+        { label: 'Employee Relations Advisor', value: 'Employee Relations Advisor' },
+        { label: 'Head of People', value: 'Head of People' },
+        { label: 'HR Administrator', value: 'HR Administrator' },
+        { label: 'HR Advisor', value: 'HR Advisor' },
+        { label: 'HR Manager', value: 'HR Manager' },
+        { label: 'HR Officer', value: 'HR Officer' },
+        { label: 'Occupational Psychologist', value: 'Occupational Psychologist' },
+        { label: 'Personnel Manager', value: 'Personnel Manager' },
+        { label: 'People Business Partner', value: 'People Business Partner' },
+        { label: 'Recruitment Consultant', value: 'Recruitment Consultant' },
+        { label: 'Training and Development Officer', value: 'Training and Development Officer' },
+        { label: 'Talent Acquisition Analyst', value: 'Talent Acquisition Analyst' },
+      ];
+        
     default:
       return message;
   }
