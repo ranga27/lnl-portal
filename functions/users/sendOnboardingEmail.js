@@ -1,5 +1,5 @@
 //TODO: move html to config db or a lightweight cms
-exports.sendEmail = ({ to, from, subject, transporter }) => {
+exports.sendOnboardingEmail = ({ to, from, subject, transporter }) => {
   const mailOptions = {
     to,
     from,
