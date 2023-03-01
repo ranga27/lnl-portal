@@ -79,7 +79,7 @@ export default function ViewRole() {
       iconColor: '#3085d6',
     });
   };
-  const copyLinkText = `https://lnl-dev.web.app/roles/${id}`;
+  const copyLinkText = `https://loop-luck.web.app/roles/${id}`;
 
   return (
     <AuthRoute>
