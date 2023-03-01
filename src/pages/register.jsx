@@ -17,7 +17,7 @@ import { signUpSchema } from '../components/schemas/registerSchema';
 import { auth, firestore } from '../../firebase/clientApp';
 import { TextInput } from '../components/UI/Form/Input';
 import { CheckBox } from '../components/UI/Form/CheckBox';
-import GoogleSignIn from '../components/layout/googleSignIn';
+//import GoogleSignIn from '../components/layout/googleSignIn';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../components/UI/Modal';
 import { TermsInfo } from '../components/layout/TermsInfo';
@@ -141,15 +141,15 @@ export default function Register() {
                     <IntlMessages id='user.registerWith' />
                   </p>
                 </div>
-                <div className='mx-auto text-center mb-8'>
+                {/* <div className='mx-auto text-center mb-8'>
                   <GoogleSignIn />
-                </div>
-                <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
+                </div> */}
+                {/* <div className='flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5'>
                   <p className='text-center font-semibold mx-4 mb-0'>
                     {' '}
                     <IntlMessages id='user.or' />
                   </p>
-                </div>
+                </div> */}
                 <div className='grid grid-cols-4 gap-x-6'>
                   <div className='col-span-4 sm:col-span-4'>
                     <TextInput
