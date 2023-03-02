@@ -242,6 +242,7 @@ export default function AddRole() {
               text: 'New Role Added.',
               icon: 'success',
               iconColor: '#3085d6',
+              timer: 2000,
               showConfirmButton: false,
             });
             window.setTimeout(() => {
@@ -324,3 +325,5 @@ export default function AddRole() {
     </AuthRoute>
   );
 }
+
+// Adding a comment to push
