@@ -97,7 +97,7 @@ export default function Login() {
                     {' '}
                     <IntlMessages id='user.or' />
                   </p>
-                </div> */}
+              </div> */}
                 <TextInput
                   name='email'
                   label='Email address'
