@@ -57,6 +57,8 @@ function AddRoleForm({
 
   const locationType = watch('locationType');
   const rolling = watch('rolling');
+  const flexible = watch('flexible');
+  const asap = watch('asap')
   const technicalSkillsOther = watch('technicalSkills');
   const roleTitle = watch('title');
   const customMessageValue = watch('customMessage');
@@ -164,7 +166,6 @@ function AddRoleForm({
                   errors={errors.customMessage}
                   data-cy='role-customMessage-input'
                 />
-
                 <div className='pt-6'>
                   <p>
                     Dear [candidate name],
@@ -192,25 +193,16 @@ function AddRoleForm({
                 </div>
               </div>
             </div>
-            <div className='col-span-4 sm:col-span-2'>
-              <CheckBox
-                name='rolling'
-                label='Rolling'
-                control={control}
-                data-cy='role-rolling-checkbox'
-                checked={defaultValues.rolling}
-              />
-            </div>
-            <div className='col-span-4 sm:col-span-4'>
-              {!rolling && (
+            <div className='col-span-4 sm:col-span-4 mt-4'>
+              {(!flexible && !asap && !rolling) && (
                 <DatePicker
-                  label='Deadline Date'
-                  name='deadline'
-                  control={control}
-                  errors={errors.deadline}
-                  data-cy='role-deadline-datepicker'
+                label='Deadline Date'
+                name='deadline'
+                control={control}
+                errors={errors.deadline}
+                data-cy='role-deadline-datepicker'
                 />
-              )}
+                )}
             </div>
             <div className='col-span-4 sm:col-span-4'>
               <DatePicker
@@ -221,6 +213,35 @@ function AddRoleForm({
                 data-cy='role-startDate-datepicker'
               />
             </div>
+            <div className="flex flex-col">
+              <div className='col-span-4 sm:col-span-2'>
+                <CheckBox
+                  name='asap'
+                  label='Role Start Date - ASAP'
+                  control={control}
+                  data-cy='role-asap-checkbox'
+                  checked={defaultValues.asap}
+                />
+              </div>
+              <div className='col-span-4 sm:col-span-2'>
+                <CheckBox
+                  name='flexible'
+                  label='Role Start Date - Flexible'
+                  control={control}
+                  data-cy='role-flexible-checkbox'
+                  checked={defaultValues.flexible}
+                />
+              </div>
+              <div className='col-span-4 sm:col-span-2 mt-3 mb-3'>
+                <CheckBox
+                  name='rolling'
+                  label='Application Deadline Date - Rolling'
+                  control={control}
+                  data-cy='role-rolling-checkbox'
+                  checked={defaultValues.rolling}
+                />
+              </div>
+            </div> 
             <div className='col-span-4 sm:col-span-4'>
               <MultiSelect
                 label='Areas of Interests'
@@ -253,7 +274,6 @@ function AddRoleForm({
                 />
               </div>
             )}
-
             <div className='col-span-4 sm:col-span-4'>
               <MultiSelect
                 label='Technical Skills'
