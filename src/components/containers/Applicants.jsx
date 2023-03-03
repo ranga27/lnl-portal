@@ -68,7 +68,7 @@ export default function ApplicantsList({
                 Search list of applicants
               </p>
                 <p className='mt-1 text-sm text-gray-600 font-medium mr-4'>
-                  number of applicants: {ApplicantData.length}
+                  Number of applicants: {ApplicantData.length}
               </p>         
             </div>
             <form className='mt-5 flex space-x-4'>
