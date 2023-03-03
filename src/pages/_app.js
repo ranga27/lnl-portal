@@ -4,7 +4,6 @@ import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppLocale from '../components/lang';
 import { AuthProvider } from '../components/context/AuthContext';
-// import ProductTour from '../components/ProductTour';
 
 import 'tailwindcss/tailwind.css';
 import '../styles/globals.css';
@@ -15,7 +14,7 @@ function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus: false,
+        refetchOnWindowFocus: true,
       },
     },
   });
