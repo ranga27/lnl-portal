@@ -9,6 +9,7 @@ import EmptyComponent from '../layout/EmptyComponent';
 import { getRoles } from '../../../firebase/firestoreService';
 import AllApplicants from './AllApplicants';
 
+
 export default function ApplicantsList({
   companyId,
   companyInviteCredits,
@@ -61,7 +62,50 @@ export default function ApplicantsList({
     <div className='relative h-screen flex overflow-hidden bg-white'>
       <div className='flex flex-col min-w-0 flex-1 overflow-hidden'>
         <div className='flex-1 relative z-0 flex overflow-hidden'>
-          <main className='flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last'>
+      <aside className='hidden xl:flex xl:flex-col flex-shrink-0 w-96 border-r border-gray-200'>
+            <div className='flex justify-between items-center mb-2 mt-2'>
+              <p className='mt-1 text-sm text-gray-600 ml-4'>
+                Search list of applicants
+              </p>
+                <p className='mt-1 text-sm text-gray-600 font-medium mr-4'>
+                  number of applicants: {ApplicantData.length}
+              </p>         
+            </div>
+            <form className='mt-5 flex space-x-4'>
+                <div className='flex-1 min-w-0'>
+                  <label htmlFor='search' className='sr-only'>
+                    Search for roles
+                  </label>
+                  <div className='relative rounded-md shadow-sm'>
+                    <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
+                      <SearchIcon
+                        className='h-5 w-5 text-gray-400'
+                        aria-hidden='true'/>
+                    </div>
+                    <input
+                      type='text'
+                      name='search'
+                      value={SearchTerms}
+                      onChange={onChangeSearch}
+                      id='search'
+                      className='py-2 focus:ring-[#F7B919] focus:border-[#F7B919] block w-full border pl-10 sm:text-sm border-solid form-control border-gray-300 rounded-md focus:outline-none'
+                      placeholder='Search for roles'
+                    />
+                  </div>
+                </div>
+                <button
+                  type='button'
+                  onClick={handleSearch}
+                  className='inline-flex justify-center px-3.5 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
+                >
+                  <FilterIcon
+                    className='h-5 w-5 text-gray-400'
+                    aria-hidden='true'
+                  />
+                  <span className='sr-only'>Search</span>
+                </button>
+              </form>
+          <main className='flex-1 xl:order-last relative z-0 overflow-y-auto focus:outline-none xl:order-last'>
             <nav
               className='flex items-start px-4 py-3 sm:px-6 lg:px-8 xl:hidden'
               aria-label='Breadcrumb'
@@ -88,49 +132,8 @@ export default function ApplicantsList({
               <AllApplicants Applicants={ApplicantData} />
             )}
           </main>
-          <aside className='hidden xl:order-first xl:flex xl:flex-col flex-shrink-0 w-96 border-r border-gray-200'>
-            <div className='px-6 pt-6 pb-4'>
-              <p className='mt-1 text-sm text-gray-600'>
-                Search list of applicants
-              </p>
-              <form className='mt-6 flex space-x-4'>
-                <div className='flex-1 min-w-0'>
-                  <label htmlFor='search' className='sr-only'>
-                    Search for roles
-                  </label>
-                  <div className='relative rounded-md shadow-sm'>
-                    <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                      <SearchIcon
-                        className='h-5 w-5 text-gray-400'
-                        aria-hidden='true'
-                      />
-                    </div>
-                    <input
-                      type='text'
-                      name='search'
-                      value={SearchTerms}
-                      onChange={onChangeSearch}
-                      id='search'
-                      className='py-2 focus:ring-[#F7B919] focus:border-[#F7B919] block w-full border pl-10 sm:text-sm border-solid form-control border-gray-300 rounded-md focus:outline-none'
-                      placeholder='Search for roles'
-                    />
-                  </div>
-                </div>
-                <button
-                  type='button'
-                  onClick={handleSearch}
-                  className='inline-flex justify-center px-3.5 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F7B919]'
-                >
-                  <FilterIcon
-                    className='h-5 w-5 text-gray-400'
-                    aria-hidden='true'
-                  />
-                  <span className='sr-only'>Search</span>
-                </button>
-              </form>
-            </div>
             <nav
-              className='flex-1 min-h-0 overflow-y-auto'
+              className='flex-1 min-h-0 overflow-y-auto mt-4'
               aria-label='Applicants'
             >
               {SearchResult.map((role) => (
