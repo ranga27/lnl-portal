@@ -161,7 +161,7 @@ function AddRoleForm({
               <div>
                 <TextInput
                   name='customMessage'
-                  label='Custom Message'
+                  label='Custom Acceptance Message'
                   control={control}
                   errors={errors.customMessage}
                   data-cy='role-customMessage-input'
