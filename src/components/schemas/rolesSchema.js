@@ -16,9 +16,9 @@ export const rolesSchema = Yup.object().shape({
   customMessage: Yup.string().required('Please provide the details'),
   deadline: Yup.date().when('rolling', {
     is: (value) => value === true,
-    then: Yup.date().nullable().notRequired(),
-    otherwise: Yup.date().nullable().required('Deadline required'),
-  }),
+    then: Yup.date().nullable(),
+    otherwise: Yup.date().required('Deadline is required'),
+  }),    
   startDate: Yup.date().nullable().required('Start Date required'),
   salary: Yup.string().required('salary is required'),
   department: Yup.string().required('Department is required'),

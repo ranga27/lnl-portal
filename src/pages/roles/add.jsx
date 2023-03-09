@@ -55,7 +55,7 @@ export default function AddRole() {
     customMessage: role.customMessage || '',
     website: role.website || '',
     rolling: role.rolling || false,
-    deadline: role.rolling === true ? null : defaultRoleDeadline,
+    deadline: role.rolling === true ? new Date(role.posted.toMillis() + 60 * 24 * 60 * 60 * 1000) : defaultRoleDeadline,
     startDate: startDate !== undefined ? defaultRoleStartDate : null,
     rolesOfInterests: role.rolesOfInterests || null,
     areaOfInterests: role.areaOfInterests || null,
