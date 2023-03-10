@@ -37,7 +37,7 @@ export default function ForgotPassword() {
 
   const onForgotPassword = (data) => {
     sendPasswordResetEmail(auth, data.email, {
-      url: 'https://loop-luck.web.app/login',
+      url: 'https://loop-luck-portal.web.app/login',
     })
       .then(() => {
         alert.fire({
