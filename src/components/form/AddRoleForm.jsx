@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextInput } from '../../components/UI/Form/Input';
@@ -23,7 +24,12 @@ function AddRoleForm({
   handleSaveFields,
   fields,
   companyName,
-}) {
+}) 
+  {
+    const [deadline, setDeadline] = useState(
+      fields.deadline ? new Date(fields.deadline) : null
+    );
+
   const defaultValues = {
     title: fields.title || '',
     locationType: fields.locationType || '',
@@ -58,7 +64,7 @@ function AddRoleForm({
   const locationType = watch('locationType');
   const rolling = watch('rolling');
   const flexible = watch('flexible');
-  const asap = watch('asap')
+  //const asap = watch('asap')
   const technicalSkillsOther = watch('technicalSkills');
   const roleTitle = watch('title');
   const customMessageValue = watch('customMessage');
@@ -81,10 +87,34 @@ function AddRoleForm({
 
   const selectAreaOfInterest =
     areasOfInterests === undefined ? [] : areasOfInterests.flatMap((x) => x);
+  
+    const onRollingChange = (e) => {
+      setValue('rolling', e.target.checked);
+      if (e.target.checked) {
+        const today = new Date();
+        const deadlineDate = new Date(today.setDate(today.getDate() + 60));
+        setDeadline(deadlineDate.toISOString());
+      } else {
+        setDeadline(null);
+      }
+    };
+
+    const onSubmitWithDeadline = (data) => {
+      const deadline = data.rolling ? addDays(new Date(), 60) : data.deadline;
+      data.deadline = deadline;
+      onSubmit(data);
+    };
+
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
 
   return (
     <Fragment>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmitWithDeadline)} method='Post'>
         <div className='bg-white py-6 px-4 sm:p-6'>
           <div className='grid grid-cols-4 gap-x-6 gay-y-2'>
             <div className='col-span-4 sm:col-span-2'>
@@ -194,7 +224,7 @@ function AddRoleForm({
               </div>
             </div>
             <div className='col-span-4 sm:col-span-4 mt-4'>
-              {(!flexible && !asap && !rolling) && (
+              {(!flexible && !rolling) && (
                 <DatePicker
                 label='Deadline Date'
                 name='deadline'
@@ -214,7 +244,7 @@ function AddRoleForm({
               />
             </div>
             <div className="flex flex-col">
-              <div className='col-span-4 sm:col-span-2'>
+              {/* <div className='col-span-4 sm:col-span-2'>
                 <CheckBox
                   name='asap'
                   label='Role Start Date - ASAP'
@@ -222,8 +252,8 @@ function AddRoleForm({
                   data-cy='role-asap-checkbox'
                   checked={defaultValues.asap}
                 />
-              </div>
-              <div className='col-span-4 sm:col-span-2'>
+              </div> */}
+              {/* <div className='col-span-4 sm:col-span-2'>
                 <CheckBox
                   name='flexible'
                   label='Role Start Date - Flexible'
@@ -231,7 +261,7 @@ function AddRoleForm({
                   data-cy='role-flexible-checkbox'
                   checked={defaultValues.flexible}
                 />
-              </div>
+              </div> */}
               <div className='col-span-4 sm:col-span-2 mt-3 mb-3'>
                 <CheckBox
                   name='rolling'
@@ -239,6 +269,7 @@ function AddRoleForm({
                   control={control}
                   data-cy='role-rolling-checkbox'
                   checked={defaultValues.rolling}
+                  onChange={onRollingChange}
                 />
               </div>
             </div> 
@@ -315,3 +346,7 @@ function AddRoleForm({
   );
 }
 export default AddRoleForm;
+
+
+
+
