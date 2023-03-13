@@ -20,19 +20,17 @@ import { CheckBoxGroup } from '../../components/UI/Form/CheckBoxGroup';
 
 // TODO: Put regex for various url inputs
 const validationSchema = Yup.object().shape({
-  companyName: Yup.string().required('Company name is required'),
+  companyName: Yup.string(),
   tagline: Yup.string(),
   companyMission: Yup.string(),
-  numberOfEmployees: Yup.string().required('Select one of the options'),
+  numberOfEmployees: Yup.string(),
   ratings: Yup.array(),
-  companyValues: Yup.array()
-    .required('Select at least one option')
-    .min(1, 'Select at least one option'),
+  companyValues: Yup.array().nullable(),
   companyBenefits: Yup.array().nullable(),
   commitmentToDiversity: Yup.string(),
   diversityAnnouncement: Yup.string(),
-  interestingStats: Yup.string(),
-  articles: Yup.string(),
+  interestingStats: Yup.string().nullable(),
+  articles: Yup.string().nullable(),
   linkedinUrl: Yup.string(),
   twitterUrl: Yup.string(),
   websiteUrl: Yup.string(),
@@ -52,16 +50,18 @@ export default function UpdateExternalCompany() {
     companyBenefits: company.companyBenefits || null,
     commitmentToDiversity: company.commitmentToDiversity || '',
     diversityAnnouncement: company.diversityAnnouncement || '',
-    interestingStats: Array.isArray(company.interestingStats)
-      ? company.interestingStats.join('\n')
-      : !Array.isArray(company.interestingStats)
-      ? company.interestingStats
-      : null,
-    articles: Array.isArray(company.articles)
-      ? company.articles.join('\n')
-      : !Array.isArray(company.articles)
-      ? company.articles
-      : null,
+    interestingStats:
+      Array.isArray(company.interestingStats) && company.interestingStats.length > 0
+        ? company.interestingStats.join('\n')
+        : typeof company.interestingStats === 'string' && company.interestingStats.trim().length > 0
+          ? company.interestingStats
+          : null,
+    articles:
+      Array.isArray(company.articles) && company.articles.length > 0
+        ? company.articles.join('\n')
+        : typeof company.articles === 'string' && company.articles.trim().length > 0
+          ? company.articles
+          : null,
     linkedinUrl: company.linkedinUrl || '',
     twitterUrl: company.twitterUrl || '',
     websiteUrl: company.websiteUrl || '',
@@ -88,8 +88,14 @@ export default function UpdateExternalCompany() {
 
   const handleUpdateExternalCompany = async (data) => {
     // Create array of news/article links & interesting stats
-    data.articles = data.articles.split('\n');
-    data.interestingStats = data.interestingStats.split('\n');
+    if (data.articles) {
+      data.articles = data.articles.split('\n');
+    }
+
+    if (data.interestingStats) {
+      data.interestingStats = data.interestingStats.split('\n');
+    }
+
 
     // Modify ratings array
     data.ratings = data.ratings.map((rating) => {
@@ -168,7 +174,7 @@ export default function UpdateExternalCompany() {
                         label='Company Name'
                         errors={errors.companyName}
                         control={control}
-                        // data-cy='company-name-input'
+                      // data-cy='company-name-input'
                       />
                     </div>
 
@@ -178,7 +184,7 @@ export default function UpdateExternalCompany() {
                         label='Tagline'
                         errors={errors.tagline}
                         control={control}
-                        // data-cy='company-name-input'
+                      // data-cy='company-name-input'
                       />
                     </div>
 
@@ -190,7 +196,7 @@ export default function UpdateExternalCompany() {
                         errors={errors.companyMission}
                         control={control}
                         rows={5}
-                        // data-cy='company-description-input'
+                      // data-cy='company-description-input'
                       />
                     </div>
                     <div className='mt-4 col-span-4 sm:col-span-2 flex gap-10'>
@@ -202,7 +208,7 @@ export default function UpdateExternalCompany() {
                           control={control}
                           options={numberOfEmployeesOptions}
                           defaultChecked={defaultValues.numberOfEmployees}
-                          // data-cy='company-description-input'
+                        // data-cy='company-description-input'
                         />
                       </div>
                       <div className='col-span-2 sm:col-span-2'>
@@ -214,7 +220,7 @@ export default function UpdateExternalCompany() {
                           setValue={setValue}
                           errors={errors}
                           defaultChecked={defaultValues.ratings}
-                          // data-cy='role-rolling-checkbox'
+                        // data-cy='role-rolling-checkbox'
                         />
                       </div>
                     </div>
@@ -225,7 +231,7 @@ export default function UpdateExternalCompany() {
                         label='Linkedin Url'
                         errors={errors.linkedinUrl}
                         control={control}
-                        // data-cy='company-linkedinUrl-input'
+                      // data-cy='company-linkedinUrl-input'
                       />
                     </div>
                     <div className='mt-4 col-span-4 sm:col-span-2'>
@@ -234,7 +240,7 @@ export default function UpdateExternalCompany() {
                         label='Twitter Url'
                         errors={errors.twitterUrl}
                         control={control}
-                        // data-cy='company-ats-input'
+                      // data-cy='company-ats-input'
                       />
                     </div>
 
@@ -244,7 +250,7 @@ export default function UpdateExternalCompany() {
                         label='Website Url'
                         errors={errors.websiteUrl}
                         control={control}
-                        // data-cy='company-ats-input'
+                      // data-cy='company-ats-input'
                       />
                     </div>
                     <div className='mt-4 col-span-4 sm:col-span-2'>
@@ -253,7 +259,7 @@ export default function UpdateExternalCompany() {
                         label='Career Page Url'
                         errors={errors.careerPageUrl}
                         control={control}
-                        // data-cy='company-ats-input'
+                      // data-cy='company-ats-input'
                       />
                     </div>
 
@@ -269,7 +275,7 @@ export default function UpdateExternalCompany() {
                         clearErrors={clearErrors}
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
-                        // data-cy='company-values-select'
+                      // data-cy='company-values-select'
                       />
                     </div>
 
@@ -285,7 +291,7 @@ export default function UpdateExternalCompany() {
                         clearErrors={clearErrors}
                         closeMenuOnSelect={false}
                         menuPortalTarget={document.querySelector('body')}
-                        // data-cy='company-values-select'
+                      // data-cy='company-values-select'
                       />
                     </div>
 
@@ -297,7 +303,7 @@ export default function UpdateExternalCompany() {
                         errors={errors.commitmentToDiversity}
                         control={control}
                         rows={4}
-                        // data-cy='company-description-input'
+                      // data-cy='company-description-input'
                       />
                     </div>
 
@@ -310,7 +316,7 @@ export default function UpdateExternalCompany() {
                         control={control}
                         rows={2}
                         placeholder='Put article link here.'
-                        // data-cy='company-description-input'
+                      // data-cy='company-description-input'
                       />
                     </div>
                     <div className='mt-4 col-span-4 sm:col-span-2'>
@@ -321,7 +327,7 @@ export default function UpdateExternalCompany() {
                         errors={errors.interestingStats}
                         control={control}
                         rows={5}
-                        // data-cy='company-description-input'
+                      // data-cy='company-description-input'
                       />
                     </div>
 
@@ -334,7 +340,7 @@ export default function UpdateExternalCompany() {
                         control={control}
                         rows={5}
                         placeholder='Put article links here.'
-                        // data-cy='company-description-input'
+                      // data-cy='company-description-input'
                       />
                     </div>
                   </div>
