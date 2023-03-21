@@ -14,10 +14,13 @@ export const rolesSchema = Yup.object().shape({
   positionType: Yup.string().required('Please select Position Type'),
   description: Yup.string().required('Please provide the details'),
   customMessage: Yup.string().required('Please provide the details'),
-  deadline: Yup.date().when('rolling', {
-    is: (value) => value === true,
-    then: Yup.date().nullable(),
-    otherwise: Yup.date().required('Deadline is required'),
+  deadline: Yup
+    .date()
+    .nullable()
+    .when(['rolling', 'flexible', 'asap'], {
+    is: (asap, flexible, rolling) => !(asap || flexible || rolling),
+    then: Yup.date().required('Deadline is required'),
+    otherwise: Yup.date().nullable(),
   }),    
   startDate: Yup.date().nullable().required('Start Date required'),
   salary: Yup.string().required('salary is required'),
