@@ -26,11 +26,20 @@ function AddRoleForm({
   companyName,
 }) 
   {
-    const [deadline, setDeadline] = useState(
-      fields.deadline ? new Date(fields.deadline) : null
-    );
+const [deadline, setDeadline] = useState(
+  fields.deadline ? new Date(fields.deadline) : null
+);
+const onFlexibleChange = (e) => {
+  setValue('flexible', e.target.checked);
+};
+
+const onAsapChange = (e) => {
+  setValue('asap', e.target.checked);
+};
 
   const defaultValues = {
+    flexible: fields.rolling || false,
+    asap: fields.asap || false,
     title: fields.title || '',
     locationType: fields.locationType || '',
     location: fields.location || '',
@@ -64,7 +73,7 @@ function AddRoleForm({
   const locationType = watch('locationType');
   const rolling = watch('rolling');
   const flexible = watch('flexible');
-  //const asap = watch('asap')
+  const asap = watch('asap')
   const technicalSkillsOther = watch('technicalSkills');
   const roleTitle = watch('title');
   const customMessageValue = watch('customMessage');
@@ -186,17 +195,38 @@ function AddRoleForm({
                 data-cy='role-department-input'
               />
             </div>
-            <div className='col-span-4 sm:col-span-2'></div>
+            <div className='col-span-4 sm:col-span-2'>
+            </div>
             <div className='col-span-4 sm:col-span-4'>
               <div>
-                <TextInput
-                  name='customMessage'
-                  label='Custom Acceptance Message'
-                  control={control}
-                  errors={errors.customMessage}
-                  data-cy='role-customMessage-input'
-                />
-                <div className='pt-6'>
+                <div>
+                  <div className='flex items-center mt-5'>
+                    <TextInput 
+                      name='customMessage'
+                      label='Custom Acceptance Message'
+                      control={control}
+                      errors={errors.customMessage}
+                      data-cy='role-customMessage-input'
+                      style={{width:'363%'}}
+                    />
+                    <div className='tooltip'>
+                      <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={1.5} stroke="currentColor" 
+                      className="w-6 h-5 ml-8 mb-7"
+                      >
+                        <path strokeLinecap="round"
+                          strokeLinejoin="round" 
+                          d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" 
+                          />
+                      </svg>
+                      <span className="tooltiptext"> &apos;Here you can customise the message accepted candidates receive with details as to the next steps of your recruitment process. E.G We will be in contact within 5 working days to arrange a telephone interview.&apos; You can also paste in URL links for candidates to book meetings or complete additional applications.  </span>
+                    </div>
+                  </div>
+                </div>
+              <div className='pt-6 mt-3'>
                   <p>
                     Dear [candidate name],
                     <br /> <br />
@@ -223,8 +253,8 @@ function AddRoleForm({
                 </div>
               </div>
             </div>
-            <div className='col-span-4 sm:col-span-4 mt-4'>
-              {(!flexible && !rolling) && (
+            <div className='col-span-4 sm:col-span-4 mt-5'>
+              {!flexible && !rolling && !asap ? (
                 <DatePicker
                 label='Deadline Date'
                 name='deadline'
@@ -232,36 +262,8 @@ function AddRoleForm({
                 errors={errors.deadline}
                 data-cy='role-deadline-datepicker'
                 />
-                )}
-            </div>
-            <div className='col-span-4 sm:col-span-4'>
-              <DatePicker
-                label='Start Date'
-                name='startDate'
-                control={control}
-                errors={errors.startDate}
-                data-cy='role-startDate-datepicker'
-              />
-            </div>
-            <div className="flex flex-col">
-              {/* <div className='col-span-4 sm:col-span-2'>
-                <CheckBox
-                  name='asap'
-                  label='Role Start Date - ASAP'
-                  control={control}
-                  data-cy='role-asap-checkbox'
-                  checked={defaultValues.asap}
-                />
-              </div> */}
-              {/* <div className='col-span-4 sm:col-span-2'>
-                <CheckBox
-                  name='flexible'
-                  label='Role Start Date - Flexible'
-                  control={control}
-                  data-cy='role-flexible-checkbox'
-                  checked={defaultValues.flexible}
-                />
-              </div> */}
+                ): null
+              }
               <div className='col-span-4 sm:col-span-2 mt-3 mb-3'>
                 <CheckBox
                   name='rolling'
@@ -272,8 +274,39 @@ function AddRoleForm({
                   onChange={onRollingChange}
                 />
               </div>
-            </div> 
+              </div>
             <div className='col-span-4 sm:col-span-4'>
+              <DatePicker
+                label='Start Date'
+                name='startDate'
+                control={control}
+                errors={errors.startDate}
+                data-cy='role-startDate-datepicker'
+              />
+            </div>
+            <div className="flex flex-col">
+            <div className='col-span-4 sm:col-span-2'>
+              <CheckBox
+                name='asap'
+                label='Role Start Date - ASAP'
+                control={control}
+                data-cy='role-asap-checkbox'
+                checked={defaultValues.asap}
+                onChange={onAsapChange}
+              />
+              </div>
+              <div className='col-span-4 sm:col-span-2'>
+              <CheckBox
+                name='flexible'
+                label='Role Start Date - Flexible'
+                control={control}
+                data-cy='role-flexible-checkbox'
+                checked={defaultValues.flexible}
+                onChange={onFlexibleChange}
+                />
+              </div>
+            </div> 
+            <div className='col-span-4 sm:col-span-4 mt-5'>
               <MultiSelect
                 label='Areas of Interests'
                 name='areaOfInterests'
