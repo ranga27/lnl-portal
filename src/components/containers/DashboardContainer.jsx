@@ -15,7 +15,7 @@ import {
   getCompanyDashboardMetrix,
 } from '../../../firebase/firestoreService';
 import { format } from 'date-fns';
-import DeleteRole from './DeleteRole';
+import RoleArchiveAndUnarchive from './RoleArchiveAndUnarchive';
 
 const DashboardContainer = () => {
   // USER AUTH
@@ -23,25 +23,31 @@ const DashboardContainer = () => {
     userData: { userId },
   } = useContext(AuthContext);
 
-  //DELETE ROLE
-  const [deleteStatus, setDeleteStatus] = useState(false);
+  const [archiveStatus, setArchiveStatus] = useState(false);
+  const [archiveId, setArchiveId] = useState();
+  const [unarchiveId, setUnarchiveId] = useState();
+  const [unarchiveStatus, setUnarchiveStatus] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [deleteId, setDeleteId] = useState();
   const [user, setUser] = useState([]);
 
-  const handleDeleteRole = (id) => {
-    setDeleteStatus(true);
-    setDeleteId(id);
+  const handleArchiveRole = (id) => {
+    setArchiveStatus(true);
+    setArchiveId(id);
+  };
+
+  const handleUnArchiveRole = (id) => {
+    setUnarchiveStatus(true);
+    setUnarchiveId(id);
   };
 
   // GET ROLES
-  const [postedRole, setpostedRole] = useState([]);
+  const [postedRole, setPostedRole] = useState([]);
   useEffect(() => {
     userId &&
       getCompanyDashboardMetrix(userId).then(
-        (result) => result?.length && setpostedRole([...result])
+        (result) => result?.length && setPostedRole([...result])
       );
-  }, [userId, deleteId]);
+  }, [userId]);
 
   const [applicants, setApplicants] = useState([]);
   useEffect(() => {
@@ -67,10 +73,15 @@ const DashboardContainer = () => {
   if (!user.firstName) {
     return <div className='loading' />;
   }
-  
+
   return (
     <div className='container mt-6 mx-auto px-4 md:px-12'>
-      {deleteStatus && <DeleteRole id={deleteId} />}
+      {archiveStatus && (
+        <RoleArchiveAndUnarchive id={archiveId} status={true} />
+      )}
+      {unarchiveStatus && (
+        <RoleArchiveAndUnarchive id={unarchiveId} status={false} />
+      )}
       {loading && user.tourCompleted ? null : (
         <ProductTour JoyRideCustomConstant={dashboardJoyRide} userId={userId} />
       )}
@@ -171,8 +182,11 @@ const DashboardContainer = () => {
                     <th className='p-2'>
                       <div className='font-semibold text-left'>Created At</div>
                     </th>
-                    <th className='p-2' id='delete-role-button'>
-                      <div className='font-semibold text-center'>Delete</div>
+                    <th className='p-2' id='status-role-button'>
+                      <div className='font-semibold text-center'>Status</div>
+                    </th>
+                    <th className='p-2' id='archive-role-button'>
+                      <div className='font-semibold text-center'>Archive</div>
                     </th>
                   </tr>
                 </thead>
@@ -195,23 +209,39 @@ const DashboardContainer = () => {
                           </div>
                         </td>
                         <td className='p-2'>
+                          <div className='text-left'>
+                            {item.archived ? 'Archived' : 'Active'}
+                          </div>
+                        </td>
+                        <td className='p-2'>
                           <div className='flex justify-center text-gray-800'>
-                            <button onClick={() => handleDeleteRole(item.id)}>
-                              <svg
-                                className='w-8 h-8 hover:text-[#F7B919] rounded-full hover:bg-gray-100 p-1'
-                                fill='none'
-                                stroke='currentColor'
-                                viewBox='0 0 24 24'
-                                xmlns='http:www.w3.org/2000/svg'
+                            {item.archived ? (
+                              <button
+                                onClick={() => handleUnArchiveRole(item.id)}
+                                className='text-sm text-[#F7B919] hover:text-black'
                               >
-                                <path
-                                  strokeLinecap='round'
-                                  strokeLinejoin='round'
-                                  strokeWidth='2'
-                                  d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-                                ></path>
-                              </svg>
-                            </button>
+                                Make Active
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleArchiveRole(item.id)}
+                              >
+                                <svg
+                                  className='w-8 h-8 hover:text-[#F7B919] rounded-full hover:bg-gray-100 p-1'
+                                  fill='none'
+                                  stroke='currentColor'
+                                  viewBox='0 0 24 24'
+                                  xmlns='http:www.w3.org/2000/svg'
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    strokeWidth='2'
+                                    d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+                                  ></path>
+                                </svg>
+                              </button>
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -337,7 +367,7 @@ const DashboardContainer = () => {
                       Application Date
                     </div>
                   </th>
-                  <th className='p-2' id='delete-role-button'>
+                  <th className='p-2' id='view-applicant-button'>
                     <div className='font-semibold text-center'></div>
                   </th>
                 </tr>
