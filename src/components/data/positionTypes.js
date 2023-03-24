@@ -14,6 +14,5 @@ export const positionTypes = [
   },
   { label: 'Work Experience', value: 'Work Experience' },
   { label: 'Freelance', value: 'Freelance' },
-  { label: 'Contract', value: 'Contract' },
   { label: 'Full Time', value: 'Full Time' },
 ];

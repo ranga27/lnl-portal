@@ -9,6 +9,7 @@ import {
   setDoc,
   where,
   query,
+  updateDoc,
   getDocs,
   serverTimestamp,
 } from 'firebase/firestore';
@@ -396,8 +397,13 @@ export async function updateUserTourInFirestore(uid) {
 export async function getScreeningQuestions(roleId, applicantId) {
   const roleRef = doc(firestore, `questionnaire/${roleId}`);
   const ansRef = collection(roleRef, 'Answers');
-  const sereeningQuestions = doc(ansRef, applicantId);
+  const screeningQuestions = doc(ansRef, applicantId);
 
-  const data = await getDoc(sereeningQuestions);
+  const data = await getDoc(screeningQuestions);
   return data.data();
+}
+
+export async function archiveAndUnArchiveRoleInUsersMatchedRoles(role, users, status) {
+  const roleRef = doc(firestore, `users/${users}/matchedRoles/${role}`);
+  return updateDoc(roleRef, { archived: status }, { merge: true });
 }

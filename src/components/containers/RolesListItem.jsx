@@ -2,11 +2,11 @@ import { Fragment, useState, useEffect, useContext } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import {
   ChevronRightIcon,
+  ClipboardCheckIcon,
   DotsVerticalIcon,
   PaperClipIcon,
   PencilAltIcon,
   TrashIcon,
-  UserAddIcon,
 } from '@heroicons/react/solid';
 import Link from 'next/link';
 import { useFirestoreDocumentMutation } from '@react-query-firebase/firestore';
@@ -14,9 +14,9 @@ import { serverTimestamp, doc } from 'firebase/firestore';
 import { firestore } from '../../../firebase/clientApp';
 import { getFirstChar } from '../../utils/commands';
 import { AuthContext } from '../../components/context/AuthContext';
-import DeleteRole from './DeleteRole';
 import { fetchUserProfileDataFromFirestore } from '../../../firebase/firestoreService';
 import { format } from 'date-fns';
+import RoleArchiveAndUnarchive from './RoleArchiveAndUnarchive';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -24,8 +24,10 @@ function classNames(...classes) {
 
 export default function RolesList({ roles }) {
   const [pinned, setPinned] = useState('3a43ocoGT2');
-  const [deleteStatus, setDeleteStatus] = useState(false);
-  const [deleteId, setDeleteId] = useState();
+  const [archiveStatus, setArchiveStatus] = useState(false);
+  const [archiveId, setArchiveId] = useState();
+  const [unarchiveId, setUnarchiveId] = useState();
+  const [unarchiveStatus, setUnarchiveStatus] = useState(false);
   const [pinnedValue, setPinnedValue] = useState(false);
   const [user, setUser] = useState([]);
   const rolesPinned = roles.filter((role) => role.pinned);
@@ -74,14 +76,24 @@ export default function RolesList({ roles }) {
     }
   };
 
-  const handleDeleteRole = (id) => {
-    setDeleteStatus(true);
-    setDeleteId(id);
+  const handleArchiveRole = (id) => {
+    setArchiveStatus(true);
+    setArchiveId(id);
+  };
+
+  const handleUnArchiveRole = (id) => {
+    setUnarchiveStatus(true);
+    setUnarchiveId(id);
   };
 
   return (
     <main>
-      {deleteStatus && <DeleteRole id={deleteId} />}
+      {archiveStatus && (
+        <RoleArchiveAndUnarchive id={archiveId} status={true} />
+      )}
+      {unarchiveStatus && (
+        <RoleArchiveAndUnarchive id={unarchiveId} status={false} />
+      )}
 
       <div className='px-4 mt-6 sm:px-6 lg:px-8'>
         <ul
@@ -340,25 +352,47 @@ export default function RolesList({ roles }) {
                             </Menu.Item>
                           </div>
                           <div className='py-1'>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <button
-                                  onClick={() => handleDeleteRole(role.id)}
-                                  className={classNames(
-                                    active
-                                      ? 'bg-gray-100 text-gray-900'
-                                      : 'text-gray-700',
-                                    'group flex items-center px-4 py-2 text-sm w-full'
-                                  )}
-                                >
-                                  <TrashIcon
-                                    className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
-                                    aria-hidden='true'
-                                  />
-                                  Delete
-                                </button>
-                              )}
-                            </Menu.Item>
+                            {role.archived ? (
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    onClick={() => handleUnArchiveRole(role.id)}
+                                    className={classNames(
+                                      active
+                                        ? 'bg-gray-100 text-gray-900'
+                                        : 'text-gray-700',
+                                      'group flex items-center px-4 py-2 text-sm w-full'
+                                    )}
+                                  >
+                                    <ClipboardCheckIcon
+                                      className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                      aria-hidden='true'
+                                    />
+                                    Unarchive
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            ) : (
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    onClick={() => handleArchiveRole(role.id)}
+                                    className={classNames(
+                                      active
+                                        ? 'bg-gray-100 text-gray-900'
+                                        : 'text-gray-700',
+                                      'group flex items-center px-4 py-2 text-sm w-full'
+                                    )}
+                                  >
+                                    <TrashIcon
+                                      className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
+                                      aria-hidden='true'
+                                    />
+                                    Archive
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            )}
                           </div>
                         </Menu.Items>
                       </Transition>

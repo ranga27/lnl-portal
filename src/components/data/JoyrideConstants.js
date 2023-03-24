@@ -24,9 +24,9 @@ export const dashboardJoyRide = [
       'Here you can find a detail view of all the roles your company has created on the platform.',
   },
   {
-    target: '#delete-role-button',
+    target: '#archive-role-button',
     content:
-      'Here you can delete a specific role by clicking on the Delete Icon',
+      'Here you can archive a specific role by clicking on the Delete Icon',
   },
   {
     target: '#metrix-details',
